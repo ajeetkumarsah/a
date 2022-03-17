@@ -1,0 +1,9 @@
+{
+    "workbench.colorCustomizations": {
+        "editorGroup.border": "#bc0d19",
+        "statusBar.background": "#8c0a13",
+        "statusBar.debuggingBackground": "#0a8c83",
+        "statusBarItem.hoverBackground": "#bc0d19",
+        "statusBarItem.remoteBackground": "#8c0a13"
+    }
+}
