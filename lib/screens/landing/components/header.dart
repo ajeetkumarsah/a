@@ -18,7 +18,7 @@ class Header extends StatelessWidget {
       child: SafeArea(
           child: Container(
         padding: EdgeInsets.only(
-            left: 88,
+            left: Responsive.isDesktop(context) ? 88 : 12.0,
             right: 88,
             top: scroll ? 20 : 50,
             bottom: scroll ? 20 : 50),
@@ -26,10 +26,9 @@ class Header extends StatelessWidget {
           children: [
             if (!Responsive.isDesktop(context))
               IconButton(
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
+                icon: _controller.scaffoldkey.currentState!.isDrawerOpen
+                    ? Image.asset('assets/home/more.png')
+                    : Image.asset('assets/home/menu.png'),
                 onPressed: () {
                   _controller.openOrCloseDrawer();
                 },

@@ -33,94 +33,97 @@ class _PartnerScreenState extends State<PartnerScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        BootstrapContainer(
-            fluid: true,
-            padding: EdgeInsets.fromLTRB(48, 150, 48, 0),
-            children: [
-              BootstrapRow(children: [
-                BootstrapCol(
-                    sizes: 'col-12 col-sm-12 col-md-6',
-                    child: Column(
-                      children: [
-                        AdaptiveText(
-                          text: "Want to grow your fitness business?",
-                          minFontSize: 14,
-                          maxLines: 2,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 72,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        AdaptiveText(
-                          text:
-                              "We made it easy for you,be a part of WTF Family in just about 45 mins, that is also the time average person works-out in the GYM too.",
-                          minFontSize: 14,
-                          maxLines: 2,
-                          style: GoogleFonts.openSans(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.06,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: AdaptiveText(
-                                text: "Get Started",
-                                minFontSize: 14,
-                                style: GoogleFonts.openSans(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              decoration: const BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8.0)),
-                                  color: Constants.primaryColor),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 75),
-                              alignment: Alignment.center,
+    return Container(
+      decoration: const BoxDecoration(color: Color(0xff1A1A1A)),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          BootstrapContainer(
+              fluid: true,
+              padding: EdgeInsets.fromLTRB(48, 150, 48, 0),
+              children: [
+                BootstrapRow(children: [
+                  BootstrapCol(
+                      sizes: 'col-12 col-sm-12 col-md-6',
+                      child: Column(
+                        children: [
+                          AdaptiveText(
+                            text: "Want to grow your fitness business?",
+                            minFontSize: 14,
+                            maxLines: 2,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 72,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
                             ),
-                            if (isDesktop()) const Spacer(),
-                            // if (isDesktop()) gymCountSection(width),
-                          ],
-                        ),
-                      ],
-                    )),
-                BootstrapCol(
-                    sizes: 'col-12 col-sm-12 col-md-6',
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 421,
-                          decoration: BoxDecoration(
-                              color: Constants.white,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(210))),
-                        )
-                      ],
-                    ))
-              ])
-            ]),
-        if (!isDesktop()) gymCountSection(width),
-        const ThreeCards(),
-        const WhyToChoose(),
-        const MustTryListening(),
-        const AboutWTFSection(),
-        const PartnerSaySection(),
-        const BottomBar(),
-      ],
+                          ),
+                          const SizedBox(height: 12),
+                          AdaptiveText(
+                            text:
+                                "We made it easy for you,be a part of WTF Family in just about 45 mins, that is also the time average person works-out in the GYM too.",
+                            minFontSize: 14,
+                            maxLines: 2,
+                            style: GoogleFonts.openSans(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.06,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: AdaptiveText(
+                                  text: "Get Started",
+                                  minFontSize: 14,
+                                  style: GoogleFonts.openSans(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                    fontStyle: FontStyle.normal,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                decoration: const BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                    color: Constants.primaryColor),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 16, horizontal: 75),
+                                alignment: Alignment.center,
+                              ),
+                              if (isDesktop()) const Spacer(),
+                              // if (isDesktop()) gymCountSection(width),
+                            ],
+                          ),
+                        ],
+                      )),
+                  BootstrapCol(
+                      sizes: 'col-12 col-sm-12 col-md-6',
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 421,
+                            decoration: BoxDecoration(
+                                color: Constants.white,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(210))),
+                          )
+                        ],
+                      ))
+                ])
+              ]),
+          if (!isDesktop()) gymCountSection(width),
+          const ThreeCards(),
+          const WhyToChoose(),
+          const MustTryListening(),
+          const AboutWTFSection(),
+          const PartnerSaySection(),
+          const BottomBar(),
+        ],
+      ),
     );
   }
 

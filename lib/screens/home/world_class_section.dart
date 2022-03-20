@@ -1,7 +1,11 @@
+// ignore_for_file: unused_element
+
 import 'dart:math';
 
 import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bootstrap/flutter_bootstrap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
@@ -36,75 +40,101 @@ class _WorldClassSectionState extends State<WorldClassSection>
 
   @override
   Widget build(BuildContext context) {
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
+    bool isTablet() => Responsive.isTablet(context);
     return Container(
-      padding: const EdgeInsets.only(left: 88),
+      padding: EdgeInsets.only(left: isDesktop() ? 88 : 12),
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: AssetImage("assets/home/diamond_bg.png"),
           fit: BoxFit.fill,
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: BootstrapContainer(
+        fluid: true,
         children: [
-          //Label
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              AdaptiveText(
-                text: 'World Class\nFacilities',
-                maxLines: 2,
-                style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 48,
-                    color: Colors.white),
+              //Label
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AdaptiveText(
+                    text: 'World Class\nFacilities',
+                    maxLines: 2,
+                    style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.normal,
+                        fontSize: isMobile() ? 24 : 48,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                      child: Container(
+                    margin: const EdgeInsets.only(top: 24),
+                    child: Divider(
+                      thickness: isMobile() ? 3 : 9,
+                      height: isMobile() ? 3 : 9,
+                      color: Colors.white,
+                    ),
+                  ))
+                ],
               ),
-              const SizedBox(
-                width: 12,
-              ),
-              Expanded(
-                  child: Container(
-                margin: const EdgeInsets.only(top: 24),
-                child: const Divider(
-                  thickness: 9,
-                  height: 9,
-                  color: Colors.white,
+              const SizedBox(height: 50),
+              TabBar(
+                controller: _tabController,
+                indicatorWeight: isMobile() ? 3 : 10,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicatorColor: Constants.primaryColor,
+                unselectedLabelColor: Colors.white,
+                labelColor: Constants.primaryColor,
+                labelPadding: const EdgeInsets.only(bottom: 12),
+                unselectedLabelStyle: GoogleFonts.montserrat(
+                  fontSize: isMobile() ? 12 : 36,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
                 ),
-              ))
+                labelStyle: GoogleFonts.montserrat(
+                  fontSize: isMobile() ? 12 : 36,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal,
+                ),
+                tabs: [
+                  tabItem(
+                      label: 'WTF Fitness',
+                      selected: _tabController.index == 0,
+                      isMobile: isMobile()),
+                  tabItem(
+                      label: 'WTF Live',
+                      selected: _tabController.index == 1,
+                      isMobile: isMobile()),
+                  tabItem(
+                      label: 'Personal Training',
+                      selected: _tabController.index == 2,
+                      isMobile: isMobile())
+                ],
+              ),
+              ExpandablePageView(
+                controller: pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  wtfFitness(isMobile()),
+                  WTFLive(),
+                  personalTraning()
+                ],
+              ),
             ],
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          TabBar(
-            controller: _tabController,
-            indicatorWeight: 10,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: Constants.primaryColor,
-            unselectedLabelColor: Colors.white,
-            labelColor: Constants.primaryColor,
-            labelPadding: const EdgeInsets.only(bottom: 12),
-            tabs: [
-              tabItem(
-                  label: 'WTF Fitness', selected: _tabController.index == 0),
-              tabItem(label: 'WTF Live', selected: _tabController.index == 1),
-              tabItem(
-                  label: 'Personal Training',
-                  selected: _tabController.index == 2)
-            ],
-          ),
-          ExpandablePageView(
-            controller: pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [wtfFitness(), WTFLive(), personalTraning()],
           ),
         ],
       ),
     );
   }
 
-  Widget wtfFitness() {
+  Widget wtfFitness(bool isMobile) {
     return Row(
       children: [options(), expandedView()],
     );
@@ -131,7 +161,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                 AdaptiveText(
                   text: "Unlocking",
                   minFontSize: 14,
-                  style: const TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 60,
                     fontWeight: FontWeight.w300,
                     color: Colors.white,
@@ -141,7 +171,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                 AdaptiveText(
                   text: "Fitness",
                   minFontSize: 14,
-                  style: const TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 70,
                     fontWeight: FontWeight.w300,
                     color: Constants.primaryColor,
@@ -150,7 +180,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                 AdaptiveText(
                   text: "101",
                   minFontSize: 14,
-                  style: const TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 70,
                     fontWeight: FontWeight.w300,
                     color: Constants.primaryColor,
@@ -162,7 +192,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                       "Get access to live class from the trainer of your own gym at your comfort of \nyour home this Pandemic.Our Membership also gives you option to train at \nhome breaking all obstacle in your fitness journey.",
                   minFontSize: 14,
                   maxLines: 3,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 16,
                     fontWeight: FontWeight.w200,
                     color: Colors.white.withOpacity(0.5),
@@ -176,7 +206,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                       child: AdaptiveText(
                         text: "Download App Now",
                         minFontSize: 14,
-                        style: const TextStyle(
+                        style: GoogleFonts.montserrat(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
                           color: Constants.primaryColor,
@@ -225,7 +255,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                         AdaptiveText(
                           text: "Personal ",
                           minFontSize: 14,
-                          style: const TextStyle(
+                          style: GoogleFonts.montserrat(
                             fontSize: 60,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -234,7 +264,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                         AdaptiveText(
                           text: "Training",
                           minFontSize: 14,
-                          style: const TextStyle(
+                          style: GoogleFonts.montserrat(
                             fontSize: 70,
                             fontWeight: FontWeight.w800,
                             color: Constants.white,
@@ -255,7 +285,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                       text: "Program \nby WTF",
                       minFontSize: 14,
                       maxLines: 2,
-                      style: const TextStyle(
+                      style: GoogleFonts.montserrat(
                         fontSize: 60,
                         fontWeight: FontWeight.w200,
                         color: Constants.white,
@@ -270,7 +300,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                       "Train with world class fitness trainer Starting \njust @ 1500/month.",
                   minFontSize: 14,
                   maxLines: 3,
-                  style: TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 16,
                     fontWeight: FontWeight.w200,
                     color: Colors.white.withOpacity(0.5),
@@ -284,7 +314,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                       child: AdaptiveText(
                         text: "Download App Now",
                         minFontSize: 14,
-                        style: const TextStyle(
+                        style: GoogleFonts.montserrat(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
                           color: Constants.primaryColor,
@@ -322,6 +352,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
   Widget options() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         wtfFitnessLeftItem(label: 'Pocket', width: 179, height: 58),
         wtfFitnessLeftItem(label: 'Friendly', width: 243, height: 58),
@@ -334,14 +365,12 @@ class _WorldClassSectionState extends State<WorldClassSection>
     return Expanded(
       child: Column(
         children: [
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           AdaptiveText(
             text:
                 'WTF Powered gyms are top class infrastructure and Modern machinery at your regular gym membership',
             minFontSize: 12,
-            style: const TextStyle(
+            style: GoogleFonts.montserrat(
                 fontSize: 14, fontWeight: FontWeight.w300, color: Colors.white),
           ),
           const SizedBox(
@@ -429,7 +458,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
               height: 81,
               child: AdaptiveText(
                 text: label,
-                style: const TextStyle(
+                style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
                     color: Colors.white,
@@ -461,7 +490,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
       child: AdaptiveText(
         text: label,
         maxLines: 3,
-        style: const TextStyle(
+        style: GoogleFonts.montserrat(
             fontSize: 36,
             color: Colors.white,
             fontWeight: FontWeight.w300,
@@ -470,11 +499,12 @@ class _WorldClassSectionState extends State<WorldClassSection>
     );
   }
 
-  Widget tabItem({required String label, bool selected = false}) {
+  Widget tabItem(
+      {required String label, bool selected = false, required bool isMobile}) {
     return Text(
       label,
-      style: TextStyle(
-          fontSize: 36,
+      style: GoogleFonts.montserrat(
+          fontSize: isMobile ? 12 : 36,
           fontWeight: FontWeight.w400,
           fontStyle: FontStyle.normal,
           color: selected ? Constants.primaryColor : Colors.white),

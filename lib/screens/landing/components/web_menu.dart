@@ -50,9 +50,10 @@ class _WebMenuItemState extends State<WebMenuItem> {
   Color _borderColor() {
     if (widget.isActive) {
       return Constants.primaryColor;
-    } else if (!widget.isActive & _isHover) {
-      return Constants.primaryColor.withOpacity(0.4);
     }
+    // } else if (!widget.isActive & _isHover) {
+    //   return Constants.primaryColor.withOpacity(0.4);
+    // }
     return Colors.transparent;
   }
 
@@ -78,7 +79,9 @@ class _WebMenuItemState extends State<WebMenuItem> {
           widget.text,
           style: GoogleFonts.openSans(
               fontWeight: FontWeight.w300,
-              color: Colors.white.withOpacity(0.5),
+              color: widget.isActive || _isHover
+                  ? Constants.white
+                  : Colors.white.withOpacity(0.5),
               fontSize: 18),
         ),
       ),

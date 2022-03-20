@@ -35,6 +35,7 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
+                        height: 66,
                         padding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 141),
                         margin: EdgeInsets.symmetric(
@@ -71,6 +72,7 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
+                        height: 66,
                         padding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 64),
                         margin: EdgeInsets.symmetric(

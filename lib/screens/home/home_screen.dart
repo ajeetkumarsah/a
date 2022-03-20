@@ -10,7 +10,6 @@ import 'package:wtf_web/screens/home/explore_section.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
-import 'about_us.dart';
 import 'offering_section.dart';
 import 'partners_say_section.dart';
 import 'world_class_section.dart';
@@ -33,38 +32,55 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisSize: MainAxisSize.max,
       children: [
         Container(
+          padding: EdgeInsets.all(0),
           constraints: const BoxConstraints(minHeight: 400, maxHeight: 700),
+          decoration: isMobile()
+              ? BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/home/banner_mobile.jpg'),
+                      fit: BoxFit.fitHeight))
+              : null,
           child: Stack(
             children: [
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Image.asset(
-                  'assets/home/bg1.png',
-                  fit: BoxFit.fitHeight,
+              if (!isMobile())
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Image.asset(
+                    'assets/home/bg1.png',
+                    fit: BoxFit.fitHeight,
+                  ),
                 ),
-              ),
               Container(
-                margin: EdgeInsets.fromLTRB(88, height * 0.2, 0, 0),
+                margin: EdgeInsets.fromLTRB(!isMobile() ? 88 : 12.0,
+                    !isMobile() ? height * 0.2 : 0, 0, !isMobile() ? 0 : 26),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: !isMobile()
+                      ? MainAxisAlignment.start
+                      : MainAxisAlignment.end,
+                  crossAxisAlignment: !isMobile()
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.center,
                   children: [
                     AdaptiveText(
                       text: "MAKING INDIA FIT",
                       minFontSize: 14,
                       style: GoogleFonts.openSans(
-                        fontSize: 72,
+                        fontSize: !isMobile() ? 72 : 36,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 12),
                     Row(
+                      mainAxisAlignment: !isMobile()
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.center,
                       children: [
                         AdaptiveText(
                           text: "ON",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
-                            fontSize: 72,
+                            fontSize: !isMobile() ? 72 : 36,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -73,30 +89,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: " BUDGET",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
-                            fontSize: 72,
+                            fontSize: !isMobile() ? 72 : 36,
                             fontWeight: FontWeight.bold,
                             color: Constants.primaryColor,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
+                    const SizedBox(height: 12),
                     AdaptiveText(
                       text:
                           "Join WTF managed fitness centers and explore\nfitness like never before",
                       minFontSize: 14,
                       maxLines: 2,
+                      align: !isMobile() ? TextAlign.start : TextAlign.center,
                       style: GoogleFonts.openSans(
                         fontSize: 30,
                         fontWeight: FontWeight.w200,
                         color: Colors.white.withOpacity(0.5),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.06,
-                    ),
+                    SizedBox(height: height * 0.06),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -105,8 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             text: "Download App Now",
                             minFontSize: 14,
                             style: GoogleFonts.openSans(
-                              fontSize: 18,
-                              fontWeight: FontWeight.normal,
+                              fontSize: !isMobile() ? 18 : 14,
+                              fontWeight: FontWeight.w300,
                               color: Colors.white,
                             ),
                           ),
@@ -131,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 0,
           ),
-        if (!isDesktop()) gymCountSection(width),
+        if (!isMobile() && !isDesktop()) gymCountSection(width),
         const ExploreSection(),
         const OfferingSection(),
         const WorldClassSection(),
@@ -180,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   bool isDesktop() => Responsive.isDesktop(context);
+  bool isMobile() => Responsive.isMobile(context);
 
   Widget gymCount({required String count, required String label}) {
     return Column(

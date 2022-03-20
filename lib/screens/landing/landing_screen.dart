@@ -28,7 +28,7 @@ class _LandingScreenState extends State<LandingScreen> {
   final MenuController _controller = Get.put(MenuController());
   late ScrollController _scrollController;
   List<Widget> pages = [
-    const FitnessCenter(),
+    const HomeScreen(),
     const NutritionScreen(),
     const GymScreen(),
     const PartnerScreen(),
@@ -67,6 +67,7 @@ class _LandingScreenState extends State<LandingScreen> {
       body: Stack(
         children: [
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             controller: _scrollController,
             child: StreamBuilder<int?>(
               stream: viewController.getBaseListStream,

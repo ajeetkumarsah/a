@@ -3,17 +3,10 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/fitness/wtf_powered.dart';
-import 'package:wtf_web/screens/home/who_said.dart';
-import 'package:wtf_web/screens/home/you_know.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
-import 'package:wtf_web/screens/home/explore_section.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
-
-import '../home/offering_section.dart';
-import '../home/partners_say_section.dart';
-import '../home/world_class_section.dart';
 import 'certified_trainers.dart';
 import 'experience.dart';
 import 'fitness_fullstop.dart';

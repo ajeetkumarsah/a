@@ -1,12 +1,15 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/screens/gym_details/fun_session.dart';
 import 'package:wtf_web/screens/membership/works_and_offers.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 import '../gym_details/choose_membership.dart';
+import '../gym_details/train_live.dart';
 import 'about_gym.dart';
 import 'buy_or_book_button.dart';
 import 'choose_plan.dart';
@@ -28,63 +31,117 @@ class _MembershipState extends State<Membership> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        Container(
-          constraints: const BoxConstraints(minHeight: 400, maxHeight: 466),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Image.asset(
-                  'assets/home/bg1.png',
-                  fit: BoxFit.fitHeight,
+        Stack(
+          children: [
+            Container(
+              constraints: const BoxConstraints(minHeight: 400, maxHeight: 488),
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  autoPlay: true,
+                  height: 488,
+                  viewportFraction: 1,
+                  enlargeCenterPage: true,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                ),
+                items: [
+                  Container(
+                    constraints:
+                        const BoxConstraints(minHeight: 400, maxHeight: 488),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/membership/banner.png',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    constraints:
+                        const BoxConstraints(minHeight: 400, maxHeight: 488),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/membership/banner.png',
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              constraints: const BoxConstraints(minHeight: 400, maxHeight: 488),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: FractionalOffset.topCenter,
+                  end: FractionalOffset.center,
+                  colors: [
+                    Color(0xff000000),
+                    Color(0xff000000).withOpacity(0.56),
+                  ],
+                  stops: [0.0, 1.0],
                 ),
               ),
-              Container(
-                padding:
-                    EdgeInsets.only(left: 12, right: 88, top: 60, bottom: 50),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {},
+            ),
+            Container(
+              constraints: const BoxConstraints(minHeight: 400, maxHeight: 488),
+              child: Stack(
+                // alignment: Alignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(
+                        left: 12, right: 88, top: 60, bottom: 50),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {},
+                        ),
+                        AdaptiveText(
+                          text: 'Back',
+                          minFontSize: 14,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Constants.white,
+                          ),
+                        ),
+                        const Spacer(),
+                      ],
                     ),
-                    AdaptiveText(
-                      text: 'Back',
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: AdaptiveText(
+                      text: 'Multiple Photos can be added',
                       minFontSize: 14,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 36,
                         fontWeight: FontWeight.w500,
                         color: Constants.white,
                       ),
                     ),
-                    const Spacer(),
-                  ],
-                ),
+                  )
+                ],
               ),
-              Align(
-                alignment: Alignment.center,
-                child: AdaptiveText(
-                  text: 'Multiple Photos can be added',
-                  minFontSize: 14,
-                  style: const TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w500,
-                    color: Constants.white,
-                  ),
-                ),
-              )
-            ],
-          ),
+            ),
+          ],
         ),
         if (!isDesktop()) gymCountSection(width),
         const MembershipAboutGym(),
         const ChoosePlan(),
         const WorksAndOffers(),
         const BuyOrbookScreen(),
-        const BottomBar(),
+        const TrainLive(),
+        const FunSession(),
+        const BottomBar(
+          color: Color(0xff292929),
+        ),
       ],
     );
   }

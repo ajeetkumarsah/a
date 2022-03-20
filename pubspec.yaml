@@ -25,6 +25,9 @@ dependencies:
   syncfusion_flutter_sliders: ^19.4.55
   dotted_border: ^2.0.0+2
   rxdart: ^0.27.3
+  carousel_slider: ^4.0.0
+  
+  
  
   
 
@@ -48,3 +51,4 @@ flutter:
     - assets/partner/
     - assets/about_us/
     - assets/studio/
+    - assets/membership/

@@ -11,69 +11,71 @@ class ThreeCards extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var padding = Constants.getPadding(context);
-    return BootstrapContainer(
-      fluid: true,
-      decoration: const BoxDecoration(color: Colors.transparent),
-      padding: const EdgeInsets.fromLTRB(88, 88, 0, 0),
-      children: [
-        BootstrapRow(
-          children: <BootstrapCol>[
-            BootstrapCol(
-              sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
-              child: cardItem(
-                  icon: 'assets/partner/send.png',
-                  heading: 'Self onboarding',
+    return Container(
+      decoration: const BoxDecoration(color: Color(0xff1A1A1A)),
+      child: BootstrapContainer(
+        fluid: true,
+        padding: const EdgeInsets.fromLTRB(88, 88, 0, 0),
+        children: [
+          BootstrapRow(
+            children: <BootstrapCol>[
+              BootstrapCol(
+                sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
+                child: cardItem(
+                    icon: 'assets/partner/send.png',
+                    heading: 'Self onboarding',
+                    description:
+                        'Self onboard in just 30 minutes and start growing your business from Day 1',
+                    onClick: () {},
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: <Color>[
+                        Color(0xffF24444),
+                        Color(0xffC60000),
+                      ],
+                    )),
+              ),
+              BootstrapCol(
+                sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
+                child: cardItem(
+                  icon: 'assets/partner/network.png',
+                  heading: 'Business Growth',
                   description:
-                      'Self onboard in just 30 minutes and start growing your business from Day 1',
+                      'Get 2x revenue jump through WTF channels, OTAs & AI enabled pricing',
                   onClick: () {},
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
                     colors: <Color>[
                       Color(0xffF24444),
-                      Color(0xffC60000),
+                      Color(0xffD70303),
                     ],
-                  )),
-            ),
-            BootstrapCol(
-              sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
-              child: cardItem(
-                icon: 'assets/partner/network.png',
-                heading: 'Business Growth',
-                description:
-                    'Get 2x revenue jump through WTF channels, OTAs & AI enabled pricing',
-                onClick: () {},
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: <Color>[
-                    Color(0xffF24444),
-                    Color(0xffD70303),
-                  ],
+                  ),
                 ),
               ),
-            ),
-            BootstrapCol(
-              sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
-              child: cardItem(
-                icon: 'assets/partner/setting.png',
-                heading: 'Easy Operations',
-                description:
-                    'Manage inventory, access bookings in real-time and seek support from WTF Partner Suite',
-                onClick: () {},
-                gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: <Color>[
-                    Color(0xffF24444),
-                    Color(0xffD00101),
-                  ],
+              BootstrapCol(
+                sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
+                child: cardItem(
+                  icon: 'assets/partner/setting.png',
+                  heading: 'Easy Operations',
+                  description:
+                      'Manage inventory, access bookings in real-time and seek support from WTF Partner Suite',
+                  onClick: () {},
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                    colors: <Color>[
+                      Color(0xffF24444),
+                      Color(0xffD00101),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 
