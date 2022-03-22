@@ -123,8 +123,8 @@ class _WorldClassSectionState extends State<WorldClassSection>
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   wtfFitness(isMobile()),
-                  WTFLive(),
-                  personalTraning()
+                  WTFLive(isMobile()),
+                  personalTraning(isMobile())
                 ],
               ),
             ],
@@ -135,13 +135,20 @@ class _WorldClassSectionState extends State<WorldClassSection>
   }
 
   Widget wtfFitness(bool isMobile) {
-    return Row(
-      children: [options(), expandedView()],
-    );
+    return isMobile?BootstrapRow(
+      children: [BootstrapCol(
+         sizes: 'col-12 col-sm-12 col-md-12',
+        child: options(isMobile), ),BootstrapCol(
+         sizes: 'col-12 col-sm-12 col-md-12',
+        child: expandedView(isMobile:isMobile ), )],): Row(children: [ options(isMobile),expandedView(isMobile:isMobile )],);
+    
+    
+   
   }
 
-  Widget WTFLive() {
-    return Container(
+  Widget WTFLive(bool isMobile) {
+    return
+     Container(
       padding: EdgeInsets.symmetric(vertical: 50),
       child: Stack(
         children: [
@@ -150,7 +157,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
             child: Image.asset(
               'assets/home/Live.png',
               fit: BoxFit.cover,
-              height: 600,
+              height:isMobile?400: 600,
             ),
           ),
           Container(
@@ -162,8 +169,8 @@ class _WorldClassSectionState extends State<WorldClassSection>
                   text: "Unlocking",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 60,
-                    fontWeight: FontWeight.w300,
+                    fontSize:  isMobile?30:60,
+                    fontWeight: isMobile? FontWeight.w700:FontWeight.w300,
                     color: Colors.white,
                   ),
                 ),
@@ -172,8 +179,8 @@ class _WorldClassSectionState extends State<WorldClassSection>
                   text: "Fitness",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 70,
-                    fontWeight: FontWeight.w300,
+                    fontSize: isMobile?36: 70,
+                    fontWeight: isMobile? FontWeight.w700:FontWeight.w300,
                     color: Constants.primaryColor,
                   ),
                 ),
@@ -181,21 +188,24 @@ class _WorldClassSectionState extends State<WorldClassSection>
                   text: "101",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 70,
-                    fontWeight: FontWeight.w300,
+                    fontSize: isMobile?36: 70,
+                    fontWeight:  isMobile? FontWeight.w700:FontWeight.w300,
                     color: Constants.primaryColor,
                   ),
                 ),
                 const SizedBox(height: 12),
-                AdaptiveText(
-                  text:
-                      "Get access to live class from the trainer of your own gym at your comfort of \nyour home this Pandemic.Our Membership also gives you option to train at \nhome breaking all obstacle in your fitness journey.",
-                  minFontSize: 14,
-                  maxLines: 3,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white.withOpacity(0.5),
+                Padding(
+                  padding: isMobile? EdgeInsets.only( right:MediaQuery.of(context).size.width*0.3):EdgeInsets.all(0),
+                  child: AdaptiveText(
+                    text:
+                        "Get access to live class from the trainer of your own gym at your comfort of \nyour home this Pandemic.Our Membership also gives you option to train at \nhome breaking all obstacle in your fitness journey.",
+                    minFontSize: 14,
+                    maxLines: 6,
+                    style: GoogleFonts.montserrat(
+                      fontSize:isMobile?10: 16,
+                      fontWeight: FontWeight.w200,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
                   ),
                 ),
                 SizedBox(height: 50),
@@ -207,15 +217,15 @@ class _WorldClassSectionState extends State<WorldClassSection>
                         text: "Download App Now",
                         minFontSize: 14,
                         style: GoogleFonts.montserrat(
-                          fontSize: 18,
-                          fontWeight: FontWeight.normal,
+                          fontSize:isMobile?10: 18,
+                          fontWeight: FontWeight.w400,
                           color: Constants.primaryColor,
                         ),
                       ),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                      decoration:  BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(isMobile?4: 12)),
                           color: Constants.white),
-                      padding: const EdgeInsets.all(16),
+                      padding: isMobile?EdgeInsets.symmetric(horizontal: 9,vertical: 10): EdgeInsets.all( 16),
                       alignment: Alignment.center,
                     ),
                     Spacer()
@@ -229,7 +239,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
     );
   }
 
-  Widget personalTraning() {
+  Widget personalTraning(bool isMobile) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 50),
       child: Stack(
@@ -239,7 +249,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
             child: Image.asset(
               'assets/home/PT.png',
               fit: BoxFit.cover,
-              height: 500,
+              height:isMobile?300: 500,
             ),
           ),
           Container(
@@ -256,7 +266,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                           text: "Personal ",
                           minFontSize: 14,
                           style: GoogleFonts.montserrat(
-                            fontSize: 60,
+                            fontSize:isMobile?30: 60,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
                           ),
@@ -265,7 +275,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                           text: "Training",
                           minFontSize: 14,
                           style: GoogleFonts.montserrat(
-                            fontSize: 70,
+                            fontSize:isMobile?36: 70,
                             fontWeight: FontWeight.w800,
                             color: Constants.white,
                           ),
@@ -279,14 +289,14 @@ class _WorldClassSectionState extends State<WorldClassSection>
                           borderRadius: BorderRadius.circular(4),
                           color: Constants.grey),
                       width: 5,
-                      height: 120,
+                      height:isMobile?70: 120,
                     ),
                     AdaptiveText(
                       text: "Program \nby WTF",
                       minFontSize: 14,
                       maxLines: 2,
                       style: GoogleFonts.montserrat(
-                        fontSize: 60,
+                        fontSize:isMobile?30: 60,
                         fontWeight: FontWeight.w200,
                         color: Constants.white,
                       ),
@@ -301,7 +311,7 @@ class _WorldClassSectionState extends State<WorldClassSection>
                   minFontSize: 14,
                   maxLines: 3,
                   style: GoogleFonts.montserrat(
-                    fontSize: 16,
+                    fontSize:isMobile?10: 16,
                     fontWeight: FontWeight.w200,
                     color: Colors.white.withOpacity(0.5),
                   ),
@@ -315,15 +325,15 @@ class _WorldClassSectionState extends State<WorldClassSection>
                         text: "Download App Now",
                         minFontSize: 14,
                         style: GoogleFonts.montserrat(
-                          fontSize: 18,
+                          fontSize: isMobile?12:18,
                           fontWeight: FontWeight.normal,
                           color: Constants.primaryColor,
                         ),
                       ),
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                      decoration:  BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(isMobile?4:12)),
                           color: Constants.white),
-                      padding: const EdgeInsets.all(16),
+                      padding: isMobile?EdgeInsets.symmetric(horizontal: 9,vertical: 10): const EdgeInsets.all(16),
                       alignment: Alignment.center,
                     ),
                     Spacer()
@@ -349,74 +359,92 @@ class _WorldClassSectionState extends State<WorldClassSection>
     );
   }
 
-  Widget options() {
+  Widget options(bool isMobile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        wtfFitnessLeftItem(label: 'Pocket', width: 179, height: 58),
-        wtfFitnessLeftItem(label: 'Friendly', width: 243, height: 58),
-        wtfFitnessLeftItem(label: 'Membership', width: 290, height: 58),
+        SizedBox(height: 20),
+        wtfFitnessLeftItem(label: 'Pocket', width: 179, height: isMobile?30: 58,isMobile:isMobile),
+        wtfFitnessLeftItem(label: 'Friendly', width: 243, height:isMobile?30: 58,isMobile:isMobile),
+        wtfFitnessLeftItem(label: 'Membership', width: 290, height:isMobile?30: 58,isMobile:isMobile),
       ],
     );
   }
 
-  Widget expandedView() {
+  Widget expandedView({required bool isMobile }) {
     return Expanded(
       child: Column(
         children: [
           const SizedBox(height: 30),
-          AdaptiveText(
-            text:
-                'WTF Powered gyms are top class infrastructure and Modern machinery at your regular gym membership',
-            minFontSize: 12,
-            style: GoogleFonts.montserrat(
-                fontSize: 14, fontWeight: FontWeight.w300, color: Colors.white),
+          Padding(
+            padding: isMobile? EdgeInsets.only(right:MediaQuery.of(context).size.width*0.4):EdgeInsets.all(0),
+            child: AdaptiveText(
+              text:
+                  'WTF Powered gyms are top class infrastructure and Modern machinery at your regular gym membership',
+              minFontSize: 8,
+              maxLines: 3,
+              style: GoogleFonts.montserrat(
+                  fontSize:isMobile?10: 14, fontWeight: FontWeight.w300, color: Colors.white),
+            ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment:!isDesktop()?MainAxisAlignment.start: MainAxisAlignment.center,
             children: [
+              
               wtfFitnessRightCard(
                   imagePath: 'assets/home/men_exercise.png',
                   label: 'GYMS',
-                  isLeft: false),
+                  isLeft: false,isMobile:isMobile,),
               if (isDesktop())
                 Container(
                   margin: const EdgeInsets.only(top: 160, left: 60),
                   child: wtfFitnessRightCard(
                       imagePath: 'assets/home/girl_exercise.png',
                       label: 'STUDIOS',
-                      isLeft: true),
+                      isLeft: true,isMobile:isMobile,),
                 )
             ],
           ),
           if (!isDesktop())
             Container(
-              margin: const EdgeInsets.only(top: 30, left: 0),
+              margin:  EdgeInsets.only(top:isMobile?8.0: 30, left: isMobile?30: 0),
+              alignment: Alignment.centerRight,
               child: wtfFitnessRightCard(
                   imagePath: 'assets/home/girl_exercise.png',
                   label: 'STUDIOS',
-                  isLeft: true),
-            )
+                  isLeft: true,isMobile:isMobile,),
+            ),
+            const SizedBox(height: 30),
+          Padding(
+            padding: isMobile? EdgeInsets.only(left:MediaQuery.of(context).size.width*0.6):EdgeInsets.all(0),
+            child: AdaptiveText(
+              text:
+                  'Our WTF Studio is all about the Dance,Zumb &Pilates classes',
+              minFontSize: 8,
+              maxLines: 3,
+              style: GoogleFonts.montserrat(
+                  fontSize:isMobile?10: 14, fontWeight: FontWeight.w300, color: Colors.white),
+            ),
+          ),
+          const SizedBox(height: 30),
         ],
       ),
     );
   }
 
   Widget wtfFitnessRightCard(
-      {required String label, required String imagePath, bool isLeft = false}) {
+      {required String label, required String imagePath, bool isLeft = false,required bool isMobile}) {
     return Stack(
       clipBehavior: Clip.none,
       children: <Widget>[
         Container(
-          height: 389.77,
-          width: 389.77,
+          height:isMobile?140 :389.77,
+          width: isMobile?140:389.77,
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(16.2)),
+            borderRadius:  BorderRadius.all(Radius.circular(isMobile?4: 16.2)),
             image: DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(
@@ -425,44 +453,44 @@ class _WorldClassSectionState extends State<WorldClassSection>
             ),
           ),
         ),
-        bookMark(!isLeft, label)
+        bookMark(!isLeft, label,isMobile)
       ],
     );
   }
 
-  Widget bookMark(bool isLeft, String label) {
+  Widget bookMark(bool isLeft, String label, bool isMobile) {
     return Positioned(
         left: isLeft
             ? null
             : isDesktop()
                 ? -300
-                : null,
+                :isMobile?-60: null,
         bottom: isLeft ? null : 0,
         right: isLeft
             ? isDesktop()
                 ? -200
-                : null
+                :isMobile?-50: null
             : null,
         child: Stack(
           alignment: Alignment.centerRight,
           children: [
             Container(
               padding: isLeft
-                  ? EdgeInsets.only(right: 100)
-                  : EdgeInsets.only(left: 60),
+                  ? EdgeInsets.only(right:isMobile?16.0: 100)
+                  : EdgeInsets.only(left:isMobile?12.0: 60),
               margin: EdgeInsets.only(
-                  top: isLeft ? 20 : 0, bottom: isLeft ? 20 : 0),
+                  top: isLeft ? isMobile?4: 20 : 0, bottom: isLeft ? isMobile?4: 20 : 0),
               alignment: Alignment.center,
               color: Constants.primaryColor,
-              width: isLeft ? 280 : 300,
-              height: 81,
+              width: isLeft ? isMobile?66: 280 :  isMobile?77: 300,
+              height:isMobile?24: 81,
               child: AdaptiveText(
                 text: label,
                 style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
                     color: Colors.white,
-                    fontSize: 45.74),
+                    fontSize:isMobile?12: 45.74),
               ),
             ),
             Align(
@@ -470,10 +498,10 @@ class _WorldClassSectionState extends State<WorldClassSection>
               child: Padding(
                 padding: isLeft
                     ? const EdgeInsets.only(left: 58.0)
-                    : const EdgeInsets.only(right: 240.0),
+                    :  EdgeInsets.only(right:isMobile?60: 240.0),
                 child: isLeft
-                    ? Image.asset('assets/home/rright.png')
-                    : Image.asset('assets/home/rleft.png'),
+                    ? Image.asset('assets/home/rright.png',height:isMobile?36:null)
+                    : Image.asset('assets/home/rleft.png',height:isMobile?36:null),
               ),
             ),
           ],
@@ -481,21 +509,27 @@ class _WorldClassSectionState extends State<WorldClassSection>
   }
 
   Widget wtfFitnessLeftItem(
-      {required String label, required double height, required double width}) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      constraints: BoxConstraints(minHeight: height, minWidth: width),
-      decoration: const BoxDecoration(color: Constants.primaryColor),
-      alignment: Alignment.center,
-      child: AdaptiveText(
-        text: label,
-        maxLines: 3,
-        style: GoogleFonts.montserrat(
-            fontSize: 36,
-            color: Colors.white,
-            fontWeight: FontWeight.w300,
-            fontStyle: FontStyle.normal),
-      ),
+      {required String label, required double height, required double width,required bool isMobile}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          constraints: BoxConstraints(minHeight: height, minWidth: width),
+          decoration: const BoxDecoration(color: Constants.primaryColor),
+          alignment: Alignment.center,
+          child: AdaptiveText(
+            text: label,
+            maxLines: 3,
+            style: GoogleFonts.montserrat(
+                fontSize:isMobile?18: 36,
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+                fontStyle: FontStyle.normal),
+          ),
+        ),
+        Spacer()
+      ],
     );
   }
 

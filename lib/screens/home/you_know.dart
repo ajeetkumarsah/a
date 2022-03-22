@@ -20,12 +20,12 @@ class YouKnow extends StatelessWidget {
       color: Constants.primaryColor,
       constraints: BoxConstraints(
           minHeight: !isDesktop() ? 200 : 400,
-          maxHeight: !isDesktop() ? 273 : 600),
+          maxHeight: !isDesktop() ? 300 : 600),
       child: Stack(
         children: [
           Container(
             margin: EdgeInsets.fromLTRB(
-                !isDesktop() ? 33 : 88, !isDesktop() ? 25 : height * 0.1, 0, 0),
+                !isDesktop() ? 33 : 88, !isDesktop() ? 25 : height * 0.1, 0,isDesktop()?0:36),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -35,7 +35,7 @@ class YouKnow extends StatelessWidget {
                   style: GoogleFonts.montserrat(
                     fontSize: !isDesktop() ? 24 : 60,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white,
+                    color: Constants.gradientRed,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -64,18 +64,21 @@ class YouKnow extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                AdaptiveText(
-                  text:
-                      "Partner with WTF and multiply your revenue channels by leveraging our technology and expertise in \nterms of infrastructure, customer service and experience, sales, and marketing.",
-                  minFontSize: 14,
-                  maxLines: 2,
-                  style: GoogleFonts.openSans(
-                    fontSize: !isDesktop() ? 12 : 22,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white.withOpacity(0.5),
+                Padding(
+                  padding:isDesktop()?const EdgeInsets.all(0): const EdgeInsets.only(right:12.0),
+                  child: AdaptiveText(
+                    text:
+                        "Partner with WTF and multiply your revenue channels by leveraging our technology and expertise in \nterms of infrastructure, customer service and experience, sales, and marketing.",
+                    minFontSize: 14,
+                    maxLines: 2,
+                    style: GoogleFonts.openSans(
+                      fontSize: !isDesktop() ? 12 : 22,
+                      fontWeight: FontWeight.w200,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
                   ),
                 ),
-                SizedBox(height: height * 0.06),
+                SizedBox(height: height * 0.04),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

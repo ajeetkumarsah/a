@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -12,6 +14,8 @@ class PartnerSaySection extends StatefulWidget {
 class _PartnerSaySectionState extends State<PartnerSaySection> {
   @override
   Widget build(BuildContext context) {
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 45, bottom: 34),
@@ -21,35 +25,36 @@ class _PartnerSaySectionState extends State<PartnerSaySection> {
           AdaptiveText(
               text: 'What our Partner say about us?',
               maxLines: 10,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontWeight: FontWeight.w400,
-                fontSize: 36,
+                fontSize:isMobile() ?18: 36,
                 color: Colors.white,
                 fontStyle: FontStyle.normal,
               )),
           SizedBox(
-              height: 500,
+              height: isMobile()?320: 500,
               child: ListView.builder(
                   itemCount: 5,
-                  padding: const EdgeInsets.only(top: 65),
+                  padding:  EdgeInsets.only(top:isMobile()?16: 65),
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return item();
+                    return item(isMobile());
                   }))
         ],
       ),
     );
   }
 
-  Widget item() {
+  Widget item(bool isMobile) {
     return Stack(
+      alignment: Alignment.topCenter,
       clipBehavior: Clip.none,
       children: [
         Container(
-          padding: const EdgeInsets.only(
-              left: 20, top: 45 + 20, right: 20, bottom: 20),
-          margin: const EdgeInsets.only(top: 60, right: 30, left: 30),
+          padding:  EdgeInsets.only(
+              left: 20, top:isMobile?16.0: 45 + 20, right: 20, bottom:isMobile?8.0: 20),
+          margin:  EdgeInsets.only(top: 60, right: 30, left: 30),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
                 begin: FractionalOffset.topCenter,
@@ -70,47 +75,47 @@ class _PartnerSaySectionState extends State<PartnerSaySection> {
             ),
             borderRadius: BorderRadius.circular(8),
           ),
-          height: 311,
-          width: 695,
+          height: isMobile?198: 311,
+          width:isMobile?309: 695,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               AdaptiveText(
                 text: 'Ragini Sharma',
-                style: const TextStyle(
+                style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
-                    fontSize: 18,
+                    fontSize:isMobile?12: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),
               ),
               const SizedBox(
-                height: 4,
+                height: 4
               ),
               AdaptiveText(
                 text: 'ONE Fitness (Noida sector 8)',
-                style: const TextStyle(
+                style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
-                    fontSize: 18,
+                    fontSize:isMobile?12: 18,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),
               ),
               const SizedBox(
-                height: 15,
+                height: 15
               ),
               AdaptiveText(
                 text:
                     'I am really impressed with the WTF Team ,From the day 1 my sales growth is going up along with i am able to make new members easily,from marketing to payments all are easily managable through WTF,I really recommend it to every gym owner out there.',
                 align: TextAlign.center,
                 maxLines: 20,
-                style: const TextStyle(
+                style: GoogleFonts.openSans(
                     fontStyle: FontStyle.normal,
-                    fontSize: 17,
+                    fontSize:isMobile?12: 17,
                     fontWeight: FontWeight.w300,
                     color: Colors.white),
               ),
               const SizedBox(
-                height: 22,
+                height: 22
               ),
             ],
           ),
@@ -119,7 +124,7 @@ class _PartnerSaySectionState extends State<PartnerSaySection> {
           left: 20,
           right: 20,
           child: CircleAvatar(
-            radius: 56,
+            radius:isMobile?37: 56,
             child: Padding(
               padding: const EdgeInsets.all(0), // Border radius
               child: Container(
@@ -132,15 +137,7 @@ class _PartnerSaySectionState extends State<PartnerSaySection> {
               ),
             ),
           ),
-          // CircleAvatar(
-          //     backgroundColor: Constants.secondBlack,
-          //     foregroundColor: Constants.secondBlack,
-          //     radius: 60.0,
-          //     child: const CircleAvatar(
-          //       backgroundImage: AssetImage("assets/home/men_exercise.png"),
-          //       radius: 50.0,
-          //     ),
-          //   ),
+         
         ),
       ],
     );
