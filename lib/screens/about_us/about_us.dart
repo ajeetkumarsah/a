@@ -25,12 +25,14 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
         BootstrapContainer(
           fluid: true,
-          padding: EdgeInsets.fromLTRB(48, 150, 48, 0),
+          padding: EdgeInsets.fromLTRB(isDesktop()?48:12.0, 150,isDesktop()? 48:12, 0),
           children: [
             BootstrapRow(
               children: [
@@ -41,7 +43,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                     children: [
                       Icon(
                         Icons.arrow_back_ios,
-                        size: 57,
+                        size:isDesktop()? 57:25,
                         color: Constants.white,
                       ),
                       AdaptiveText(
@@ -49,7 +51,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
-                          fontSize: 64,
+                          fontSize:isDesktop()? 64:24,
                           color: Colors.white,
                         ),
                       ),
@@ -60,7 +62,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             ),
           ],
         ),
-        if (!isDesktop()) gymCountSection(width),
+        
         const AboutUsCard(),
         const OurTechWillHelp(),
         const MeetOurLeaders(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 
 class AboutWTFSection extends StatefulWidget {
@@ -19,6 +20,8 @@ class _AboutWTFSectionState extends State<AboutWTFSection> {
   ];
   @override
   Widget build(BuildContext context) {
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 0, bottom: 20),
@@ -26,30 +29,30 @@ class _AboutWTFSectionState extends State<AboutWTFSection> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-              height: 400,
+              height: isMobile()?300:400,
               child: ListView.builder(
                   itemCount: title.length,
-                  padding: const EdgeInsets.only(top: 0),
+                  
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return item(subTitle: subTitle[index], title: title[index]);
+                    return item(subTitle: subTitle[index], title: title[index],isMobile:isMobile());
                   }))
         ],
       ),
     );
   }
 
-  Widget item({required String title, required subTitle, Gradient? gradient}) {
+  Widget item({required String title, required subTitle, Gradient? gradient,required bool isMobile}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          height: 154,
-          width: 154,
+          height:isMobile?90: 154,
+          width:isMobile?90: 154,
           padding: const EdgeInsets.all(20),
           margin:
-              const EdgeInsets.only(top: 60, right: 100, left: 100, bottom: 32),
+               EdgeInsets.only(top: 60, right:isMobile?60: 100, left: isMobile?60: 100, bottom: 32),
           decoration: BoxDecoration(
             gradient: gradient != null
                 ? gradient
@@ -69,7 +72,7 @@ class _AboutWTFSectionState extends State<AboutWTFSection> {
               text: title,
               style: GoogleFonts.montserrat(
                 fontStyle: FontStyle.normal,
-                fontSize: 24,
+                fontSize:isMobile?12: 24,
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
@@ -82,7 +85,7 @@ class _AboutWTFSectionState extends State<AboutWTFSection> {
           align: TextAlign.center,
           style: GoogleFonts.openSans(
               fontStyle: FontStyle.normal,
-              fontSize: 18,
+              fontSize:isMobile?14: 18,
               fontWeight: FontWeight.w400,
               color: Colors.white),
         ),

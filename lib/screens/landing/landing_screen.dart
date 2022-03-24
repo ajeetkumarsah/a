@@ -3,17 +3,13 @@ import 'package:get/get.dart';
 import 'package:wtf_web/controller/menu_controller.dart';
 import 'package:wtf_web/controller/view_controller.dart';
 import 'package:wtf_web/screens/about_us/about_us.dart';
-import 'package:wtf_web/screens/fitness/fitness_screen.dart';
-import 'package:wtf_web/screens/gym_details/gym_details.dart';
 import 'package:wtf_web/screens/gyms/gyms.dart';
 import 'package:wtf_web/screens/landing/components/header.dart';
 import 'package:wtf_web/screens/membership/membership.dart';
 import 'package:wtf_web/utils/const.dart';
 import '../home/home_screen.dart';
-import '../membership_details/membership_details.dart';
 import '../nutrition/nutrition.dart';
 import '../partner/partner.dart';
-import '../studios/studios.dart';
 
 class LandingScreen extends StatefulWidget {
   static String routeName = '/landingScreen';
@@ -32,8 +28,9 @@ class _LandingScreenState extends State<LandingScreen> {
     const NutritionScreen(),
     const GymScreen(),
     const PartnerScreen(),
-    // const AboutUsScreen(),
-    const Membership(),
+    // const Membership(),
+    const AboutUsScreen(),
+    
     // const MembershipDetails(),
 
     // const StudiosScreen(),

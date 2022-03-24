@@ -15,14 +15,16 @@ class HaveKnowledge extends StatelessWidget {
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+  
     bool isDesktop() => Responsive.isDesktop(context);
-    return Container(
-      color: Constants.primaryColor,
-      constraints: const BoxConstraints(minHeight: 400, maxHeight: 600),
-      child: Stack(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(88, height * 0.1, 0, 0),
+    bool isMobile() => Responsive.isMobile(context);
+    return BootstrapContainer(
+      fluid: true,
+      decoration: BoxDecoration(color: Constants.primaryColor,),
+      
+      children: [
+        BootstrapRow(children:<BootstrapCol> [BootstrapCol(sizes: 'col-12 col-md-6 col-sm-12',child:Container(
+            margin: EdgeInsets.fromLTRB(isDesktop()? 88:30,isDesktop()? height * 0.1:30, 30, 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisSize: MainAxisSize.min,
@@ -31,7 +33,7 @@ class HaveKnowledge extends StatelessWidget {
                   text: "Have",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 43,
+                    fontSize:isDesktop()? 43:22,
                     fontWeight: FontWeight.w400,
                     color: Colors.white,
                   ),
@@ -44,7 +46,7 @@ class HaveKnowledge extends StatelessWidget {
                       text: "Knowledge?",
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize: 43,
+                        fontSize: isDesktop()? 43:22,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                       ),
@@ -54,7 +56,7 @@ class HaveKnowledge extends StatelessWidget {
                       align: TextAlign.left,
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize: 43,
+                        fontSize: isDesktop()? 43:22,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),
@@ -68,22 +70,25 @@ class HaveKnowledge extends StatelessWidget {
                   minFontSize: 14,
                   maxLines: 3,
                   style: GoogleFonts.openSans(
-                    fontSize: 24,
+                    fontSize: isDesktop()? 24:12,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                     color: Colors.white.withOpacity(0.5),
                   ),
                 ),
                 SizedBox(height: height * 0.06),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+
                   children: [
                     Container(
                       child: AdaptiveText(
                         text: "Know More",
                         minFontSize: 14,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style:  TextStyle(
+                          fontSize: isDesktop()? 18:10,
                           fontWeight: FontWeight.normal,
                           color: Constants.primaryColor,
                         ),
@@ -95,27 +100,36 @@ class HaveKnowledge extends StatelessWidget {
                           vertical: 16, horizontal: 32),
                       alignment: Alignment.center,
                     ),
-                    if (isDesktop()) const Spacer(),
+                    if(isDesktop()) const Spacer(),
                   ],
                 ),
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
+           ),BootstrapCol(
+          sizes: 'col-12 col-md-6 col-sm-12',child:Align(
+            alignment:isDesktop()? Alignment.centerRight:Alignment.center,
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 30),
-              height: 427,
-              width: 427,
+              
+              margin: EdgeInsets.symmetric(horizontal: 30,vertical: 30),
+              height:isDesktop()? 427:isMobile()?200: 300,
+              width: isDesktop()? 427:isMobile()?200:300,
               decoration: BoxDecoration(
                   color: Constants.cardRed,
                   borderRadius: BorderRadius.circular(12.0)),
               child:
                   Center(child: Image.asset('assets/fitness/Guruprogram.png')),
             ),
-          ),
-        ],
-      ),
-    );
+          ), )])
+      ]);
+    // Container(
+    //   color: Constants.primaryColor,
+    //   constraints: const BoxConstraints(minHeight: 400, maxHeight: 600),
+    //   child: Stack(
+    //     children: [
+          
+    //     ],
+    //   ),
+    // );
   }
 }

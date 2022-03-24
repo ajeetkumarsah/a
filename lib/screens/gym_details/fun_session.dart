@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -13,48 +14,53 @@ class FunSession extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var padding = Constants.getPadding(context);
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(color: Colors.transparent),
-      padding: const EdgeInsets.fromLTRB(88, 38, 0, 80),
+      padding:  EdgeInsets.fromLTRB(isDesktop()?88:0, isDesktop()?38:30, 0,isDesktop()? 80:30),
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AdaptiveText(
-              text: "Fun Session at GYM",
-              minFontSize: 14,
-              style: GoogleFonts.openSans(
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
-                fontStyle: FontStyle.normal,
-                color: Colors.white,
-              ),
-            ),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 32.0, vertical: 4.0),
-              margin: EdgeInsets.only(top: 8.0),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(0)),
-                  color: Constants.blue),
-              child: AdaptiveText(
-                text: "Starting only at 119 ",
-                minFontSize: 18,
+        Padding(
+          padding:  EdgeInsets.only(left:isDesktop()?0: 12.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AdaptiveText(
+                text: "Fun Session at GYM",
+                minFontSize: 14,
                 style: GoogleFonts.openSans(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w300,
+                  fontSize:isDesktop()? 28:18,
+                  fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,
                   color: Colors.white,
                 ),
               ),
-            ),
-          ],
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32.0, vertical: 4.0),
+                margin: EdgeInsets.only(top: 8.0),
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(0)),
+                    color: Constants.blue),
+                child: AdaptiveText(
+                  text: "Starting only at 119 ",
+                  minFontSize: 14,
+                  style: GoogleFonts.openSans(
+                    fontSize: isDesktop()?24:14,
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 170),
+        SizedBox(height:isDesktop()? 170:90),
         Container(
-          height: 238,
+          height:isDesktop()? 238:200,
           child: ListView.builder(
             padding: EdgeInsets.all(0),
             itemCount: 5,
@@ -62,7 +68,7 @@ class FunSession extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: ((context, index) {
               return Container(
-                height: 238,
+                height:isDesktop()? 238:200,
                 width: 283,
                 margin: EdgeInsets.only(left: 20),
                 child: Stack(

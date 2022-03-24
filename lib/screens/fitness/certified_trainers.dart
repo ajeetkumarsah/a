@@ -3,6 +3,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -19,10 +20,13 @@ class _CertifiedTrainersState extends State<CertifiedTrainers> {
   @override
   Widget build(BuildContext context) {
     var padding = Constants.getPadding(context);
+    
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(color: Colors.transparent),
-      padding: const EdgeInsets.fromLTRB(0, 88, 0, 40),
+      padding:  EdgeInsets.fromLTRB(0,isDesktop()? 88:30, 0,isDesktop()? 40:0),
       children: [
         Align(
           alignment: Alignment.topLeft,
@@ -38,7 +42,7 @@ class _CertifiedTrainersState extends State<CertifiedTrainers> {
                   align: TextAlign.center,
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 36,
+                    fontSize:isDesktop()? 36:18,
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
                     color: Colors.white,
@@ -53,7 +57,7 @@ class _CertifiedTrainersState extends State<CertifiedTrainers> {
                       align: TextAlign.center,
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize: 36,
+                        fontSize: isDesktop()? 36:18,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                         color: Colors.white,
@@ -64,7 +68,7 @@ class _CertifiedTrainersState extends State<CertifiedTrainers> {
                       // align: TextAlign.center,
                       minFontSize: 14,
                       style: GoogleFonts.openSans(
-                        fontSize: 70,
+                        fontSize: isDesktop()? 70:36,
                         fontWeight: FontWeight.w800,
                         fontStyle: FontStyle.normal,
                         color: Constants.primaryColor,

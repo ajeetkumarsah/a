@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
-import 'package:wtf_web/screens/fitness/wtf_powered.dart';
 import 'package:wtf_web/screens/nutrition/get_diet.dart';
 import 'package:wtf_web/screens/nutrition/nutrivores_plan.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
@@ -11,11 +10,7 @@ import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
 import '../fitness/certified_trainers.dart';
-import '../fitness/experience.dart';
-import '../fitness/fitness_fullstop.dart';
 import '../fitness/have_knowledge.dart';
-import '../fitness/most_booked.dart';
-import '../fitness/most_booked_stuidio.dart';
 import 'nutrivores.dart';
 
 class NutritionScreen extends StatefulWidget {
@@ -32,6 +27,9 @@ class _NutritionScreenState extends State<NutritionScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -49,7 +47,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(right: 61.0, bottom: 122),
+                  padding:  EdgeInsets.only(right:isMobile()?12.0: 61.0, bottom:isMobile()?12.0: 122),
                   child: Image.asset(
                     'assets/nutrition/banner.png',
                     fit: BoxFit.fitHeight,
@@ -59,14 +57,15 @@ class _NutritionScreenState extends State<NutritionScreen> {
               Container(
                 margin: EdgeInsets.fromLTRB(88, height * 0.2, 0, 0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:isMobile()?CrossAxisAlignment.center: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 32),
                     AdaptiveText(
                       text: "Who said diet",
+                      align: TextAlign.center,
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize: 72,
+                        fontSize: isMobile() ?36:72,
                         fontWeight: FontWeight.w200,
                         color: Colors.white,
                       ),
@@ -76,7 +75,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       text: "foods are",
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize: 72,
+                        fontSize:isMobile() ?36: 72,
                         fontWeight: FontWeight.w200,
                         color: Colors.white,
                       ),
@@ -86,7 +85,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       text: "Boring?",
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize: 72,
+                        fontSize:isMobile() ?36: 72,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -97,10 +96,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             ],
           ),
         ),
-        if (!isDesktop())
-          const SizedBox(
-            height: 0,
-          ),
+        
         if (!isDesktop()) gymCountSection(width),
         const NutriVores(),
         const GetDiet(),

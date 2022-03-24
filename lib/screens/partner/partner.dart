@@ -3,19 +3,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
-import 'package:wtf_web/screens/home/who_said.dart';
-import 'package:wtf_web/screens/home/you_know.dart';
 import 'package:wtf_web/screens/partner/three_card.dart';
 import 'package:wtf_web/screens/partner/why_to_choose.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
-import 'package:wtf_web/screens/home/explore_section.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
 import '../fitness/partners_say_section.dart';
-import '../home/offering_section.dart';
-import '../home/world_class_section.dart';
 import 'about_wtf_section.dart';
 import 'must_try_listening.dart';
 
@@ -33,6 +28,9 @@ class _PartnerScreenState extends State<PartnerScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
+    bool isTablet() => Responsive.isTablet(context);
     return Container(
       decoration: const BoxDecoration(color: Color(0xff1A1A1A)),
       child: Column(
@@ -52,7 +50,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                             minFontSize: 14,
                             maxLines: 2,
                             style: GoogleFonts.montserrat(
-                              fontSize: 72,
+                              fontSize:isMobile()?36: 72,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -62,7 +60,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                             text:
                                 "We made it easy for you,be a part of WTF Family in just about 45 mins, that is also the time average person works-out in the GYM too.",
                             minFontSize: 14,
-                            maxLines: 2,
+                            maxLines: 4,
                             style: GoogleFonts.openSans(
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
@@ -70,8 +68,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                             ),
                           ),
                           SizedBox(
-                            height: height * 0.06,
-                          ),
+                            height: height * 0.06),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -106,6 +103,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                         children: [
                           Container(
                             height: 421,
+                            margin: EdgeInsets.only(top:isDesktop()? 0:30),
                             decoration: BoxDecoration(
                                 color: Constants.white,
                                 borderRadius: BorderRadius.only(
@@ -114,8 +112,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                         ],
                       ))
                 ])
-              ]),
-          if (!isDesktop()) gymCountSection(width),
+              ]),          
           const ThreeCards(),
           const WhyToChoose(),
           const MustTryListening(),

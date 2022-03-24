@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -15,9 +16,12 @@ class MustTryListening extends StatelessWidget {
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
+    bool isMobileLarge() => Responsive.isMobileLarge(context);
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(88, 0, 0, 0),
+      padding: EdgeInsets.fromLTRB(isDesktop()? 88:12.0, 0, 0, 0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
@@ -34,7 +38,7 @@ class MustTryListening extends StatelessWidget {
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
-                      fontSize: 64,
+                      fontSize:isDesktop() ? 64:32,
                       color: Colors.white,
                     ),
                   ),
@@ -46,17 +50,17 @@ class MustTryListening extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
-                          fontSize: 64,
+                          fontSize:isDesktop() ? 64:32,
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(
-                        width: 12,
+                        width: 12
                       ),
-                      const Expanded(
+                       Expanded(
                         child: Divider(
-                          thickness: 9,
-                          height: 9,
+                          thickness: isDesktop()? 9:4,
+                          height:isDesktop()? 9:4,
                           color: Colors.white,
                         ),
                       ),
@@ -67,7 +71,7 @@ class MustTryListening extends StatelessWidget {
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w500,
                       fontStyle: FontStyle.normal,
-                      fontSize: 36,
+                      fontSize:isDesktop() ? 36:18,
                       color: Colors.white,
                     ),
                   ),
@@ -85,6 +89,7 @@ class MustTryListening extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                   SizedBox(height: 24),
                   cardView(
                       text:
                           'multiplying revenue channels and using our technological expertise to maximize demand.',
@@ -103,6 +108,7 @@ class MustTryListening extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                   SizedBox(height: 24),
                   cardView(
                       text:
                           'Reaching more members/users & optimize the experience',
@@ -120,6 +126,7 @@ class MustTryListening extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                   SizedBox(height: 24),
                   cardView(
                       text: 'Hassle-free operations',
                       icon: 'assets/about_us/web.png'),

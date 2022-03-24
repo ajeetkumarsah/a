@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/utils/const.dart';
 
 import '../widgets/adaptiveText.dart';
@@ -20,9 +21,11 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(48, height * 0.1, 67, 0),
+      padding: EdgeInsets.fromLTRB(isDesktop()? 48:12.0, height * 0.1,isDesktop()? 67:12.0, 0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
@@ -35,11 +38,11 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 66,
+                        height:isDesktop()? 66:40,
                         padding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 141),
+                            vertical: 12.0, horizontal:isDesktop() || isMobile()? 141:100),
                         margin: EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 12.0),
+                            horizontal:isDesktop()? 10:0, vertical:isDesktop()?  12.0:0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           color: Constants.maroon,
@@ -51,7 +54,7 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
                               style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 18,
+                                fontSize:isDesktop()? 18:14,
                                 color: Colors.white,
                               ),
                             ),
@@ -72,9 +75,9 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 66,
+                        height:isDesktop()? 66:40,
                         padding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 64),
+                            vertical: 12.0, horizontal:isDesktop() || isMobile()?  64:32),
                         margin: EdgeInsets.symmetric(
                             horizontal: 10, vertical: 12.0),
                         decoration: BoxDecoration(
@@ -88,7 +91,7 @@ class _BuyOrbookScreenState extends State<BuyOrbookScreen> {
                               style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
-                                fontSize: 18,
+                                fontSize: isDesktop()? 18:14,
                                 color: Colors.white,
                               ),
                             ),

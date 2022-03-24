@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -21,6 +22,10 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
+     bool isTablet() => Responsive.isTablet(context);
+     bool isMinDesktop() => Responsive.isMinDesktop(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(color: Colors.transparent),
@@ -35,7 +40,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
               height: 600,
               children: <BootstrapCol>[
                 BootstrapCol(
-                  sizes: 'col-2 col-lg-2 col-xl-2 col-sm-2 col-md-2',
+                  sizes: 'col-12 col-md-3 col-sm-12',
                   child: Container(
                     padding: EdgeInsets.only(left: 30),
                     child: Column(
@@ -44,9 +49,9 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         AdaptiveText(
                           text: "Filters",
                           align: TextAlign.left,
-                          minFontSize: 14,
+                          minFontSize: 10,
                           style: GoogleFonts.montserrat(
-                            fontSize: 36,
+                            fontSize: isDesktop()?36:18,
                             fontWeight: FontWeight.w400,
                             color: Colors.white,
                           ),
@@ -55,17 +60,17 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         AdaptiveText(
                           text: "Location",
                           align: TextAlign.left,
-                          minFontSize: 14,
+                          minFontSize: 10,
                           style: GoogleFonts.montserrat(
-                            fontSize: 18,
+                            fontSize: isDesktop()?18:10,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
                           ),
                         ),
                         SizedBox(height: 20),
                         Container(
-                          width: 293,
-                          height: 55,
+                          width:isDesktop()? 293:180,
+                          height:isDesktop()? 55:30,
                           decoration: BoxDecoration(
                             color: Constants.cardBlackLight,
                             border: Border.all(width: 2, color: Constants.grey),
@@ -77,7 +82,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                             border: InputBorder.none,
                             hintText: 'Enter location',
                             hintStyle: GoogleFonts.montserrat(
-                              fontSize: 18,
+                              fontSize: isDesktop()?18:10,
                               fontWeight: FontWeight.w400,
                               color: Color.fromARGB(255, 172, 168, 168),
                             ),
@@ -87,9 +92,9 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         AdaptiveText(
                           text: "Price",
                           align: TextAlign.left,
-                          minFontSize: 14,
+                          minFontSize: 10,
                           style: GoogleFonts.montserrat(
-                            fontSize: 18,
+                            fontSize: isDesktop()?18:10,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
                           ),
@@ -98,8 +103,8 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         Row(
                           children: [
                             Container(
-                              width: 90,
-                              height: 55,
+                              width:isDesktop()? 90:60,
+                              height: isDesktop()? 55:30,
                               decoration: BoxDecoration(
                                 color: Constants.cardBlackLight,
                                 border:
@@ -112,15 +117,15 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                                 border: InputBorder.none,
                                 hintText: 'Min',
                                 hintStyle: GoogleFonts.montserrat(
-                                  fontSize: 18,
+                                  fontSize: isDesktop()?18:10,
                                   fontWeight: FontWeight.w400,
                                   color: Color.fromARGB(255, 172, 168, 168),
                                 ),
                               )),
                             ),
                             Container(
-                              width: 90,
-                              height: 55,
+                             width:isDesktop()? 90:60,
+                              height: isDesktop()? 55:30,
                               margin: EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
                                 color: Constants.cardBlackLight,
@@ -134,7 +139,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                                 border: InputBorder.none,
                                 hintText: 'Max',
                                 hintStyle: GoogleFonts.montserrat(
-                                  fontSize: 18,
+                                  fontSize: isDesktop()?18:10,
                                   fontWeight: FontWeight.w400,
                                   color: Color.fromARGB(255, 172, 168, 168),
                                 ),
@@ -146,9 +151,9 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         AdaptiveText(
                           text: "Features",
                           align: TextAlign.left,
-                          minFontSize: 14,
+                          minFontSize: 10,
                           style: GoogleFonts.montserrat(
-                            fontSize: 18,
+                            fontSize: isDesktop()?18:10,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
                           ),
@@ -162,7 +167,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                             'Pilates Studios',
                           ],
                           labelStyle: GoogleFonts.montserrat(
-                            fontSize: 18,
+                            fontSize:isDesktop()?18:10,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
                           ),
@@ -173,7 +178,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         AdaptiveText(
                           text: "Distance in Km",
                           align: TextAlign.left,
-                          minFontSize: 14,
+                          minFontSize: 10,
                           style: GoogleFonts.montserrat(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -204,9 +209,9 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                   ),
                 ),
                 BootstrapCol(
-                  sizes: 'col-10 col-lg-10 col-xl-10 col-sm-10 col-md-10',
+                  sizes: 'col-12 col-md-9 col-sm-12',
                   child: Container(
-                    padding: EdgeInsets.only(right: 30),
+                    padding: EdgeInsets.only(right: isDesktop()?30:0),
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: 5,
@@ -214,7 +219,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                         return Container(
                           margin: EdgeInsets.all(10),
                           width: width,
-                          height: 276,
+                          height:isMobile()?170: isTablet()?height*0.30: height* 0.36,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: Constants.cardBlackLight,
@@ -226,7 +231,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Image.asset('assets/gym/gym1.png'),
-                                  cardDetails(),
+                                  cardDetails(isDesktop(),width),
                                 ],
                               ),
                               Align(
@@ -251,10 +256,10 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                                           AdaptiveText(
                                             text: "Live Class",
                                             align: TextAlign.left,
-                                            minFontSize: 14,
+                                            minFontSize: 10,
                                             maxLines: 2,
                                             style: GoogleFonts.montserrat(
-                                              fontSize: 18,
+                                              fontSize:isDesktop()? 18:10,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black,
                                             ),
@@ -262,10 +267,10 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                                           AdaptiveText(
                                             text: "Available @ 99",
                                             align: TextAlign.left,
-                                            minFontSize: 14,
+                                            minFontSize: 10,
                                             maxLines: 2,
                                             style: GoogleFonts.montserrat(
-                                              fontSize: 18,
+                                              fontSize:isDesktop()? 18:10,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.black,
                                             ),
@@ -277,22 +282,22 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                                 ),
                               ),
                               Align(
-                                alignment: Alignment.bottomRight,
+                                alignment:isMinDesktop()? Alignment.centerRight:isMobile()? Alignment.centerRight:Alignment.bottomRight,
                                 child: Container(
                                   margin:
-                                      EdgeInsets.only(right: 30, bottom: 30),
-                                  padding: const EdgeInsets.only(
-                                      left: 18, right: 18, top: 13, bottom: 13),
+                                      EdgeInsets.only(right:isDesktop()? 30:8.0, bottom:isDesktop()? 30:8.0),
+                                  padding:isDesktop()? const EdgeInsets.only(
+                                      left: 18, right: 18, top: 13, bottom: 13):EdgeInsets.symmetric(horizontal:12,vertical: 8.0 ),
                                   decoration: const BoxDecoration(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(3)),
                                       color: Constants.primaryColor),
                                   child: AdaptiveText(
                                     text: 'Book Now',
-                                    minFontSize: 14,
+                                    minFontSize: 10,
                                     style: GoogleFonts.openSans(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: isDesktop()? 18:10,
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w400,
                                     ),
@@ -314,10 +319,10 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
     );
   }
 
-  Widget cardDetails() {
+  Widget cardDetails(bool isDesktop,double width) {
     return Container(
-      height: 280,
-      padding: EdgeInsets.all(20),
+      height:isDesktop? 260:150,
+      padding:isDesktop? EdgeInsets.all(20):EdgeInsets.all(8.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,10 +333,10 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
               AdaptiveText(
                 text: "Mass Monster",
                 align: TextAlign.left,
-                minFontSize: 14,
+                minFontSize: 10,
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
-                  fontSize: 24,
+                  fontSize:isDesktop? 24:12,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
@@ -345,10 +350,10 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
               AdaptiveText(
                 text: "Noida Sector 8,C Block",
                 align: TextAlign.left,
-                minFontSize: 14,
+                minFontSize: 10,
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
-                  fontSize: 18,
+                  fontSize:isDesktop? 18:10,
                   fontWeight: FontWeight.w300,
                   color: Colors.white,
                 ),
@@ -362,41 +367,45 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
               AdaptiveText(
                 text: "₹ 1500 for 3 months",
                 align: TextAlign.left,
-                minFontSize: 14,
+                minFontSize: 10,
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
-                  fontSize: 18,
+                  fontSize: isDesktop? 18:10,
                   fontWeight: FontWeight.w500,
                   color: Constants.primaryColor,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 20),
+         Spacer(),
           AdaptiveText(
             text: "Benifits",
             align: TextAlign.left,
-            minFontSize: 14,
+            minFontSize: 10,
             maxLines: 2,
             style: GoogleFonts.montserrat(
-              fontSize: 18,
+              fontSize:isDesktop? 18:10,
               fontWeight: FontWeight.w500,
               color: Constants.white,
             ),
           ),
           SizedBox(height: 10),
           Wrap(
-            spacing: 50,
+            spacing:isDesktop? width*0.04:width*0.02,
             children: [
               cardIconText(
+                isDesktop: isDesktop,
                   text: 'Modern \nEqipments',
                   icon: 'assets/gym/raphael_fitocracy.svg'),
               cardIconText(
+                isDesktop: isDesktop,
                   text: 'Skilled \nTrainer',
                   icon: 'assets/gym/colorful_man.svg'),
               cardIconText(
+                isDesktop: isDesktop,
                   text: 'Top class \nAmbiance', icon: 'assets/gym/Vector.svg'),
               cardIconText(
+                isDesktop: isDesktop,
                   text: 'Sanitized \nGYMS',
                   icon: 'assets/gym/fluent_sanitize.svg'),
             ],
@@ -407,14 +416,14 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
     );
   }
 
-  Widget cardIconText({required String text, required String icon}) {
+  Widget cardIconText({required String text, required String icon,required bool isDesktop}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         SvgPicture.asset(
           icon,
-          // height: 50,
+          height:isDesktop?null: 20,
         ),
         SizedBox(height: 4),
         AdaptiveText(

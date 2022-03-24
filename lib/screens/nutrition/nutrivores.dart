@@ -11,13 +11,15 @@ class NutriVores extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
 
     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(color: Colors.transparent),
-      padding: const EdgeInsets.fromLTRB(48, 100, 0, 0),
+      padding:  EdgeInsets.fromLTRB(48,isMobile()?30: 100, 0, 0),
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +31,7 @@ class NutriVores extends StatelessWidget {
                   text: "NUT",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 64,
+                    fontSize: isMobile()?32: 64,
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
                     color: Constants.cardGreen,
@@ -39,7 +41,7 @@ class NutriVores extends StatelessWidget {
                   text: "RIVO",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 64,
+                    fontSize: isMobile()?32:64,
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
                     color: Constants.cardBrown,
@@ -49,7 +51,7 @@ class NutriVores extends StatelessWidget {
                   text: "RES",
                   minFontSize: 14,
                   style: GoogleFonts.montserrat(
-                    fontSize: 64,
+                    fontSize:isMobile()?32: 64,
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.normal,
                     color: Constants.cardBabyPink,
@@ -62,7 +64,7 @@ class NutriVores extends StatelessWidget {
               text: "Tailored diets for all",
               minFontSize: 14,
               style: GoogleFonts.openSans(
-                fontSize: 36,
+                fontSize:isMobile()?16: 36,
                 fontWeight: FontWeight.w300,
                 fontStyle: FontStyle.normal,
                 color: Colors.white,
@@ -85,6 +87,9 @@ class NutriVores extends StatelessWidget {
               BootstrapCol(
                 sizes: 'col-12 col-md-3 col-sm-12',
                 child: item(
+                  isDesktop: isDesktop(),
+                  width: width,
+                   isMobile: isMobile(),
                     color: Constants.cardGreen,
                     text:
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada eu mollis lacus, ',
@@ -94,6 +99,9 @@ class NutriVores extends StatelessWidget {
               BootstrapCol(
                 sizes: 'col-12 col-md-3 col-sm-12',
                 child: item(
+                  isDesktop: isDesktop(),
+                  width: width,
+                   isMobile: isMobile(),
                     color: Constants.cardBrown,
                     text:
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada eu mollis lacus, ',
@@ -103,6 +111,9 @@ class NutriVores extends StatelessWidget {
               BootstrapCol(
                 sizes: 'col-12 col-md-3 col-sm-12',
                 child: item(
+                  isDesktop: isDesktop(),
+                  width: width,
+                  isMobile: isMobile(),
                     color: Constants.cardBabyPink,
                     text:
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Malesuada eu mollis lacus, ',
@@ -120,12 +131,13 @@ class NutriVores extends StatelessWidget {
       {required Color color,
       required String text,
       required String icon,
-      required Function onClick}) {
+      required Function onClick,required isMobile,required double width,required bool isDesktop}) {
     return Stack(
+      alignment:isDesktop? AlignmentDirectional.topStart:AlignmentDirectional.topCenter,
       children: [
         Container(
           constraints: const BoxConstraints(maxHeight: 301, maxWidth: 282),
-          margin: const EdgeInsets.only(bottom: 22, top: 70),
+          margin:  EdgeInsets.only(bottom: 22, top: 70),
           alignment: Alignment.center,
           decoration: BoxDecoration(
               color: color,

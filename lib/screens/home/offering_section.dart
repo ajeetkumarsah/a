@@ -27,14 +27,14 @@ class OfferingSection extends StatelessWidget {
           children: <BootstrapCol>[
             if (!isMobile())
               BootstrapCol(
-                sizes: 'col-12 col-sm-4 col-md-4',
+                sizes: 'col-12 col-sm-3 col-md-4',
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.topLeft,
                   child: Image.asset(
                     'assets/home/offering.png',
                     height: isTablet()
-                        ? 400
+                        ? 300
                         : isMobile()
                             ? 100
                             : 600,
@@ -43,7 +43,7 @@ class OfferingSection extends StatelessWidget {
                 ),
               ),
             BootstrapCol(
-              sizes: 'col-12 col-sm-8 col-md-8',
+              sizes: 'col-12 col-sm-9 col-md-8',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -79,7 +79,7 @@ class OfferingSection extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 60),
-                  isMobile()
+                  isMobile() 
                       ? Container(
                           constraints: const BoxConstraints(
                               minHeight: 300, maxHeight: 380),
@@ -263,8 +263,8 @@ class OfferingSection extends StatelessWidget {
                                       width: 2, color: Constants.primaryColor)),
                             ),
                             offeringCard(
-                                width: 274,
-                                height: 274,
+                                width:isDesktop()? 274:150,
+                                height: isDesktop()? 274:150,
                                 margin: const EdgeInsets.all(18),
                                 isMobile: isMobile(),
                                 label: '50 +',

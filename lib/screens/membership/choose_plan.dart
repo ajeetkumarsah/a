@@ -5,6 +5,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -29,14 +30,17 @@ class _ChoosePlanState extends State<ChoosePlan> {
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isFullDesktop() => Responsive.isFullDesktop(context);
+      bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(48, height * 0.09, 0, 0),
+      padding: EdgeInsets.fromLTRB(isDesktop()? 48:12.0, isDesktop()? height * 0.09:30.0, 0, 0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
             BootstrapCol(
-              sizes: 'col-12 col-sm-12 col-md-7',
+              sizes: isFullDesktop()?'col-12 col-sm-12 col-md-7':'col-12 col-sm-12 col-md-12',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,10 +49,10 @@ class _ChoosePlanState extends State<ChoosePlan> {
                     style: GoogleFonts.openSans(
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
-                        fontSize: 24,
+                        fontSize:24,
                         color: Colors.white),
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height:isDesktop()?  30:12),
                   AdaptiveText(
                     text:
                         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus massa, morbi habitasse posuere condimentum in mi nunc nunc. In fermentum ut nulla tempor amet, a nibh vitae. In laoreet lacus suspendisse duis senectus consectetur bibendum. Vitae sed ultrices sollicitudin sagittis. In nibh ac dolor hendrerit.',
@@ -56,19 +60,19 @@ class _ChoosePlanState extends State<ChoosePlan> {
                     style: GoogleFonts.openSans(
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
-                        fontSize: 14,
+                        fontSize: isDesktop() ? 14:10,
                         color: Colors.white),
                   ),
-                  const SizedBox(height: 70),
+                  SizedBox(height:isDesktop()?  70:20),
                   AdaptiveText(
                     text: 'Facilities',
                     style: GoogleFonts.openSans(
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
-                        fontSize: 24,
+                        fontSize:isDesktop() ? 24:12,
                         color: Colors.white),
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height:isDesktop()? 30:12.0),
                   new Wrap(
                     direction: Axis.horizontal,
                     spacing: 60.0,
@@ -76,60 +80,73 @@ class _ChoosePlanState extends State<ChoosePlan> {
                     crossAxisAlignment: WrapCrossAlignment.end,
                     children: [
                       facilities(
+                        height: isDesktop()?null:30,
+                        isDesktop: isDesktop(),
                           label: 'Modern \nEqipments',
                           icon: 'assets/gym/raphael_fitocracy.svg'),
                       facilities(
+                        height: isDesktop()?null:30,
+                        isDesktop: isDesktop(),
                           label: 'Skilled \nTrainer',
                           icon: 'assets/gym/emojione_person.svg'),
                       facilities(
+                        isDesktop: isDesktop(),
                           label: 'Top class \nAmbiance',
                           icon: 'assets/gym/Vector.svg',
-                          height: 50),
+                          height: isDesktop()?50:30,),
                       facilities(
+                        height: isDesktop()?null:30,
+                        isDesktop: isDesktop(),
                           label: 'Sanitized \nGYMS',
                           icon: 'assets/gym/fluent_sanitize.svg'),
                     ],
                   ),
-                  const SizedBox(height: 70),
+                   SizedBox(height:isDesktop()? 70:30),
                   AdaptiveText(
                     text: 'Why to choose WTF?',
                     style: GoogleFonts.openSans(
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
-                        fontSize: 24,
+                        fontSize:isDesktop()? 24:16,
                         color: Colors.white),
                   ),
                   const SizedBox(height: 30),
                   new Wrap(
                     direction: Axis.horizontal,
-                    spacing: 30.0,
+                    spacing:isDesktop()? 30.0:16,
+                    runSpacing: 30,
                     children: [
                       whyToChoose(
+                          isDesktop: isDesktop(),
                           label: 'Earn WTF rewards coin',
                           icon: 'assets/gym_details/coins.svg'),
                       whyToChoose(
+                          isDesktop: isDesktop(),
                           label: 'Fully Vaccinated\nStaff',
                           icon: 'assets/gym_details/vaccine.svg'),
                       whyToChoose(
+                          isDesktop: isDesktop(),
                           label: 'Track Fitness \nJourney',
                           icon: 'assets/gym_details/fitness.svg'),
                       whyToChoose(
+                          isDesktop: isDesktop(),
                           label: 'Pocket Friendly \nMembership',
                           icon: 'assets/gym_details/money.svg')
                     ],
                   ),
+                  const SizedBox(height: 30),
                 ],
               ),
             ),
             BootstrapCol(
-              sizes: 'col-12 col-sm-12 col-md-5',
+              sizes: isFullDesktop()? 'col-12 col-sm-12 col-md-5':'col-12 col-sm-12 col-md-12',
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    height: 566,
-                    width: 642,
+                    // height: 566,
+                    width: 650,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20.0),
                       color: Constants.cardBlackLight,
@@ -148,16 +165,18 @@ class _ChoosePlanState extends State<ChoosePlan> {
                             color: Colors.white,
                           ),
                         ),
+                        SizedBox(height: 30),
                         GridView(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
-                                  childAspectRatio: 1.5,
+                                  childAspectRatio: 1.46,
                                   mainAxisSpacing: 16,
                                   crossAxisSpacing: 16),
                           shrinkWrap: true,
                           children: [
                             plans(
+                              isMobile: isMobile(),
                               titleColor: Constants.textLightGreen,
                               amount: '₹ 999',
                               offer1: '1 Month membership',
@@ -169,6 +188,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                               amountColor: Color(0xff669C75),
                             ),
                             plans(
+                              isMobile: isMobile(),
                               titleColor: Constants.textLightPink,
                               amount: '₹ 999',
                               offer1: '3 Month membership',
@@ -188,6 +208,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                               amountColor: Color(0xffA46284),
                             ),
                             plans(
+                             isMobile: isMobile(),
                               titleColor: Constants.textRedLight,
                               amount: '₹ 999',
                               offer1: '6 Month membership',
@@ -207,6 +228,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                               amountColor: Color(0xffD24D4D),
                             ),
                             plans(
+                              isMobile: isMobile(),
                               titleColor: Constants.textLightBlue,
                               amount: '₹ 999',
                               offer1: '12 Month membership',
@@ -227,8 +249,10 @@ class _ChoosePlanState extends State<ChoosePlan> {
                             ),
                           ],
                         ),
+
                         Container(
                           height: 56,
+                          margin: EdgeInsets.only(top: 30),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             border:
@@ -278,13 +302,14 @@ class _ChoosePlanState extends State<ChoosePlan> {
     required String offer2,
     required String offer3,
     required Color titleColor,
+    required bool isMobile,
     Color? amountColor,
   }) {
     return Container(
-      width: 341,
+      width: 351,
       height: 164,
       // margin: EdgeInsets.only(top: 40),
-      padding: EdgeInsets.fromLTRB(12.0, 12.0, 0, 12.0),
+      padding: EdgeInsets.fromLTRB(isMobile?8:12.0, 6.0, 0,isMobile?8: 12.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(11),
         gradient: gradient != null
@@ -306,17 +331,17 @@ class _ChoosePlanState extends State<ChoosePlan> {
             children: [
               AdaptiveText(
                 text: 'PLAN $plan',
-                minFontSize: 14,
+                minFontSize: 10,
                 style: GoogleFonts.montserrat(
-                  fontSize: 16,
+                  fontSize:isMobile?12: 16,
                   fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,
                   color: Constants.white,
                 ),
               ),
               Container(
-                height: 27,
-                width: 87,
+                height:isMobile?17:27,
+                width:isMobile?60: 87,
                 decoration: BoxDecoration(
                   color: amountColor,
                   borderRadius: BorderRadius.circular(4),
@@ -324,9 +349,9 @@ class _ChoosePlanState extends State<ChoosePlan> {
                 child: Center(
                   child: AdaptiveText(
                     text: amount,
-                    minFontSize: 14,
+                    minFontSize: 10,
                     style: GoogleFonts.montserrat(
-                      fontSize: 16,
+                      fontSize:isMobile?10: 16,
                       fontWeight: FontWeight.w600,
                       fontStyle: FontStyle.normal,
                       color: Constants.white,
@@ -338,13 +363,13 @@ class _ChoosePlanState extends State<ChoosePlan> {
           ),
           Row(
             children: [
-              Image.asset('assets/logo.png', height: 22),
+              Image.asset('assets/logo.png', height: isMobile?14:22),
               SizedBox(width: 8.0),
               AdaptiveText(
                 text: title,
-                minFontSize: 14,
+                minFontSize: 10,
                 style: GoogleFonts.montserrat(
-                  fontSize: 22,
+                  fontSize:isMobile?14: 22,
                   fontWeight: FontWeight.w800,
                   fontStyle: FontStyle.normal,
                   color: titleColor,
@@ -360,7 +385,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
               minFontSize: 10,
               maxLines: 2,
               style: GoogleFonts.montserrat(
-                fontSize: 14,
+                fontSize:isMobile?12: 14,
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.normal,
                 color: Constants.white,
@@ -368,7 +393,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding:  EdgeInsets.symmetric(horizontal:isMobile?10: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -379,7 +404,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                   maxLines: 2,
                   align: TextAlign.left,
                   style: GoogleFonts.montserrat(
-                    fontSize: 14,
+                    fontSize:isMobile?10: 14,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                     color: Constants.white,
@@ -390,7 +415,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                   minFontSize: 10,
                   maxLines: 2,
                   style: GoogleFonts.montserrat(
-                    fontSize: 14,
+                    fontSize:isMobile?10: 14,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                     color: Constants.white,
@@ -401,7 +426,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
                   minFontSize: 10,
                   maxLines: 2,
                   style: GoogleFonts.montserrat(
-                    fontSize: 14,
+                    fontSize:isMobile?10:14,
                     fontWeight: FontWeight.w300,
                     fontStyle: FontStyle.normal,
                     color: Constants.white,
@@ -475,7 +500,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
   }
 
   Widget facilities(
-      {required String icon, required String label, double? height}) {
+      {required String icon, required String label, double? height,required bool isDesktop}) {
     return Column(
       children: [
         SvgPicture.asset(
@@ -491,7 +516,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
           style: GoogleFonts.openSans(
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.normal,
-              fontSize: 16,
+              fontSize:isDesktop? 16:12,
               color: Colors.white),
         ),
       ],
@@ -499,10 +524,10 @@ class _ChoosePlanState extends State<ChoosePlan> {
   }
 
   Widget whyToChoose(
-      {required String label, required String icon, double? iconHeight}) {
+      {required String label, required String icon, double? iconHeight,required bool isDesktop}) {
     return new Container(
-      height: 131,
-      width: 131,
+      height:isDesktop? 131:100,
+      width: isDesktop? 131:100,
       decoration: BoxDecoration(
         color: Constants.primaryColor,
         borderRadius: BorderRadius.circular(4.0),
@@ -514,7 +539,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
         children: [
           SvgPicture.asset(
             icon,
-            height: iconHeight != null ? iconHeight : 40,
+            height: iconHeight != null ? iconHeight :isDesktop? 40:30,
           ),
           SizedBox(height: 10),
           new AdaptiveText(
@@ -524,7 +549,7 @@ class _ChoosePlanState extends State<ChoosePlan> {
             style: GoogleFonts.openSans(
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.normal,
-              fontSize: 14,
+              fontSize:isDesktop? 14:8,
               color: Colors.white,
             ),
           ),

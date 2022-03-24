@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -13,10 +14,12 @@ class MembershipAboutGym extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var padding = Constants.getPadding(context);
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(color: Colors.transparent),
-      padding: const EdgeInsets.fromLTRB(56, 62, 0, 0),
+      padding:  EdgeInsets.fromLTRB(isDesktop() ?56:12.0, isDesktop() ?62:12.0, 0, 0),
       children: [
         ListTile(
           title: Row(
@@ -26,7 +29,7 @@ class MembershipAboutGym extends StatelessWidget {
                 text: "Mass Monster",
                 minFontSize: 14,
                 style: GoogleFonts.openSans(
-                  fontSize: 48,
+                  fontSize:isDesktop() ? 48:14,
                   fontWeight: FontWeight.w600,
                   fontStyle: FontStyle.normal,
                   color: Colors.white,
@@ -44,7 +47,7 @@ class MembershipAboutGym extends StatelessWidget {
                       text: "Noida ",
                       minFontSize: 14,
                       style: GoogleFonts.openSans(
-                        fontSize: 18,
+                        fontSize: isDesktop() ?18:14,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
                         color: Colors.white,
@@ -54,7 +57,7 @@ class MembershipAboutGym extends StatelessWidget {
                       text: "150 Ratings",
                       minFontSize: 14,
                       style: GoogleFonts.openSans(
-                        fontSize: 18,
+                        fontSize: isDesktop() ?18:14,
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.normal,
                         color: Colors.white,
@@ -74,7 +77,7 @@ class MembershipAboutGym extends StatelessWidget {
                 text: "Noida Sector 8, C-Block",
                 minFontSize: 14,
                 style: GoogleFonts.openSans(
-                  fontSize: 24,
+                  fontSize:isDesktop() ? 24:12,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.normal,
                   color: Colors.white,

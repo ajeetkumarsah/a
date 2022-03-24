@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/gym_details/fun_session.dart';
 import 'package:wtf_web/screens/membership/works_and_offers.dart';
@@ -28,6 +29,9 @@ class _MembershipState extends State<Membership> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -105,7 +109,7 @@ class _MembershipState extends State<Membership> {
                         AdaptiveText(
                           text: 'Back',
                           minFontSize: 14,
-                          style: const TextStyle(
+                          style: GoogleFonts.montserrat(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                             color: Constants.white,
@@ -120,8 +124,8 @@ class _MembershipState extends State<Membership> {
                     child: AdaptiveText(
                       text: 'Multiple Photos can be added',
                       minFontSize: 14,
-                      style: const TextStyle(
-                        fontSize: 36,
+                      style: GoogleFonts.montserrat(
+                        fontSize:isDesktop() ? 36:18,
                         fontWeight: FontWeight.w500,
                         color: Constants.white,
                       ),
@@ -132,7 +136,6 @@ class _MembershipState extends State<Membership> {
             ),
           ],
         ),
-        if (!isDesktop()) gymCountSection(width),
         const MembershipAboutGym(),
         const ChoosePlan(),
         const WorksAndOffers(),
@@ -181,6 +184,9 @@ class _MembershipState extends State<Membership> {
       ),
     );
   }
+
+
+
 
   bool isDesktop() => Responsive.isDesktop(context);
 

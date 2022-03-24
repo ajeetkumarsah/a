@@ -25,6 +25,8 @@ class _GymScreenState extends State<GymScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+      bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -121,11 +123,7 @@ class _GymScreenState extends State<GymScreen> {
             ],
           ),
         ),
-        if (!isDesktop())
-          const SizedBox(
-            height: 0,
-          ),
-        if (!isDesktop()) gymCountSection(width),
+        
         const SearchSection(),
         FiltersAndGyms(),
         const Experience(),

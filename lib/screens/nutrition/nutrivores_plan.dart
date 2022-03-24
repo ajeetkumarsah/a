@@ -6,6 +6,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
@@ -16,6 +17,9 @@ class NutrivoresPlan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var padding = Constants.getPadding(context);
+    
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     List<Nutrivores> nutrivores = [
       Nutrivores(duration: ' Powered 7 Days', price: '₹ 1500'),
       Nutrivores(duration: 'Powered 15 days', price: '₹ 4000'),
@@ -29,22 +33,22 @@ class NutrivoresPlan extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 88, 0, 0),
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 88.0, top: 38, bottom: 60),
+          padding:  EdgeInsets.only(left: isDesktop()? 88.0:30, top: 38, bottom:isDesktop()? 60:0),
           child: AdaptiveText(
             text: "Nutrivores Plan",
             minFontSize: 14,
             style: GoogleFonts.openSans(
-              fontSize: 30,
+              fontSize:isDesktop()? 30:20,
               fontWeight: FontWeight.w600,
               fontStyle: FontStyle.normal,
               color: Colors.white,
             ),
           ),
         ),
-        const SizedBox(height: 100),
+         SizedBox(height:isDesktop()? 100:30),
         Container(
-          height: 418,
-          margin: EdgeInsets.only(left: 88, bottom: 88),
+          height:isDesktop()? 418:350,
+          margin: EdgeInsets.only(left:isDesktop()? 88:0, bottom: 88),
           child: ListView.builder(
             padding: EdgeInsets.all(0),
             itemCount: nutrivores.length,
@@ -52,19 +56,19 @@ class NutrivoresPlan extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: ((context, index) {
               return Container(
-                height: 418,
-                width: 312,
-                margin: EdgeInsets.only(right: 50),
+                height:isDesktop()?  418:310,
+                width: isDesktop()? 312:212,
+                margin: isDesktop()? EdgeInsets.only(right: 50):EdgeInsets.only(left: 50),
                 child: Stack(
                   alignment: AlignmentDirectional.center,
                   children: [
                     Container(
-                      width: 312,
-                      height: 418,
+                      width: isDesktop()? 312:212,
+                      height:isDesktop()?  418:310,
                       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       padding: EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(24.0),
+                        borderRadius: BorderRadius.circular(isDesktop()? 24.0:12.0),
                         color: Constants.deepMaroon,
                       ),
                       alignment: Alignment.center,
@@ -86,8 +90,8 @@ class NutrivoresPlan extends StatelessWidget {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(90)),
                                   child: Container(
-                                    height: 129,
-                                    width: 129,
+                                    height:isDesktop()? 129:90,
+                                    width: isDesktop()? 129:90,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(90),
@@ -116,7 +120,7 @@ class NutrivoresPlan extends StatelessWidget {
                               align: TextAlign.center,
                               minFontSize: 14,
                               style: GoogleFonts.openSans(
-                                fontSize: 16,
+                                fontSize:isDesktop()? 16:10,
                                 fontWeight: FontWeight.w600,
                                 fontStyle: FontStyle.normal,
                                 color: Colors.white,
@@ -127,7 +131,7 @@ class NutrivoresPlan extends StatelessWidget {
                               align: TextAlign.center,
                               minFontSize: 14,
                               style: GoogleFonts.openSans(
-                                fontSize: 25,
+                                fontSize:isDesktop()? 25:12,
                                 fontWeight: FontWeight.w700,
                                 fontStyle: FontStyle.normal,
                                 color: Colors.white,
@@ -145,7 +149,7 @@ class NutrivoresPlan extends StatelessWidget {
                                     align: TextAlign.center,
                                     minFontSize: 8,
                                     style: GoogleFonts.openSans(
-                                      fontSize: 11,
+                                      fontSize: isDesktop()?11:8,
                                       fontWeight: FontWeight.w200,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.white,
@@ -156,7 +160,7 @@ class NutrivoresPlan extends StatelessWidget {
                                     align: TextAlign.center,
                                     minFontSize: 8,
                                     style: GoogleFonts.openSans(
-                                      fontSize: 11,
+                                      fontSize: isDesktop()?11:8,
                                       fontWeight: FontWeight.w200,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.white,
@@ -174,7 +178,7 @@ class NutrivoresPlan extends StatelessWidget {
                                     align: TextAlign.center,
                                     minFontSize: 8,
                                     style: GoogleFonts.openSans(
-                                      fontSize: 11,
+                                      fontSize: isDesktop()?11:8,
                                       fontWeight: FontWeight.w200,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.white,
@@ -185,7 +189,7 @@ class NutrivoresPlan extends StatelessWidget {
                                     align: TextAlign.center,
                                     minFontSize: 8,
                                     style: GoogleFonts.openSans(
-                                      fontSize: 11,
+                                      fontSize:isDesktop()?11:8,
                                       fontWeight: FontWeight.w200,
                                       fontStyle: FontStyle.normal,
                                       color: Colors.white,

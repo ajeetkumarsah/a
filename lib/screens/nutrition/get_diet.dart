@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/nutrition/widget/custom_shape.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
@@ -15,16 +16,18 @@ class GetDiet extends StatelessWidget {
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(0, height * 0.1, 0, height * 0.1),
+      padding: EdgeInsets.fromLTRB(0, isDesktop()?height * 0.1:0, 0, isDesktop()?height * 0.1:0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
             BootstrapCol(
-              sizes: 'col-12 col-sm-12 col-md-5',
+              sizes: 'col-12 col-sm-12 col-md-7',
               child: Container(
-                margin: EdgeInsets.only(top: 200, left: 100),
+                margin: EdgeInsets.only(top:isDesktop()? 200:30, left:isDesktop()? 100:12.0,right:isDesktop()? 0:12.0),
                 alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -35,7 +38,7 @@ class GetDiet extends StatelessWidget {
                       style: GoogleFonts.oregano(
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
-                          fontSize: 64,
+                          fontSize:isDesktop()? 64:32,
                           color: Colors.white),
                     ),
                     Image.asset('assets/nutrition/Brunch.png'),
@@ -100,14 +103,14 @@ class GetDiet extends StatelessWidget {
                               ],
                             ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 90),
+                          padding:isDesktop()? const EdgeInsets.symmetric(
+                              vertical: 16, horizontal: 90):const EdgeInsets.symmetric(horizontal: 30,vertical: 9),
                           alignment: Alignment.center,
                           child: AdaptiveText(
                             text: "Get Diet",
                             minFontSize: 14,
                             style: GoogleFonts.montserrat(
-                              fontSize: 24,
+                              fontSize:isDesktop()? 24:10,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,
                               color: Colors.white,
@@ -116,15 +119,16 @@ class GetDiet extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 100),
+                  
+                    SizedBox(height: isDesktop()?100:30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        someInfo(title: '200 +', subTitle: 'Premade Recepies'),
+                        someInfo(title: '200 +', subTitle: 'Premade Recepies',isDesktop: isDesktop()),
                         someInfo(
-                            title: '25 +', subTitle: 'Certified Nutritionist'),
+                            title: '25 +', subTitle: 'Certified Nutritionist',isDesktop: isDesktop()),
                         someInfo(
-                            title: 'Unlimited', subTitle: 'Tailored Diets'),
+                            title: 'Unlimited', subTitle: 'Tailored Diets',isDesktop: isDesktop()),
                       ],
                     )
                   ],
@@ -132,7 +136,7 @@ class GetDiet extends StatelessWidget {
               ),
             ),
             BootstrapCol(
-              sizes: 'col-12 col-sm-12 col-md-7',
+              sizes: 'col-12 col-sm-12 col-md-5',
               child: Stack(
                 children: [
                   Align(
@@ -165,7 +169,7 @@ class GetDiet extends StatelessWidget {
     );
   }
 
-  Widget someInfo({required String title, required String subTitle}) {
+  Widget someInfo({required String title, required String subTitle,required bool isDesktop}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -173,7 +177,7 @@ class GetDiet extends StatelessWidget {
           text: title,
           minFontSize: 14,
           style: GoogleFonts.openSans(
-            fontSize: 28,
+            fontSize:isDesktop? 28:14,
             fontWeight: FontWeight.w700,
             fontStyle: FontStyle.normal,
             color: Colors.white,
@@ -183,7 +187,7 @@ class GetDiet extends StatelessWidget {
           text: subTitle,
           minFontSize: 14,
           style: GoogleFonts.openSans(
-            fontSize: 18,
+            fontSize:isDesktop?  18:10,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
             color: Colors.white,

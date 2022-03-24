@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -11,17 +13,20 @@ class ThreeCards extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     var padding = Constants.getPadding(context);
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return Container(
       decoration: const BoxDecoration(color: Color(0xff1A1A1A)),
       child: BootstrapContainer(
         fluid: true,
-        padding: const EdgeInsets.fromLTRB(88, 88, 0, 0),
+        padding:  EdgeInsets.fromLTRB(isDesktop()? 88:12.0, 88, 0, 0),
         children: [
           BootstrapRow(
             children: <BootstrapCol>[
               BootstrapCol(
                 sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
                 child: cardItem(
+                  isDesktop: isDesktop(),
                     icon: 'assets/partner/send.png',
                     heading: 'Self onboarding',
                     description:
@@ -39,6 +44,7 @@ class ThreeCards extends StatelessWidget {
               BootstrapCol(
                 sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
                 child: cardItem(
+                  isDesktop: isDesktop(),
                   icon: 'assets/partner/network.png',
                   heading: 'Business Growth',
                   description:
@@ -57,6 +63,7 @@ class ThreeCards extends StatelessWidget {
               BootstrapCol(
                 sizes: 'col-12 col-lg-6 col-xl-4 col-sm-12 col-md-4',
                 child: cardItem(
+                  isDesktop: isDesktop(),
                   icon: 'assets/partner/setting.png',
                   heading: 'Easy Operations',
                   description:
@@ -84,8 +91,9 @@ class ThreeCards extends StatelessWidget {
       required String description,
       required Function onClick,
       Gradient? gradient,
-      required String icon}) {
+      required String icon,required bool isDesktop}) {
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       constraints: const BoxConstraints(minHeight: 147, maxWidth: 414),
       padding: const EdgeInsets.only(left: 22, right: 22, top: 25, bottom: 40),
       decoration: BoxDecoration(
@@ -105,10 +113,13 @@ class ThreeCards extends StatelessWidget {
         children: [
           ListTile(
             contentPadding: const EdgeInsets.all(0),
-            title: Text(
-              heading,
-              style: const TextStyle(
+            title: AdaptiveText(
+              text:heading,
+              minFontSize: 14,
+              maxLines:1,
+              style:  GoogleFonts.montserrat(
                 fontSize: 20,
+                
                 fontWeight: FontWeight.w300,
                 color: Colors.white,
               ),
@@ -118,9 +129,9 @@ class ThreeCards extends StatelessWidget {
           const SizedBox(height: 17),
           AdaptiveText(
             text: description,
-            minFontSize: 14,
+            minFontSize: 10,
             maxLines: 3,
-            style: const TextStyle(
+            style: GoogleFonts.montserrat(
               fontSize: 14,
               fontWeight: FontWeight.w300,
               color: Colors.white,

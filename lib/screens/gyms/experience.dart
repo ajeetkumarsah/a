@@ -3,6 +3,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -12,6 +13,9 @@ class Experience extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
+     bool isTablet() => Responsive.isTablet(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(
@@ -28,11 +32,11 @@ class Experience extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 88, 0, 0),
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(120, 0, 32, 0),
+          padding:  EdgeInsets.fromLTRB(isDesktop()?120:12.0, 0,isDesktop()? 32:0, 0),
           child: BootstrapRow(
             children: [
               BootstrapCol(
-                sizes: 'col-4 col-sm-4 col-md-4',
+                sizes:!isMobile()? 'col-4 col-sm-4 col-md-4':'col-5 col-sm-5 col-md-5',
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -40,7 +44,7 @@ class Experience extends StatelessWidget {
                         text: "WTF Fitness",
                         minFontSize: 14,
                         style: GoogleFonts.openSans(
-                          fontSize: 48,
+                          fontSize:isDesktop()? 48:24,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                           color: Colors.white,
@@ -50,7 +54,7 @@ class Experience extends StatelessWidget {
                         text: "Experience?",
                         minFontSize: 14,
                         style: GoogleFonts.openSans(
-                          fontSize: 48,
+                          fontSize:isDesktop()? 48:24,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                           color: Colors.white,
@@ -61,8 +65,8 @@ class Experience extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            height: 200,
-                            width: 60,
+                            height:!isDesktop()?50: 200,
+                            width: width *0.04,
                             decoration: const BoxDecoration(
                               color: Color(0XffFB5E5E),
                             ),
@@ -76,7 +80,7 @@ class Experience extends StatelessWidget {
                                 text: "@ your regular ",
                                 minFontSize: 14,
                                 style: GoogleFonts.openSans(
-                                  fontSize: 30,
+                                  fontSize:isDesktop()? 30:16,
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   color: Colors.white,
@@ -86,7 +90,7 @@ class Experience extends StatelessWidget {
                                 text: "gym cost?",
                                 minFontSize: 14,
                                 style: GoogleFonts.openSans(
-                                  fontSize: 30,
+                                  fontSize: isDesktop()? 30:16,
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   color: Colors.white,
@@ -99,7 +103,7 @@ class Experience extends StatelessWidget {
                     ]),
               ),
               BootstrapCol(
-                sizes: 'col-8 col-sm-8 col-md-8',
+                sizes:!isMobile()? 'col-8 col-sm-8 col-md-8':'col-7 col-sm-7 col-md-7',
                 child: Padding(
                   padding: const EdgeInsets.only(top: 180.0),
                   child: BootstrapRow(
@@ -107,6 +111,7 @@ class Experience extends StatelessWidget {
                       BootstrapCol(
                         sizes: 'col-12 col-lg-6 col-xl-3 col-sm-12 col-md-6',
                         child: item(
+                           isDesktop: isDesktop(),
                             description: 'Modern \nEqipments',
                             icon: 'assets/gym/raphael_fitocracy.svg',
                             onClick: () {}),
@@ -114,6 +119,7 @@ class Experience extends StatelessWidget {
                       BootstrapCol(
                         sizes: 'col-12 col-lg-6 col-xl-3 col-sm-12 col-md-6',
                         child: item(
+                           isDesktop: isDesktop(),
                             description: 'Skilled \nTrainer',
                             icon: 'assets/gym/emojione_person.svg',
                             onClick: () {}),
@@ -121,6 +127,7 @@ class Experience extends StatelessWidget {
                       BootstrapCol(
                         sizes: 'col-12 col-lg-6 col-xl-3 col-sm-12 col-md-6',
                         child: item(
+                           isDesktop: isDesktop(),
                             description: 'Top class \nAmbiance',
                             icon: 'assets/gym/Vector.svg',
                             onClick: () {}),
@@ -128,6 +135,7 @@ class Experience extends StatelessWidget {
                       BootstrapCol(
                         sizes: 'col-12 col-lg-6 col-xl-3 col-sm-12 col-md-6',
                         child: item(
+                          isDesktop: isDesktop(),
                             onClick: () {},
                             icon: 'assets/gym/fluent_sanitize.svg',
                             description: 'Sanitized \nGYMS'),
@@ -146,7 +154,7 @@ class Experience extends StatelessWidget {
   Widget item(
       {required String description,
       required String icon,
-      required Function onClick}) {
+      required Function onClick,required bool isDesktop}) {
     return Container(
       // constraints: const BoxConstraints(maxHeight: 144, maxWidth: 131),
       height: 144,
@@ -178,8 +186,8 @@ class Experience extends StatelessWidget {
             minFontSize: 14,
             maxLines: 5,
             align: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 17,
+            style:  GoogleFonts.montserrat(
+              fontSize:isDesktop? 17:10,
               fontWeight: FontWeight.w300,
               color: Colors.white,
             ),

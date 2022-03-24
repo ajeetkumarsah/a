@@ -5,5 +5,10 @@
         "statusBar.debuggingBackground": "#0a8c83",
         "statusBarItem.hoverBackground": "#bc0d19",
         "statusBarItem.remoteBackground": "#8c0a13"
-    }
+    },
+    "files.autoSave": "onFocusChange",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "files.defaultLanguage": "dart",
+    "zenMode.hideStatusBar": false,
+    "editor.suggest.showStatusBar": true
 }

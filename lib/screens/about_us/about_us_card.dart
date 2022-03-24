@@ -19,7 +19,7 @@ class AboutUsCard extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(88, height * 0.1, 0, 0),
+      padding: EdgeInsets.fromLTRB(isDesktop()? 88:12.0, height * 0.1, 0, 0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
@@ -30,7 +30,9 @@ class AboutUsCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  cardView(
+                  SizedBox(height: 24),
+                  cardView(                    
+                    isDesktop: isDesktop(),
                     title: 'Our Mission',
                     subTitle:
                         'We aim to build an end to end User Experience driven by Technology - right from discovery to accede to the realization of a standardized fitness experience',
@@ -38,7 +40,8 @@ class AboutUsCard extends StatelessWidget {
                     width: 576,
                   ),
                   SizedBox(height: 24),
-                  cardView(
+                  cardView(                    
+                    isDesktop: isDesktop(),
                     title: 'Summary',
                     subTitle:
                         'WTF is creating a global platform that empowers entrepreneurs and small businesses with Fitness Facilities to go digital providing full-stack technology that increases earnings and eases operations.\nBringing affordable and best-in-class experience that members can book instantly. We strive to make the lives of our patrons easier by multiplying revenue channels and using our technological expertise to maximize demand.',
@@ -52,7 +55,9 @@ class AboutUsCard extends StatelessWidget {
               sizes: 'col-12 col-sm-12 col-md-6',
               child: Column(
                 children: [
-                  cardView(
+                  SizedBox(height: 24),
+                  cardView(                    
+                    isDesktop: isDesktop(),
                     title: 'Our Vision',
                     subTitle:
                         'Our vision is to deliver simple Fitness Lifestyle for \ncommon living People on \nBUDGET',
@@ -61,6 +66,7 @@ class AboutUsCard extends StatelessWidget {
                   ),
                   SizedBox(height: 24),
                   cardView(
+                    isDesktop: isDesktop(),
                     title: 'Company History',
                     subTitle: '',
                     height: 204,
@@ -78,11 +84,13 @@ class AboutUsCard extends StatelessWidget {
   Widget cardView(
       {required String title,
       required String subTitle,
+      required bool isDesktop,
       double? height,
       double? width}) {
     return Container(
       height: height != null ? height : 204,
       width: width != null ? width : 576,
+      
       padding: EdgeInsets.all(24),
       child: ListTile(
         contentPadding: EdgeInsets.all(0),
@@ -92,9 +100,9 @@ class AboutUsCard extends StatelessWidget {
           children: [
             AdaptiveText(
               text: title,
-              minFontSize: 14,
+              minFontSize: 12,
               style: GoogleFonts.montserrat(
-                fontSize: 24,
+                fontSize:isDesktop? 24:14,
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
                 color: Colors.white,
@@ -105,10 +113,10 @@ class AboutUsCard extends StatelessWidget {
         ),
         subtitle: AdaptiveText(
           text: subTitle,
-          minFontSize: 14,
+          minFontSize: 10,
           maxLines: 13,
           style: GoogleFonts.openSans(
-            fontSize: 18,
+            fontSize:isDesktop? 18:12,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
             color: Colors.white,
@@ -120,5 +128,5 @@ class AboutUsCard extends StatelessWidget {
           color: Constants.primaryColor),
       alignment: Alignment.center,
     );
-  }
+  }  
 }

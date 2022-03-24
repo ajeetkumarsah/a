@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/utils/const.dart';
 
 import '../widgets/adaptiveText.dart';
@@ -21,6 +22,9 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    bool isDesktop() => Responsive.isDesktop(context);
+    bool isFullDesktop() => Responsive.isFullDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
     return BootstrapContainer(
       fluid: true,
       padding: EdgeInsets.fromLTRB(48, height * 0.09, 67, 0),
@@ -40,7 +44,7 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w300,
                       fontStyle: FontStyle.normal,
-                      fontSize: 24,
+                      fontSize:isDesktop()? 24:18,
                       color: Colors.white,
                     ),
                   ),
@@ -52,14 +56,17 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         howItWorks(
+                          isDesktop: isDesktop(),
                             leadingIcon: 'assets/gym/emojione_person.svg',
                             text:
                                 'Pick membership start ddate and complete your subscription process by clicking Buy Now below.'),
                         howItWorks(
+                          isDesktop: isDesktop(),
                             leadingIcon: 'assets/gym/emojione_person.svg',
                             text:
                                 'A dedicated general trainer will be assigned after you have taken your subscription.'),
                         howItWorks(
+                          isDesktop: isDesktop(),
                             leadingIcon: 'assets/gym/emojione_person.svg',
                             text:
                                 'Explore WTF and start your fitness journey.'),
@@ -74,6 +81,8 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if(!isDesktop())
+                  SizedBox(height: 30),
                   new AdaptiveText(
                     text: 'Offers Available for you',
                     maxLines: 2,
@@ -87,19 +96,19 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
                     ),
                   ),
                   Container(
-                    height: 240,
+                    height:isMobile()?200: 240,
                     margin: EdgeInsets.only(top: 30),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(isDesktop()? 20.0:12),
                       color: Constants.cardBlackLight,
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 44, vertical: 40),
+                    padding: EdgeInsets.symmetric(horizontal:isDesktop()? 44:16, vertical:isDesktop()? 32:12),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        offers(title: 'New member Offer'),
-                        offers(title: '20% OFF for 1st month'),
-                        offers(title: '30% OFF on 2nd month'),
+                        offers(title: 'New member Offer',isDesktop: isDesktop()),
+                        offers(title: '20% OFF for 1st month',isDesktop: isDesktop()),
+                        offers(title: '30% OFF on 2nd month',isDesktop: isDesktop()),
                       ],
                     ),
                   )
@@ -112,7 +121,7 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
     );
   }
 
-  Widget howItWorks({required String text, required String leadingIcon}) {
+  Widget howItWorks({required String text, required String leadingIcon,required bool isDesktop}) {
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
       runAlignment: WrapAlignment.center,
@@ -134,7 +143,7 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
             style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w300,
               fontStyle: FontStyle.normal,
-              fontSize: 16,
+              fontSize:isDesktop? 16:14,
               color: Colors.white,
             ),
           ),
@@ -143,33 +152,28 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
     );
   }
 
-  Widget offers({required String title}) {
+  Widget offers({required String title,required bool isDesktop}) {
     return ListTile(
       contentPadding: EdgeInsets.all(0),
       leading: SvgPicture.asset('assets/gym/map_pin.svg'),
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          new AdaptiveText(
-            text: title,
-            maxLines: 2,
-            minFontSize: 12,
-            align: TextAlign.center,
-            style: GoogleFonts.montserrat(
-              fontWeight: FontWeight.w300,
-              fontStyle: FontStyle.normal,
-              fontSize: 20,
-              color: Colors.white,
-            ),
-          ),
-        ],
+      
+      title: new AdaptiveText(
+        text: title,
+        maxLines: 2,
+        minFontSize: 12,
+        align: TextAlign.left,
+        style: GoogleFonts.montserrat(
+          fontWeight: FontWeight.w300,
+          fontStyle: FontStyle.normal,
+          fontSize: isDesktop ?20:14,
+          color: Colors.white,
+        ),
       ),
       trailing: Container(
-        height: 46,
-        width: 127,
+        height:isDesktop? 46:30,
+        width:isDesktop? 127:90,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(isDesktop? 4.0:2.0),
           color: Constants.primaryColor,
         ),
         child: Center(
@@ -180,7 +184,7 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
             style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w500,
               fontStyle: FontStyle.normal,
-              fontSize: 18,
+              fontSize:isDesktop? 18:12,
               color: Colors.white,
             ),
           ),

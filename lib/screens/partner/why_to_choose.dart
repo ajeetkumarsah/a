@@ -14,7 +14,10 @@ class WhyToChoose extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDesktop() => Responsive.isDesktop(context);
+   
+     bool isDesktop() => Responsive.isDesktop(context);
+    bool isMobile() => Responsive.isMobile(context);
+    bool isMobileLarge() => Responsive.isMobileLarge(context);
     var padding = Constants.getPadding(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -22,7 +25,7 @@ class WhyToChoose extends StatelessWidget {
       decoration: const BoxDecoration(color: Color(0xff1A1A1A)),
       child: BootstrapContainer(
         fluid: true,
-        padding: EdgeInsets.fromLTRB(88, height * 0.1, 0, 0),
+        padding: EdgeInsets.fromLTRB(isDesktop()? 88:12.0, height * 0.1, 0, 0),
         children: [
           BootstrapRow(
             children: <BootstrapCol>[
@@ -41,7 +44,7 @@ class WhyToChoose extends StatelessWidget {
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal,
-                            fontSize: 48,
+                            fontSize: isDesktop()?48:24,
                             color: Colors.white,
                           ),
                         ),
@@ -63,7 +66,7 @@ class WhyToChoose extends StatelessWidget {
           BootstrapRow(
             children: <BootstrapCol>[
               BootstrapCol(
-                sizes: 'col-12 col-sm-12 col-md-6',
+                sizes: 'col-12 col-sm-12 col-md-8',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,19 +74,23 @@ class WhyToChoose extends StatelessWidget {
                   children: [
                     SizedBox(height: 86),
                     rowBuilder(
+                      isDesktop: isDesktop(),
                         title:
                             'If your fitness centre is getting affected by COVID19?',
                         icon: 'assets/partner/virus.svg'),
                     SizedBox(height: 46),
                     rowBuilder(
+                      isDesktop: isDesktop(),
                         title: 'If finding new client is challenging for you?',
                         icon: 'assets/partner/group.svg'),
                     SizedBox(height: 46),
                     rowBuilder(
+                      isDesktop: isDesktop(),
                         title: 'If managing operations is a headache for you?',
                         icon: 'assets/partner/setting.svg'),
                     SizedBox(height: 46),
                     rowBuilder(
+                      isDesktop: isDesktop(),
                         title:
                             'If you want to make your business fully automated?',
                         icon: 'assets/partner/settings.svg'),
@@ -118,15 +125,15 @@ class WhyToChoose extends StatelessWidget {
                 ),
               ),
               BootstrapCol(
-                sizes: 'col-12 col-sm-12 col-md-6',
-                child: Container(
+                sizes: 'col-12 col-sm-12 col-md-4',
+                child:isMobileLarge()?SizedBox(): Container(
                   width: double.infinity,
                   margin: EdgeInsets.only(top: 24),
                   alignment: Alignment.centerLeft,
                   child: Image.asset(
                     'assets/partner/iphone.png',
-                    height: 600,
-                    fit: BoxFit.fitHeight,
+                    height: 400,
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
               ),
@@ -137,7 +144,7 @@ class WhyToChoose extends StatelessWidget {
     );
   }
 
-  Widget rowBuilder({required String title, required String icon}) {
+  Widget rowBuilder({required String title, required String icon,required bool isDesktop}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -148,7 +155,7 @@ class WhyToChoose extends StatelessWidget {
           style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
-            fontSize: 18,
+            fontSize: isDesktop?18:14,
             color: Colors.white,
           ),
         ),
