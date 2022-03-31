@@ -51,13 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               Container(
-                margin: EdgeInsets.fromLTRB(!isMobile() ? 88 : 12.0,
-                    !isMobile() ? height * 0.2 : 0, 0, !isMobile() ? 0 : 26),
+                margin: EdgeInsets.fromLTRB(isDesktop() ? 88 : 30.0,
+                    isDesktop() ? height * 0.2 : 90, 0, isDesktop() ? 0 : 26),
                 child: Column(
-                  mainAxisAlignment: !isMobile()
+                  mainAxisAlignment: isDesktop()
                       ? MainAxisAlignment.start
                       : MainAxisAlignment.end,
-                  crossAxisAlignment: !isMobile()
+                  crossAxisAlignment: isDesktop()
                       ? CrossAxisAlignment.start
                       : CrossAxisAlignment.center,
                   children: [
@@ -65,14 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       text: "MAKING INDIA FIT",
                       minFontSize: 14,
                       style: GoogleFonts.openSans(
-                        fontSize: !isMobile() ? 72 : 36,
+                        fontSize: isDesktop() ? 72 : 36,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 12),
                     Row(
-                      mainAxisAlignment: !isMobile()
+                      mainAxisAlignment: isDesktop()
                           ? MainAxisAlignment.start
                           : MainAxisAlignment.center,
                       children: [
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: "ON",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
-                            fontSize: !isMobile() ? 72 : 36,
+                            fontSize: isDesktop() ? 72 : 36,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           text: " BUDGET",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
-                            fontSize: !isMobile() ? 72 : 36,
+                            fontSize: isDesktop() ? 72 : 36,
                             fontWeight: FontWeight.bold,
                             color: Constants.primaryColor,
                           ),
@@ -102,14 +102,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           "Join WTF managed fitness centers and explore\nfitness like never before",
                       minFontSize: 14,
                       maxLines: 2,
-                      align: !isMobile() ? TextAlign.start : TextAlign.center,
+                      align: isDesktop() ? TextAlign.start : TextAlign.center,
                       style: GoogleFonts.openSans(
                         fontSize: 30,
                         fontWeight: FontWeight.w200,
                         color: Colors.white.withOpacity(0.5),
                       ),
                     ),
-                    SizedBox(height: height * 0.06),
+                    // SizedBox(height:isDesktop()? height * 0.06:30),
+                    Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -118,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             text: "Download App Now",
                             minFontSize: 14,
                             style: GoogleFonts.openSans(
-                              fontSize: !isMobile() ? 18 : 14,
+                              fontSize: isDesktop() ? 18 : 14,
                               fontWeight: FontWeight.w300,
                               color: Colors.white,
                             ),
@@ -144,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 0,
           ),
-        if (!isMobile() && !isDesktop()) gymCountSection(width),
+        if (isDesktop() && !isDesktop()) gymCountSection(width),
         const ExploreSection(),
         const OfferingSection(),
         const WorldClassSection(),

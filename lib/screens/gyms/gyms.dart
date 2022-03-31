@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/fitness/wtf_powered.dart';
+import 'package:wtf_web/screens/gyms/bloc/gym_bloc.dart';
 import 'package:wtf_web/screens/gyms/experience.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
+import 'package:wtf_web/screens/widgets/custom_loader.dart';
+import 'package:wtf_web/session_manager/session_manager.dart';
 import 'package:wtf_web/utils/const.dart';
 
 import 'filters_gyms.dart';
@@ -21,114 +25,131 @@ class GymScreen extends StatefulWidget {
 }
 
 class _GymScreenState extends State<GymScreen> {
+  SessionManager _sessionManager = SessionManager.getInstance();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-      bool isDesktop() => Responsive.isDesktop(context);
-    bool isMobile() => Responsive.isMobile(context);
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[Constants.gradientRedLight, Constants.black],
-            ),
-          ),
-          constraints: const BoxConstraints(minHeight: 400, maxHeight: 542),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      Constants.black.withOpacity(0.4), BlendMode.srcOver),
+    return BlocProvider(
+      lazy: false,
+      create: (context) => GymBloc()..add(FetchGymsEvent(userId: '')),
+      child: BlocConsumer<GymBloc, GymState>(
+        listener: (context, state) {
+          if (state is GymInitial) {}
+        },
+        builder: (context, state) {
+          if (state is FetchGymListState) {
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: <Color>[
+                        Constants.gradientRedLight,
+                        Constants.black
+                      ],
+                    ),
+                  ),
+                  constraints:
+                      const BoxConstraints(minHeight: 400, maxHeight: 542),
                   child: Stack(
-                    children: <Widget>[
-                      AdaptiveText(
-                        text: 'Powered',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 352,
-                          fontWeight: FontWeight.w700,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 6
-                            ..color = Constants.gradientRed,
-                          letterSpacing: -7,
-                        ),
-                      ),
-                      // Solid text as fill.
-                      AdaptiveText(
-                        text: "Powered",
-                        minFontSize: 14,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 352,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                          color: Colors.transparent,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 324.0),
-                  child: Image.asset(
-                    'assets/gym/running_girl.png',
-                    // color: Constants.gradientRed,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 124.0),
-                  child: Image.asset(
-                    'assets/gym/running_boy.png',
-                    // color: Constants.gradientRed,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  margin:
-                      EdgeInsets.fromLTRB(88, height * 0.2, height * 0.2, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      AdaptiveText(
-                        text: "GYM",
-                        minFontSize: 14,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 220,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          color: Colors.white,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: ColorFiltered(
+                          colorFilter: ColorFilter.mode(
+                              Constants.black.withOpacity(0.4),
+                              BlendMode.srcOver),
+                          child: Stack(
+                            children: <Widget>[
+                              AdaptiveText(
+                                text: 'Powered',
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 352,
+                                  fontWeight: FontWeight.w700,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 6
+                                    ..color = Constants.gradientRed,
+                                  letterSpacing: -7,
+                                ),
+                              ),
+                              // Solid text as fill.
+                              AdaptiveText(
+                                text: "Powered",
+                                minFontSize: 14,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 352,
+                                  fontWeight: FontWeight.w500,
+                                  fontStyle: FontStyle.normal,
+                                  color: Colors.transparent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 324.0),
+                          child: Image.asset(
+                            'assets/gym/running_girl.png',
+                            // color: Constants.gradientRed,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 124.0),
+                          child: Image.asset(
+                            'assets/gym/running_boy.png',
+                            // color: Constants.gradientRed,
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          margin: EdgeInsets.fromLTRB(
+                              88, height * 0.2, height * 0.2, 0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              AdaptiveText(
+                                text: "GYM",
+                                minFontSize: 14,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 220,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        
-        const SearchSection(),
-        FiltersAndGyms(),
-        const Experience(),
-        const BottomBar(),
-      ],
+                const SearchSection(),
+                FiltersAndGyms(gymList: state.gymList),
+                const Experience(),
+                const BottomBar(),
+              ],
+            );
+          }
+          return CustomLoader();
+        },
+      ),
     );
   }
 
@@ -168,6 +189,7 @@ class _GymScreenState extends State<GymScreen> {
     );
   }
 
+  bool isSmallMobile() => Responsive.isSmallMobile(context);
   bool isDesktop() => Responsive.isDesktop(context);
 
   Widget gymCount({required String count, required String label}) {

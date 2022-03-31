@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/screens/gym_details/gym_details.dart';
 import 'package:wtf_web/screens/home/home_screen.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
+import 'package:wtf_web/screens/login/login.dart';
+import 'package:wtf_web/screens/onboarding/onboarding.dart';
+import 'package:wtf_web/screens/widgets/custom_loader.dart';
+import 'package:wtf_web/session_manager/session_manager.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +20,11 @@ class MyApp extends StatelessWidget {
   // This widgets is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SessionManager _sessionManager = SessionManager.getInstance();
     return GetMaterialApp(
       title: 'WTF',
       debugShowCheckedModeBanner: false,
+      // initialRoute: LoginScreen.routeName,
       theme: ThemeData(
           primarySwatch: Colors.deepPurple,
           primaryColor: Colors.black,
@@ -47,10 +54,15 @@ class MyApp extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 15))),
-      home: const LandingScreen(),
+      home: _sessionManager.getId() != null
+          ? const LandingScreen()
+          : CustomLoader(),
       routes: {
         HomeScreen.routeName: (context) => const HomeScreen(),
         LandingScreen.routeName: (context) => const LandingScreen(),
+        GymDetails.routeName: (context) => const GymDetails(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        OnboardingScreen.routeName: (context) => const OnboardingScreen(),
       },
     );
   }

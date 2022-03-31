@@ -15,7 +15,7 @@ class Experience extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     bool isDesktop() => Responsive.isDesktop(context);
     bool isMobile() => Responsive.isMobile(context);
-     bool isTablet() => Responsive.isTablet(context);
+    bool isSmallMobile() => Responsive.isSmallMobile(context);
     return BootstrapContainer(
       fluid: true,
       decoration: const BoxDecoration(
@@ -32,19 +32,19 @@ class Experience extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0, 88, 0, 0),
       children: [
         Padding(
-          padding:  EdgeInsets.fromLTRB(isDesktop()?120:12.0, 0,isDesktop()? 32:0, 0),
+          padding:  EdgeInsets.fromLTRB(isDesktop()?120:12.0,isSmallMobile() || isMobile()?20: 0,isDesktop()? 32:0, 0),
           child: BootstrapRow(
             children: [
               BootstrapCol(
-                sizes:!isMobile()? 'col-4 col-sm-4 col-md-4':'col-5 col-sm-5 col-md-5',
+                sizes: 'col-5 col-sm-5 col-md-5',
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AdaptiveText(
                         text: "WTF Fitness",
-                        minFontSize: 14,
+                        minFontSize: 8,
                         style: GoogleFonts.openSans(
-                          fontSize:isDesktop()? 48:24,
+                          fontSize:isDesktop()? 48:isSmallMobile()?12:isMobile()?18: 24,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                           color: Colors.white,
@@ -52,9 +52,9 @@ class Experience extends StatelessWidget {
                       ),
                       AdaptiveText(
                         text: "Experience?",
-                        minFontSize: 14,
+                        minFontSize: 8,
                         style: GoogleFonts.openSans(
-                          fontSize:isDesktop()? 48:24,
+                          fontSize:isDesktop()? 48:isSmallMobile()?12:isMobile()?18:24,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                           color: Colors.white,
@@ -71,16 +71,17 @@ class Experience extends StatelessWidget {
                               color: Color(0XffFB5E5E),
                             ),
                           ),
-                          SizedBox(width: 20),
+                          SizedBox(width:isSmallMobile() ?10: 20),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               AdaptiveText(
                                 text: "@ your regular ",
-                                minFontSize: 14,
+                                minFontSize: 8,
                                 style: GoogleFonts.openSans(
-                                  fontSize:isDesktop()? 30:16,
+                                  fontSize:isDesktop()? 30:isSmallMobile() ?9:isMobile()?12:16,
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   color: Colors.white,
@@ -88,9 +89,9 @@ class Experience extends StatelessWidget {
                               ),
                               AdaptiveText(
                                 text: "gym cost?",
-                                minFontSize: 14,
+                                minFontSize: 8,
                                 style: GoogleFonts.openSans(
-                                  fontSize: isDesktop()? 30:16,
+                                  fontSize: isDesktop()? 30:isSmallMobile() ?9:isMobile()?12:16,
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   color: Colors.white,
@@ -103,9 +104,9 @@ class Experience extends StatelessWidget {
                     ]),
               ),
               BootstrapCol(
-                sizes:!isMobile()? 'col-8 col-sm-8 col-md-8':'col-7 col-sm-7 col-md-7',
+                sizes:'col-7 col-sm-7 col-md-7',
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 180.0),
+                  padding:  EdgeInsets.only(top:isSmallMobile()|| isMobile()?30: 180.0),
                   child: BootstrapRow(
                     children: <BootstrapCol>[
                       BootstrapCol(

@@ -2,8 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/model/gym_details.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/gym_details/fun_session.dart';
+import 'package:wtf_web/screens/gym_details/gym_details.dart';
 import 'package:wtf_web/screens/membership/works_and_offers.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
@@ -29,7 +31,7 @@ class _MembershipState extends State<Membership> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    
+
     bool isDesktop() => Responsive.isDesktop(context);
     bool isMobile() => Responsive.isMobile(context);
     return Column(
@@ -125,7 +127,7 @@ class _MembershipState extends State<Membership> {
                       text: 'Multiple Photos can be added',
                       minFontSize: 14,
                       style: GoogleFonts.montserrat(
-                        fontSize:isDesktop() ? 36:18,
+                        fontSize: isDesktop() ? 36 : 18,
                         fontWeight: FontWeight.w500,
                         color: Constants.white,
                       ),
@@ -136,9 +138,9 @@ class _MembershipState extends State<Membership> {
             ),
           ],
         ),
-        const MembershipAboutGym(),
-        const ChoosePlan(),
-        const WorksAndOffers(),
+        MembershipAboutGym(gymDetails: GymDetailsModel()),
+        ChoosePlan(gymDetails: GymDetailsModel()),
+        const WorksAndOffers(gymId: ''),
         const BuyOrbookScreen(),
         const TrainLive(),
         const FunSession(),
@@ -185,9 +187,6 @@ class _MembershipState extends State<Membership> {
     );
   }
 
-
-
-
   bool isDesktop() => Responsive.isDesktop(context);
 
   Widget gymCount({required String count, required String label}) {
@@ -203,9 +202,7 @@ class _MembershipState extends State<Membership> {
             color: Constants.primaryColor,
           ),
         ),
-        const SizedBox(
-          height: 6,
-        ),
+        const SizedBox(height: 6),
         AdaptiveText(
           text: label,
           minFontSize: 14,

@@ -33,7 +33,7 @@ class MeetOurLeaders extends StatelessWidget {
     ];
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(88, height * 0.1, 0, 0),
+      padding: EdgeInsets.fromLTRB(isDesktop()? 88:12.0,isDesktop() ?  height * 0.1:0, 0, 0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
@@ -43,7 +43,7 @@ class MeetOurLeaders extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(height: 60),
+                   SizedBox(height:isDesktop()? 60:30),
                   Row(
                     children: [
                       AdaptiveText(
@@ -52,15 +52,15 @@ class MeetOurLeaders extends StatelessWidget {
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
-                          fontSize: 48,
+                          fontSize: isDesktop() ? 48 : 24,
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Expanded(
+                      Expanded(
                           child: Divider(
-                        thickness: 9,
-                        height: 9,
+                        thickness: isDesktop() ? 9 : 4,
+                        height: isDesktop() ? 9 : 4,
                         color: Colors.white,
                       ))
                     ],
@@ -70,13 +70,14 @@ class MeetOurLeaders extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 60),
+
+         SizedBox(height:isDesktop() ?  60:30),
         BootstrapRow(
           children: <BootstrapCol>[
             BootstrapCol(
               sizes: 'col-12 col-sm-12 col-md-12',
               child: SizedBox(
-                height: 500,
+                height:isDesktop() ?  500:300,
                 child: ListView.builder(
                   itemCount: leaders.length,
                   padding: const EdgeInsets.only(top: 0),
@@ -84,6 +85,7 @@ class MeetOurLeaders extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return item(
+                      isDesktop: isDesktop(),
                         name: leaders[index].name,
                         role: leaders[index].role,
                         index: index);
@@ -100,7 +102,9 @@ class MeetOurLeaders extends StatelessWidget {
   Widget item(
       {required String name,
       required String role,
+      required bool isDesktop,
       Gradient? gradient,
+      
       required int index}) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -111,8 +115,8 @@ class MeetOurLeaders extends StatelessWidget {
                 ? Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 58.0, top: 48),
-                      child: Image.asset('assets/about_us/cardLeft.png'),
+                      padding:  EdgeInsets.only(left: 58.0, top:isDesktop? 48:8.0),
+                      child: Image.asset('assets/about_us/cardLeft.png',height: isDesktop?null:200),
                     ),
                   )
                 : SizedBox(),
@@ -120,8 +124,8 @@ class MeetOurLeaders extends StatelessWidget {
                 ? Align(
                     alignment: Alignment.topRight,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 58.0, top: 48),
-                      child: Image.asset('assets/about_us/cardCenter.png'),
+                      padding:  EdgeInsets.only(left:isDesktop? 58.0:60, top:isDesktop? 48:8.0),
+                      child: Image.asset('assets/about_us/cardCenter.png',width: isDesktop?null:200),
                     ),
                   )
                 : SizedBox(),
@@ -129,17 +133,17 @@ class MeetOurLeaders extends StatelessWidget {
                 ? Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 290.0, top: 40),
-                      child: Image.asset('assets/about_us/cardRight.png'),
+                      padding:  EdgeInsets.only(left:isDesktop? 290.0:210, top:isDesktop? 40:10),
+                      child: Image.asset('assets/about_us/cardRight.png',height: isDesktop?null:200),
                     ),
                   )
                 : SizedBox(),
             Container(
-              height: 327,
-              width: 327,
+              height:isDesktop? 327:200,
+              width: isDesktop? 327:200,
               padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.only(
-                  top: 60, right: 70, left: 70, bottom: 32),
+              margin:  EdgeInsets.only(
+                  top:isDesktop? 60:16, right: 70, left: 70, bottom:isDesktop? 32:16),
               decoration: BoxDecoration(
                 gradient: gradient != null
                     ? gradient
@@ -161,7 +165,7 @@ class MeetOurLeaders extends StatelessWidget {
           text: name,
           style: GoogleFonts.montserrat(
             fontStyle: FontStyle.normal,
-            fontSize: 18,
+            fontSize:isDesktop? 18:14,
             fontWeight: FontWeight.w700,
             color: Colors.white,
           ),
@@ -174,7 +178,7 @@ class MeetOurLeaders extends StatelessWidget {
           minFontSize: 10,
           style: GoogleFonts.openSans(
               fontStyle: FontStyle.normal,
-              fontSize: 14,
+              fontSize:isDesktop? 14:10,
               fontWeight: FontWeight.w400,
               color: Colors.white),
         ),

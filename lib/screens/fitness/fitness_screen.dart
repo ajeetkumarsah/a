@@ -130,11 +130,6 @@ class _FitnessCenterState extends State<FitnessCenter> {
             ],
           ),
         ),
-        if (!isDesktop())
-          const SizedBox(
-            height: 0,
-          ),
-        if (!isDesktop()) gymCountSection(width),
         const Experience(),
         const WTFPowered(),
         const MostBooked(),

@@ -1,14 +1,19 @@
 {
-    "workbench.colorCustomizations": {
-        "editorGroup.border": "#bc0d19",
-        "statusBar.background": "#8c0a13",
-        "statusBar.debuggingBackground": "#0a8c83",
-        "statusBarItem.hoverBackground": "#bc0d19",
-        "statusBarItem.remoteBackground": "#8c0a13"
-    },
-    "files.autoSave": "onFocusChange",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "files.defaultLanguage": "dart",
-    "zenMode.hideStatusBar": false,
-    "editor.suggest.showStatusBar": true
+  "workbench.colorCustomizations": {
+    "editorGroup.border": "#bc0d19",
+    "statusBar.background": "#8c0a13",
+    "statusBar.debuggingBackground": "#0a8c83",
+    "statusBarItem.hoverBackground": "#bc0d19",
+    "statusBarItem.remoteBackground": "#8c0a13"
+  },
+  "files.autoSave": "onFocusChange",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.defaultLanguage": "dart",
+  "zenMode.hideStatusBar": false,
+  "editor.suggest.showStatusBar": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code"
+  }
 }

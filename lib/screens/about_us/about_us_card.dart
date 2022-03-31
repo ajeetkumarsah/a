@@ -19,7 +19,7 @@ class AboutUsCard extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return BootstrapContainer(
       fluid: true,
-      padding: EdgeInsets.fromLTRB(isDesktop()? 88:12.0, height * 0.1, 0, 0),
+      padding: EdgeInsets.fromLTRB(isDesktop()? 88:12.0,isDesktop()? height * 0.1:30, 0, 0),
       children: [
         BootstrapRow(
           children: <BootstrapCol>[
@@ -88,8 +88,8 @@ class AboutUsCard extends StatelessWidget {
       double? height,
       double? width}) {
     return Container(
-      height: height != null ? height : 204,
-      width: width != null ? width : 576,
+      // height: height != null ? height : 204,
+      // width: width != null ? width : 576,
       
       padding: EdgeInsets.all(24),
       child: ListTile(

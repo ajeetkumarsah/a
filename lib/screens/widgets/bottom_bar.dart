@@ -1,5 +1,7 @@
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/utils/const.dart';
 
 class BottomBar extends StatefulWidget {
@@ -22,6 +24,7 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     final padding = Constants.getPadding(context);
+    bool isDesktop() => Responsive.isDesktop(context);
     return Container(
       decoration: BoxDecoration(
           color: widget.color != null ? widget.color : Colors.transparent),
@@ -48,62 +51,78 @@ class _BottomBarState extends State<BottomBar> {
                     ],
                   )),
               BootstrapCol(
-                sizes: 'col-12 col-xl-3 col-sm-12 col-md-4',
+                sizes: 'col-xl-3 col-sm-6 col-md-4',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    getHeading(heading: 'Quick Links'),
+                    getHeading(
+                      isDesktop: isDesktop(),heading: 'Quick Links'),
                     const SizedBox(
-                      height: 18,
+                      height: 18
                     ),
-                    getItem(item: 'About', onClick: () {}),
-                    getItem(item: 'FAQs', onClick: () {}),
-                    getItem(item: 'Term & Conditions', onClick: () {}),
-                    getItem(item: 'Refund & Cancellation', onClick: () {}),
-                    getItem(item: 'Contact', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'About', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'FAQs', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'Term & Conditions', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'Refund & Cancellation', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'Contact', onClick: () {}),
                   ],
                 ),
               ),
               BootstrapCol(
-                sizes: 'col-12 col-xl-3 col-sm-12 col-md-4',
+                sizes: 'col-xl-3 col-sm-6 col-md-4',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    getHeading(heading: 'Explore'),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    getItem(item: 'Arenas', onClick: () {}),
-                    getItem(item: 'Studios', onClick: () {}),
-                    getItem(item: 'Nutrition', onClick: () {}),
-                    getItem(item: 'Personal Trainer', onClick: () {}),
-                  ],
-                ),
-              ),
-              BootstrapCol(
-                sizes: 'col-12 col-xl-3 col-sm-12 col-md-4',
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    getHeading(heading: 'Contact'),
+                    getHeading(
+                      isDesktop: isDesktop(),heading: 'Explore'),
                     const SizedBox(
                       height: 18,
                     ),
                     getItem(
+                      isDesktop: isDesktop(),item: 'Arenas', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'Studios', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'Nutrition', onClick: () {}),
+                    getItem(
+                      isDesktop: isDesktop(),item: 'Personal Trainer', onClick: () {}),
+                  ],
+                ),
+              ),
+              BootstrapCol(
+                sizes: 'col-12 col-xl-3 col-sm-12 col-md-4',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    getHeading(
+                      isDesktop: isDesktop(),heading: 'Contact'),
+                    const SizedBox(
+                      height: 18
+                    ),
+                    getItem(
+                      isDesktop: isDesktop(),
                         item:
                             'Ro : S 1502, Amrapali Silicon city, Sector 76, Noida, Uttar Pradesh, India',
                         onClick: () {},
                         iconData: Icons.location_on),
                     getItem(
+                      isDesktop: isDesktop(),
                         item:
                             'Ho : C-86 B, Ground Floor, Sector 8, Noida, Uttar Pradesh, India',
                         onClick: () {},
                         iconData: Icons.location_on),
                     getItem(
+                      isDesktop: isDesktop(),
                         item: '+919090639005',
                         onClick: () {},
                         iconData: Icons.phone),
                     getItem(
+                      isDesktop: isDesktop(),
                         item: 'support@wtfup.me',
                         onClick: () {},
                         iconData: Icons.mail),
@@ -117,14 +136,14 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 
-  Widget getHeading({required String heading}) {
+  Widget getHeading({required String heading,required bool isDesktop}) {
     return ListTile(
       dense: true,
       title: Text(
         heading,
-        style: const TextStyle(
+        style: GoogleFonts.montserrat(
           color: Colors.white,
-          fontSize: 20,
+          fontSize:isDesktop? 20:18,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -132,7 +151,7 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   Widget getItem(
-      {required String item, required Function onClick, IconData? iconData}) {
+      {required String item, required Function onClick, IconData? iconData,required bool isDesktop}) {
     return ListTile(
       onTap: onClick(),
       leading: iconData != null
@@ -145,7 +164,7 @@ class _BottomBarState extends State<BottomBar> {
       title: Text(item,
           style: TextStyle(
             color: Colors.white.withOpacity(0.7),
-            fontSize: 18,
+            fontSize:isDesktop? 18:12,
           )),
     );
   }

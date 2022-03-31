@@ -122,7 +122,7 @@ class _StudiosScreenState extends State<StudiosScreen> {
         ),
         if (!isDesktop()) gymCountSection(width),
         const SearchSection(),
-        FiltersAndGyms(),
+        FiltersAndGyms(gymList: [],),
         const Experience(),
         const BottomBar(),
       ],

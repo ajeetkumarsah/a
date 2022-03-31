@@ -11,7 +11,7 @@ class MenuController extends GetxController {
         "Nutrition",
         "Gyms",
         "Become WTF Partner",
-        "Membership",
+        "About Us",
       ];
   GlobalKey<ScaffoldState> get scaffoldkey => _scaffoldKey;
 
