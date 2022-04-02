@@ -527,9 +527,9 @@ class _ChoosePlanState extends State<ChoosePlan> {
             // SizedBox(height: 4.0),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Flexible(
-                fit: FlexFit.tight,
+              child: Expanded(
                 child: Html(
+
                     // defaultTextStyle: TextStyle(fontSize: 12),
                     data: """$subTitle"""),
               ),

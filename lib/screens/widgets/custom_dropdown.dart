@@ -10,6 +10,7 @@ class CustomDropDown extends StatefulWidget {
   final List<DropdownMenuItem<String>>? items;
   final Widget? hint;
   final TextStyle? style;
+  final void Function(String?)? onChanged;
   const CustomDropDown(
       {Key? key,
       this.padding,
@@ -19,6 +20,7 @@ class CustomDropDown extends StatefulWidget {
       this.width,
       this.constraints,
       required this.items,
+      required this.onChanged,
       this.style,
       this.hint})
       : super(key: key);
@@ -54,7 +56,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
             focusColor: Color(0xff424242).withOpacity(0.4),
             items: widget.items,
             hint: widget.hint,
-            onChanged: (_) {},
+            onChanged: widget.onChanged,
           ),
         ));
   }

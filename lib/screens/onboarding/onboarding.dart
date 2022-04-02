@@ -1,11 +1,17 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:wtf_web/model/diet.dart';
+import 'package:wtf_web/model/onboarding4.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/screens/package/flutter_fluid_slider.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/widgets/container_text_field.dart';
@@ -27,6 +33,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool isDesktop() => Responsive.isDesktop(context);
   bool isMobile() => Responsive.isMobile(context);
   List<String> icons = [];
+  double _value = 0.0;
+  int selected = 0;
+  bool smoke = false, drink = false;
+  List<String> selectAge =
+      new List<String>.generate(100, (i) => (i + 1).toString());
+  List<String> selectHeight =
+      new List<String>.generate(100, (i) => (i + 1).toString());
   @override
   void initState() {
     super.initState();
@@ -38,13 +51,68 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     ];
   }
 
+  List<Onboarding4> onboarding4 = [
+    Onboarding4(
+        title: 'Eat',
+        subtitle: ' 1610 calories / day',
+        icon: 'assets/onboarding/apple.gif'),
+    Onboarding4(
+        title: 'Drink',
+        subtitle: '4L water / day',
+        icon: 'assets/onboarding/glass.gif'),
+    Onboarding4(
+        title: 'Walk',
+        subtitle: '8000 steps / day',
+        icon: 'assets/onboarding/walking.gif'),
+    Onboarding4(
+        title: 'Burn',
+        subtitle: '500 calories / day',
+        icon: 'assets/onboarding/pushups.gif'),
+  ];
+  List<DietModel> diets = [
+    DietModel(
+        title: 'Vegeterian',
+        icon: 'assets/onboarding/veg.svg',
+        coloredIcon: 'assets/onboarding/Coloured_veg.svg'),
+    DietModel(
+        title: 'Eggeterian',
+        icon: 'assets/onboarding/egg.svg',
+        coloredIcon: 'assets/onboarding/Coloured_egg.svg'),
+    DietModel(
+        title: 'Non-vegeterian',
+        icon: 'assets/onboarding/nonveg.svg',
+        coloredIcon: 'assets/onboarding/Coloured_nonveg.svg'),
+  ];
+  String? selectedFitnessGoal = null, selectedDiet = null;
+  List<String> fitnessGoal = ['Lean', 'Gain', 'Maintain'];
+  List<String> condition = [
+    'Diabeties',
+    'Cholesterol',
+    'Hypertension',
+    'PCOS',
+    'Thyroid',
+    'Physical Injury',
+    'Excessive Stress/Anxiety',
+    'Depression',
+    'Anger issue',
+    'Other',
+    'None of the above',
+  ];
+  List<String> selectedItems = [];
+  String userAge = 'Select your age',
+      userBodyType = 'Select your body Type',
+      userHeight = 'Height in cm',
+      userWeight = 'Weight in kg',
+      userGender = 'Gender',
+      userTargetWeight = 'Target weight in kg',
+      userExperience = 'Workout Experience';
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final pages = [
       onBoarding1(),
-      onBoarding2(),
+      onBoarding2(width),
       onBoarding3(),
       onBoarding4(),
     ];
@@ -63,54 +131,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         },
       ),
     );
-
-    // Stack(
-    //   alignment: Alignment.center,
-    //   children: [
-    //     Positioned(
-    //       top: 100,
-    //       right: 284,
-    //       child: CustomPaint(
-    //         foregroundPainter: CircleBlurPainter(
-    //             circleWidth: 104,
-    //             blurSigma: 1.0,
-    //             color: Constants.primaryColor),
-    //       ),
-    //     ),
-    //     Positioned(
-    //       top: 80,
-    //       right: 204,
-    //       child: CustomPaint(
-    //         foregroundPainter: CircleBlurPainter(
-    //             circleWidth: 40, blurSigma: 2.0, color: Constants.primaryColor),
-    //       ),
-    //     ),
-    //     Align(
-    //       alignment: Alignment.center,
-    //       child: Container(
-    //         constraints: BoxConstraints(
-    //             maxHeight: 538, minHeight: 400, maxWidth: 874, minWidth: 600),
-    //         // width: 874,
-    //         // height: 538,
-    //         margin: EdgeInsets.only(top: isDesktop() ? 90 : 30),
-    //         padding: EdgeInsets.fromLTRB(0, 45, 0, 10),
-    //         decoration: BoxDecoration(
-    //           gradient: LinearGradient(
-    //             begin: Alignment.topLeft,
-    //             end: Alignment.bottomRight,
-    //             colors: [
-    //               Color(0xFF1D1D1D),
-    //               Color(0xFF494949).withOpacity(0.31),
-    //             ],
-    //             stops: [0.1, 1],
-    //           ),
-    //           borderRadius: BorderRadius.circular(16),
-    //         ),
-    //         // child:
-    //       ),
-    //     ),
-    //   ],
-    // );
   }
 
   Widget onBoarding1() {
@@ -143,15 +163,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 SizedBox(height: 20),
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userAge = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Select your age',
+                    userAge,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items: selectAge.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -159,15 +185,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   }).toList(),
                 ),
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userBodyType = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Select your body Type',
+                    userBodyType,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items: <String>[
+                    'Lean',
+                    'Skinny',
+                    'Average',
+                    'Athletic',
+                    'Overweight',
+                    'Heavy'
+                  ].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -175,15 +214,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   }).toList(),
                 ),
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userHeight = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Height in cm',
+                    userHeight,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items: selectHeight.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -191,15 +236,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   }).toList(),
                 ),
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userTargetWeight = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Target weight in kg',
+                    userTargetWeight,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items: selectHeight.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -213,15 +264,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userGender = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Gender',
+                    userGender,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items:
+                      <String>['Male', 'Female', 'Other'].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -229,15 +287,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   }).toList(),
                 ),
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userExperience = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Workout Experience',
+                    userExperience,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items: <String>['Almost never', 'Sometimes', 'Actively']
+                      .map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -245,15 +310,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   }).toList(),
                 ),
                 CustomDropDown(
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      userWeight = value;
+                      setState(() {});
+                    }
+                  },
                   hint: Text(
-                    'Weight in kg',
+                    userWeight,
                     style: GoogleFonts.openSans(
                       color: Constants.white,
                       fontWeight: FontWeight.w300,
                       fontSize: 18,
                     ),
                   ),
-                  items: <String>['1', '2', '3', '4'].map((String value) {
+                  items: selectHeight.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
@@ -329,7 +400,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget onBoarding2() {
+  Widget onBoarding2(double width) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -365,88 +436,193 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                ContainerTextField(
-                    width: 374,
-                    cursorColor: Constants.white,
-                    // controller: ,
-                    color: Color(0xff424242).withOpacity(0.4),
-                    hintText: 'Enter Full name'),
-                ContainerTextField(
-                  width: 374,
-                  // controller: ,
-                  cursorColor: Constants.white,
-                  hintText: 'Enter password',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-                ContainerTextField(
-                  width: 374,
-                  // controller: ,
-                  cursorColor: Constants.white,
-                  hintText: 'Mobile number',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-                ContainerTextField(
-                  width: 374,
-                  // controller: ,
-                  cursorColor: Constants.white,
-                  hintText: 'OTP',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ContainerTextField(
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                    cursorColor: Constants.white,
-                    color: Color(0xff424242).withOpacity(0.4),
-                    hintText: 'Email id'),
-                ContainerTextField(
-                  constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                  cursorColor: Constants.white,
-                  hintText: 'Confirm Password',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-                ContainerTextField(
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                    cursorColor: Constants.white,
-                    color: Color(0xff424242).withOpacity(0.4),
-                    hintText: 'Referal Code (Optional)'),
-                SizedBox(height: 12),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    // width: 374,
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                    height: 58,
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6.0),
-                        color: Constants.primaryColor),
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Center(
-                      child: AdaptiveText(
-                        text: 'Login',
-                        minFontSize: 14,
-                        align: TextAlign.center,
-                        style: GoogleFonts.openSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          color: Constants.white,
-                        ),
-                      ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 106.0, vertical: 12.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AutoSizeText(
+                    '${_value.toStringAsFixed(2)}  kg/week',
+                    style: GoogleFonts.openSans(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: Constants.white,
                     ),
                   ),
-                ),
-              ],
+                  SizedBox(height: 16),
+                  FluidSlider(
+                    value: _value,
+                    start: AutoSizeText(
+                      '0.0',
+                      style: GoogleFonts.openSans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                        color: Constants.white,
+                      ),
+                    ),
+                    end: AutoSizeText(
+                      '1.5',
+                      style: GoogleFonts.openSans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                        color: Constants.white,
+                      ),
+                    ),
+                    onChanged: (double newValue) {
+                      setState(() {
+                        _value = newValue;
+                      });
+                    },
+                    sliderColor: Color(0xff424242).withOpacity(0.4),
+                    min: 0.0,
+                    max: 1.5,
+                    thumbColor: Constants.primaryColor,
+                    showDecimalValue: true,
+                    valueTextStyle: GoogleFonts.openSans(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                      color: Constants.white,
+                    ),
+                    width: width * 0.45,
+                  ),
+                  SizedBox(height: 16),
+                  AutoSizeText(
+                    ' Do you have any special medical Condition?',
+                    style: GoogleFonts.openSans(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: Constants.white,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  SizedBox(
+                    width: width * 0.4,
+                    child: Wrap(
+                      spacing: 8, runSpacing: 12,
+                      runAlignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      alignment: WrapAlignment.center,
+                      children: List<Widget>.generate(
+                        condition.length,
+                        (int index) {
+                          bool isSelected =
+                              selectedItems.contains(condition[index]);
+                          return GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? Constants.primaryColor
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(4),
+                                border: isSelected
+                                    ? null
+                                    : Border.all(
+                                        width: 0.5, color: Constants.white),
+                              ),
+                              child: Text(condition[index],
+                                  style: GoogleFonts.openSans(
+                                      color: Constants.white)),
+                            ),
+                            onTap: () {
+                              print('Condition called ====>');
+                              if (index == condition.length - 2) {
+                                showBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ContainerTextField(
+                                              width: 374,
+                                              cursorColor: Constants.white,
+                                              // controller: ,
+                                              color: Color(0xff424242)
+                                                  .withOpacity(0.4),
+                                              hintText: 'Enter your condition'),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Container(
+                                                    color: Constants.grey,
+                                                    height: 50,
+                                                    child: Center(
+                                                      child: Text('Cancel'),
+                                                    )),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                  selectedItems.clear();
+                                                  selectedItems
+                                                      .add(condition[index]);
+                                                  setState(() {});
+                                                },
+                                                child: Container(
+                                                    height: 50,
+                                                    color:
+                                                        Constants.primaryColor,
+                                                    child: Center(
+                                                      child: Text('Ok'),
+                                                    )),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    });
+                              } else if (index == condition.length - 1) {
+                                selectedItems.clear();
+                                selectedItems.add(condition[index]);
+                              } else {
+                                if (selectedItems
+                                    .contains(condition[condition.length - 1]))
+                                  selectedItems
+                                      .remove(condition[condition.length - 1]);
+                                if (selectedItems
+                                    .contains(condition[condition.length - 2]))
+                                  selectedItems
+                                      .remove(condition[condition.length - 2]);
+                                if (selectedItems.contains(condition[index])) {
+                                  // print('Condition called item removed====>');
+                                  selectedItems.remove(condition[index]);
+                                } else {
+                                  selectedItems.add(condition[index]);
+                                  // print('Condition called item added====>');
+                                }
+                              }
+                              setState(() {});
+                            },
+                          );
+                        },
+                      ),
+                      //  [
+                      // Container(
+                      //   padding:
+                      //       EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      //   decoration: BoxDecoration(
+                      //       color: Constants.primaryColor,
+                      //       borderRadius: BorderRadius.circular(4)),
+                      //   child: Center(
+                      //       child: Text(
+                      //         'Diabeties',
+                      //         style: TextStyle(color: Constants.white),
+                      //       ),
+                      //     ),
+                      //   )
+                      // ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
@@ -485,8 +661,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [
-                        Color(0xFFDE0000),
                         Color(0xFF9A0E0E),
+                        Color(0xFFDE0000),
                       ],
                       stops: [0.1, 1],
                     ),
@@ -534,7 +710,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             AdaptiveText(
-              text: 'How Fast do you want to achieve this goal?',
+              text: 'What is your fitness goal?',
               minFontSize: 14,
               align: TextAlign.center,
               style: GoogleFonts.openSans(
@@ -547,92 +723,180 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             SizedBox()
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                ContainerTextField(
-                    width: 374,
-                    cursorColor: Constants.white,
-                    // controller: ,
-                    color: Color(0xff424242).withOpacity(0.4),
-                    hintText: 'Enter Full name'),
-                ContainerTextField(
-                  width: 374,
-                  // controller: ,
-                  cursorColor: Constants.white,
-                  hintText: 'Enter password',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-                ContainerTextField(
-                  width: 374,
-                  // controller: ,
-                  cursorColor: Constants.white,
-                  hintText: 'Mobile number',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-                ContainerTextField(
-                  width: 374,
-                  // controller: ,
-                  cursorColor: Constants.white,
-                  hintText: 'OTP',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ContainerTextField(
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                    cursorColor: Constants.white,
-                    color: Color(0xff424242).withOpacity(0.4),
-                    hintText: 'Email id'),
-                ContainerTextField(
-                  constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                  cursorColor: Constants.white,
-                  hintText: 'Confirm Password',
-                  color: Color(0xff424242).withOpacity(0.4),
-                ),
-                ContainerTextField(
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                    cursorColor: Constants.white,
-                    color: Color(0xff424242).withOpacity(0.4),
-                    hintText: 'Referal Code (Optional)'),
-                SizedBox(height: 12),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    // width: 374,
-                    constraints: BoxConstraints(minWidth: 200, maxWidth: 374),
-                    height: 58,
-                    margin: EdgeInsets.symmetric(horizontal: 30),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6.0),
-                        color: Constants.primaryColor),
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Center(
-                      child: AdaptiveText(
-                        text: 'Login',
-                        minFontSize: 14,
-                        align: TextAlign.center,
-                        style: GoogleFonts.openSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          color: Constants.white,
-                        ),
+        SizedBox(height: 24),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 32,
+          runSpacing: 2,
+          children: List<Widget>.generate(
+            fitnessGoal.length,
+            (int index) {
+              bool isSelected = (selectedFitnessGoal == fitnessGoal[index]);
+              return GestureDetector(
+                onTap: () {
+                  selectedFitnessGoal = fitnessGoal[index];
+                  setState(() {});
+                },
+                child: Container(
+                  // width: 374,
+                  constraints: BoxConstraints(minWidth: 150, maxWidth: 178),
+                  height: 58,
+                  // margin: EdgeInsets.symmetric(horizontal: 30),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6.0),
+                    color:
+                        isSelected ? Constants.primaryColor : Color(0xff424242),
+                    gradient: isSelected
+                        ? LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Color(0xFF9A0E0E),
+                              Color(0xFFDE0000),
+                            ],
+                            stops: [0.1, 1],
+                          )
+                        : null,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Center(
+                    child: AdaptiveText(
+                      text: fitnessGoal[index],
+                      minFontSize: 14,
+                      align: TextAlign.center,
+                      style: GoogleFonts.openSans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        color: Constants.white,
                       ),
                     ),
                   ),
                 ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 32),
+        AdaptiveText(
+          text: 'Diet Preference',
+          minFontSize: 14,
+          align: TextAlign.center,
+          style: GoogleFonts.openSans(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            fontStyle: FontStyle.normal,
+            color: Constants.white,
+          ),
+        ),
+        SizedBox(height: 24),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 32,
+          runSpacing: 2,
+          children: List<Widget>.generate(
+            diets.length,
+            (int index) {
+              bool isSelected = (selectedDiet == diets[index].title);
+              return GestureDetector(
+                onTap: () {
+                  selectedDiet = diets[index].title;
+                  setState(() {});
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      constraints: BoxConstraints(minWidth: 60, maxWidth: 83),
+                      height: 83,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.0),
+                      ),
+                      child: SvgPicture.asset(
+                        isSelected
+                            ? diets[index].coloredIcon
+                            : diets[index].icon,
+                        height: 83,
+                        width: 83,
+                      ),
+                    ),
+                    SizedBox(height: 12.0),
+                    AdaptiveText(
+                      text: diets[index].title,
+                      minFontSize: 10,
+                      align: TextAlign.center,
+                      style: GoogleFonts.openSans(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        color: Constants.white,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 48),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AdaptiveText(
+                  text: 'Smoke',
+                  minFontSize: 10,
+                  align: TextAlign.center,
+                  style: GoogleFonts.openSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                    color: Constants.white,
+                  ),
+                ),
+                Switch(
+                  value: smoke,
+                  activeColor: Constants.primaryColor,
+                  onChanged: (bool value) {
+                    setState(() {
+                      smoke = value;
+                    });
+                  },
+                ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AdaptiveText(
+                  text: 'Drink',
+                  minFontSize: 10,
+                  align: TextAlign.center,
+                  style: GoogleFonts.openSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.normal,
+                    color: Constants.white,
+                  ),
+                ),
+                Switch(
+                  value: drink,
+                  activeColor: Constants.primaryColor,
+                  onChanged: (bool value) {
+                    setState(() {
+                      drink = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(),
           ],
         ),
         Spacer(),
@@ -719,7 +983,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             ),
             AdaptiveText(
-              text: 'How Fast do you want to achieve this goal?',
+              text: 'To reach 0.25 kg per week you need to?',
               minFontSize: 14,
               align: TextAlign.center,
               style: GoogleFonts.openSans(
@@ -733,23 +997,62 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
         ),
         Container(
-          height: 200,
+          height: 240,
+          margin: EdgeInsets.only(top: 54),
           child: ListView.builder(
             itemCount: 4,
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 32),
-                    height: 172,
-                    width: 172,
-                    decoration: BoxDecoration(
-                      color: Color(0xff383838),
+              return Container(
+                margin: EdgeInsets.only(left: index == 0 ? 0 : 32),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 16),
+                      height: 172,
+                      width: 172,
+                      decoration: BoxDecoration(
+                        color: Color(0xff383838),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            onboarding4[index].icon,
+                            height: 90,
+                          ),
+                          AdaptiveText(
+                            text: onboarding4[index].title,
+                            minFontSize: 14,
+                            align: TextAlign.center,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
+                              color: Constants.white,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                ],
+                    AdaptiveText(
+                      text: onboarding4[index].subtitle,
+                      minFontSize: 14,
+                      align: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.normal,
+                        color: Constants.white,
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           ),

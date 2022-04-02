@@ -28,7 +28,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-     bool isDesktop() => Responsive.isDesktop(context);
+    bool isDesktop() => Responsive.isDesktop(context);
     bool isMobile() => Responsive.isMobile(context);
     bool isTablet() => Responsive.isTablet(context);
     return Container(
@@ -50,7 +50,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                             minFontSize: 14,
                             maxLines: 2,
                             style: GoogleFonts.montserrat(
-                              fontSize:isMobile()?36: 72,
+                              fontSize: isMobile() ? 36 : 64,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
                             ),
@@ -67,8 +67,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                               color: Colors.white.withOpacity(0.5),
                             ),
                           ),
-                          SizedBox(
-                            height: height * 0.06),
+                          SizedBox(height: height * 0.06),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -103,7 +102,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                         children: [
                           Container(
                             height: 421,
-                            margin: EdgeInsets.only(top:isDesktop()? 0:30),
+                            margin: EdgeInsets.only(top: isDesktop() ? 0 : 30),
                             decoration: BoxDecoration(
                                 color: Constants.white,
                                 borderRadius: BorderRadius.only(
@@ -112,7 +111,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
                         ],
                       ))
                 ])
-              ]),          
+              ]),
           const ThreeCards(),
           const WhyToChoose(),
           const MustTryListening(),

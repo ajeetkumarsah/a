@@ -30,7 +30,7 @@ class _LandingScreenState extends State<LandingScreen> {
   final MenuController _controller = Get.put(MenuController());
   late ScrollController _scrollController;
   List<Widget> pages = [
-    const SignupScreen(),
+    const FitnessCenter(),
     const NutritionScreen(),
     const GymScreen(),
     const PartnerScreen(),
