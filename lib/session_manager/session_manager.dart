@@ -7,34 +7,34 @@ class SessionManager {
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   static String KEY_ID = "id";
-  static String KEY_NAME = "name";
-  static String KEY_EMAIL = "email";
+
   static String KEY_AUTH_TOKEN = "auth_token";
   static String KEY_UID = "uid";
-  static String KEY_USER_EMAIL = "user_email";
+  static String EMAIL_ID = "email_id";
+  static String NAME = "name";
   static String KEY_USER_PASS = "user_pass";
+  static String IS_USER_LOGGED_IN = 'user_logged_in';
 
   static getInstance() {
-    // ignore: unnecessary_null_comparison
     if (_sessionManager == null) {
       _sessionManager = SessionManager._();
     }
+
     return _sessionManager;
   }
 
   saveProfile({
     required String id,
-    required String name,
-    required String emailId,
     required String authToken,
-    required String uid,
+    required String name,
+    required String email,
   }) async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString(KEY_ID, id);
-    prefs.setString(KEY_NAME, name);
-    prefs.setString(KEY_EMAIL, emailId);
+    prefs.setString(EMAIL_ID, email);
+    prefs.setString(NAME, name);
     prefs.setString(KEY_AUTH_TOKEN, 'Bearer $authToken');
-    prefs.setString(KEY_UID, uid);
+    prefs.setBool(IS_USER_LOGGED_IN, true);
   }
 
   getToken() async {
@@ -47,14 +47,20 @@ class SessionManager {
     return prefs.get(KEY_ID);
   }
 
-  getName() async {
+  getEmail() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.get(KEY_NAME);
+    return prefs.get(EMAIL_ID);
   }
 
-  getEmailId() async {
+  getName() async {
     final SharedPreferences prefs = await _prefs;
-    return prefs.get(KEY_EMAIL);
+    return prefs.get(NAME);
+  }
+
+  getIsUserLoggedIn() async {
+    final SharedPreferences prefs = await _prefs;
+
+    return prefs.getBool(IS_USER_LOGGED_IN);
   }
 
   getUuid() async {

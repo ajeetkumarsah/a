@@ -2,6 +2,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/screens/widgets/animated_pointer.dart';
 import 'package:wtf_web/utils/const.dart';
 
 class BottomBar extends StatefulWidget {
@@ -12,13 +13,30 @@ class BottomBar extends StatefulWidget {
   State<BottomBar> createState() => _BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
+class _BottomBarState extends State<BottomBar>
+    with SingleTickerProviderStateMixin {
+  Offset? pointerOffset;
+  AnimationController? pointerSizeController;
+  Animation<double>? pointerAnimation;
   @override
   void initState() {
+    pointerSizeController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+    pointerAnimation = CurvedAnimation(
+        curve: Curves.easeInOutCubic,
+        parent:
+            Tween<double>(begin: 0, end: 1).animate(pointerSizeController!));
     super.initState();
     bootstrapGridParameters(
       gutterSize: 30,
     );
+  }
+
+  void togglePointerSize(bool hovering) async {
+    if (hovering) {
+      pointerSizeController!.forward();
+    } else
+      pointerSizeController!.reverse();
   }
 
   @override
@@ -55,21 +73,24 @@ class _BottomBarState extends State<BottomBar> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    getHeading(
-                      isDesktop: isDesktop(),heading: 'Quick Links'),
-                    const SizedBox(
-                      height: 18
-                    ),
+                    getHeading(isDesktop: isDesktop(), heading: 'Quick Links'),
+                    const SizedBox(height: 18),
                     getItem(
-                      isDesktop: isDesktop(),item: 'About', onClick: () {}),
+                        isDesktop: isDesktop(), item: 'About', onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'FAQs', onClick: () {}),
+                        isDesktop: isDesktop(), item: 'FAQs', onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Term & Conditions', onClick: () {}),
+                        isDesktop: isDesktop(),
+                        item: 'Term & Conditions',
+                        onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Refund & Cancellation', onClick: () {}),
+                        isDesktop: isDesktop(),
+                        item: 'Refund & Cancellation',
+                        onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Contact', onClick: () {}),
+                        isDesktop: isDesktop(),
+                        item: 'Contact',
+                        onClick: () {}),
                   ],
                 ),
               ),
@@ -78,19 +99,24 @@ class _BottomBarState extends State<BottomBar> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    getHeading(
-                      isDesktop: isDesktop(),heading: 'Explore'),
+                    getHeading(isDesktop: isDesktop(), heading: 'Explore'),
                     const SizedBox(
                       height: 18,
                     ),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Arenas', onClick: () {}),
+                        isDesktop: isDesktop(), item: 'Arenas', onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Studios', onClick: () {}),
+                        isDesktop: isDesktop(),
+                        item: 'Studios',
+                        onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Nutrition', onClick: () {}),
+                        isDesktop: isDesktop(),
+                        item: 'Nutrition',
+                        onClick: () {}),
                     getItem(
-                      isDesktop: isDesktop(),item: 'Personal Trainer', onClick: () {}),
+                        isDesktop: isDesktop(),
+                        item: 'Personal Trainer',
+                        onClick: () {}),
                   ],
                 ),
               ),
@@ -99,30 +125,32 @@ class _BottomBarState extends State<BottomBar> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    getHeading(
-                      isDesktop: isDesktop(),heading: 'Contact'),
-                    const SizedBox(
-                      height: 18
-                    ),
+                    TextColumn(
+                        textColor: Constants.primaryColor,
+                        backgroundColor: Colors.black,
+                        onLinkHovered: togglePointerSize,
+                        child: getHeading(
+                            isDesktop: isDesktop(), heading: 'Contact')),
+                    const SizedBox(height: 18),
                     getItem(
-                      isDesktop: isDesktop(),
+                        isDesktop: isDesktop(),
                         item:
                             'Ro : S 1502, Amrapali Silicon city, Sector 76, Noida, Uttar Pradesh, India',
                         onClick: () {},
                         iconData: Icons.location_on),
                     getItem(
-                      isDesktop: isDesktop(),
+                        isDesktop: isDesktop(),
                         item:
                             'Ho : C-86 B, Ground Floor, Sector 8, Noida, Uttar Pradesh, India',
                         onClick: () {},
                         iconData: Icons.location_on),
                     getItem(
-                      isDesktop: isDesktop(),
+                        isDesktop: isDesktop(),
                         item: '+919090639005',
                         onClick: () {},
                         iconData: Icons.phone),
                     getItem(
-                      isDesktop: isDesktop(),
+                        isDesktop: isDesktop(),
                         item: 'support@wtfup.me',
                         onClick: () {},
                         iconData: Icons.mail),
@@ -136,14 +164,14 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 
-  Widget getHeading({required String heading,required bool isDesktop}) {
+  Widget getHeading({required String heading, required bool isDesktop}) {
     return ListTile(
       dense: true,
       title: Text(
         heading,
         style: GoogleFonts.montserrat(
           color: Colors.white,
-          fontSize:isDesktop? 20:18,
+          fontSize: isDesktop ? 20 : 18,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -151,7 +179,10 @@ class _BottomBarState extends State<BottomBar> {
   }
 
   Widget getItem(
-      {required String item, required Function onClick, IconData? iconData,required bool isDesktop}) {
+      {required String item,
+      required Function onClick,
+      IconData? iconData,
+      required bool isDesktop}) {
     return ListTile(
       onTap: onClick(),
       leading: iconData != null
@@ -164,7 +195,7 @@ class _BottomBarState extends State<BottomBar> {
       title: Text(item,
           style: TextStyle(
             color: Colors.white.withOpacity(0.7),
-            fontSize:isDesktop? 18:12,
+            fontSize: isDesktop ? 18 : 12,
           )),
     );
   }

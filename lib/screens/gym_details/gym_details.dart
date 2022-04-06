@@ -35,7 +35,7 @@ class _GymDetailsState extends State<GymDetails> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    // print('User Id================>' + args['id'].toString());
+    print('ID================>' + args['id'].toString());
 
     return BlocProvider(
       lazy: false,

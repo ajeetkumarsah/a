@@ -1,8 +1,7 @@
 import 'package:wtf_web/db/api_response.dart';
 import 'package:wtf_web/db/db_provider.dart';
-import 'package:wtf_web/model/gym_details.dart';
-import 'package:wtf_web/model/login.dart';
-import 'package:wtf_web/screens/gym_details/gym_details.dart';
+import 'package:wtf_web/model/add_membership.dart';
+import 'package:wtf_web/model/signup.dart';
 
 class Repository {
   final _dbProvider = DBProvider();
@@ -12,8 +11,16 @@ class Repository {
 
   Future<ApiResponse> getGymDetails({required String uid}) async =>
       _dbProvider.getGymDetails(id: uid);
-  Future<ApiResponse> postLogin({required LoginModel userDetails}) async =>
-      _dbProvider.logIn(userDetails);
+  Future<ApiResponse> sendOTP({required String mobile}) async =>
+      _dbProvider.sendOTP(mobile: mobile);
+  Future<ApiResponse> postLogin(
+          {required String firstData, required String authenticator}) async =>
+      _dbProvider.logIn(firstData: firstData, authenticator: authenticator);
+  Future<ApiResponse> postNewMember(
+          {required AddMembershipModel memberShip}) async =>
+      _dbProvider.addMembership(membershipModel: memberShip);
+  Future<ApiResponse> postSignup({required SignupModel userDetails}) async =>
+      _dbProvider.signUp(userDetails);
   Future<ApiResponse> getMembershipPlan({required String id}) async =>
       _dbProvider.getMembershipPlan(id: id);
   Future<ApiResponse> getOffers({required String id}) async =>

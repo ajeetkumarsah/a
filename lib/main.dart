@@ -7,6 +7,9 @@ import 'package:wtf_web/screens/home/home_screen.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/login/login.dart';
 import 'package:wtf_web/screens/onboarding/onboarding.dart';
+import 'package:wtf_web/screens/profile/profile.dart';
+import 'package:wtf_web/screens/signup/signup.dart';
+import 'package:wtf_web/screens/splash/splash_screen.dart';
 import 'package:wtf_web/screens/widgets/custom_loader.dart';
 import 'package:wtf_web/session_manager/session_manager.dart';
 
@@ -54,15 +57,16 @@ class MyApp extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.w600,
                   fontSize: 15))),
-      home: _sessionManager.getId() != null
-          ? const LandingScreen()
-          : CustomLoader(),
+      home: SplashScreen(),
+
       routes: {
         HomeScreen.routeName: (context) => const HomeScreen(),
         LandingScreen.routeName: (context) => const LandingScreen(),
         GymDetails.routeName: (context) => const GymDetails(),
         LoginScreen.routeName: (context) => const LoginScreen(),
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
+        ProfileScreen.routeName: (context) => const ProfileScreen(),
+        SignupScreen.routeName: (context) => const SignupScreen(),
       },
     );
   }

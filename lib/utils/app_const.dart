@@ -12,7 +12,9 @@ class AppConstants {
   static const String LOGIN_WITH_MAIL_URL = '/user/login';
   static const String LOGIN_WITH_OTP_URL = '/user/mobile/otp';
   static const String LOGIN_WITH_MOBILE_URL = '/user/mobile/login';
-  static String ADD_MEMBERSHIP(String id) => '/member/add';
+  static const String SIGNUP_URL = '/user/add';
+  static const String ADD_MEMBERSHIP = '/member/add';
+  static const String SEND_OTP_URL = '/user/mobile/otp';
 
   static const String BANNER_URI = '';
 }

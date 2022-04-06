@@ -1,14 +1,16 @@
-import 'dart:math';
-
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
-
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wtf_web/model/login.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/package/animated_button.dart';
+import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/login/bloc/login_bloc.dart';
+import 'package:wtf_web/screens/signup/signup.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/container_text_field.dart';
 import 'package:wtf_web/utils/const.dart';
@@ -24,6 +26,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _bloc = LoginBloc();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formkey = GlobalKey<FormState>();
+
+  final AnimatedButtonController animatedButtonController =
+      AnimatedButtonController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -31,18 +40,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
     bool isDesktop() => Responsive.isDesktop(context);
     bool isMobile() => Responsive.isMobile(context);
+    _launchURL() async {
+      const url =
+          'https://play.google.com/store/apps/details?id=com.wtf.member&hl=en_US&gl=US';
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+
     return BlocProvider(
-      create: (context) => LoginBloc()
-        ..add(
-          PostLogInEvent(
-            loginDetails: LoginModel(
-                email: 'kukreti12.naresh@gmail.com', password: 'password'),
-          ),
-        ),
+      create: (context) => LoginBloc(),
       child: BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) {},
+        bloc: _bloc,
+        listener: (context, state) async {
+          if (state is LoginStatusState) {
+            if (state.isSuccess) {
+              animatedButtonController.completed();
+
+              animatedButtonController.reset();
+              Navigator.pushReplacementNamed(context, LandingScreen.routeName,
+                  arguments: LandingPageArgumnet(userLoggedIn: true));
+            } else {
+              print('=========>Login Failed');
+            }
+          }
+        },
         builder: (context, state) {
-          // print('Calling Function===========>');
           return SingleChildScrollView(
             child: Column(
               children: [
@@ -119,68 +144,186 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            AdaptiveText(
-                                              text: 'Welcome Back',
-                                              minFontSize: 14,
-                                              align: TextAlign.center,
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 36,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle: FontStyle.normal,
-                                                color: Constants.white,
+                                    child: Form(
+                                      key: formkey,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              AdaptiveText(
+                                                text: 'Welcome Back',
+                                                minFontSize: 14,
+                                                align: TextAlign.center,
+                                                style: GoogleFonts.openSans(
+                                                  fontSize: 36,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontStyle: FontStyle.normal,
+                                                  color: Constants.white,
+                                                ),
                                               ),
-                                            ),
-                                            // Image.asset('assets/logo.png', height: 0),
-                                          ],
-                                        ),
+                                              // Image.asset('assets/logo.png', height: 0),
+                                            ],
+                                          ),
 
-                                        SizedBox(height: 30),
-                                        ContainerTextField(
+                                          SizedBox(height: 30),
+                                          ContainerTextField(
                                             cursorColor: Constants.white,
-                                            // controller: ,
+                                            controller: emailController,
                                             color: Color(0xff424242)
                                                 .withOpacity(0.4),
-                                            hintText: 'Enter Email'),
-                                        ContainerTextField(
-                                          // controller: ,
-                                          cursorColor: Constants.white,
-                                          hintText: 'Enter password',
-                                          color: Color(0xff424242)
-                                              .withOpacity(0.4),
-                                        ),
-                                        // ContainerTextField(
-                                        //   cursorColor: Constants.white,
-                                        //   hintText: 'OTP',
-                                        //   color: Color(0xff424242).withOpacity(0.4),
-                                        // ),
+                                            hintText: 'Enter Email',
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return "Enter a valid email id";
+                                              } else
+                                                return null;
+                                            },
+                                          ),
+                                          ContainerTextField(
+                                            controller: passwordController,
+                                            cursorColor: Constants.white,
+                                            obscureText: !_bloc.passwordVisible,
+                                            suffixIcon: IconButton(
+                                              icon: Icon(
+                                                _bloc.passwordVisible
+                                                    ? Icons.visibility
+                                                    : Icons.visibility_off,
+                                                color: Constants.white,
+                                                size: 18,
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _bloc.passwordVisible =
+                                                      !_bloc.passwordVisible;
+                                                });
+                                              },
+                                            ),
+                                            hintText: 'Enter password',
+                                            color: Color(0xff424242)
+                                                .withOpacity(0.4),
+                                            onChanged: (value) {
+                                              formkey.currentState!.validate();
+                                            },
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return "Enter a password";
+                                              } else
+                                                return null;
+                                            },
+                                          ),
 
-                                        SizedBox(height: 30),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Container(
+                                          SizedBox(height: 30),
+                                          AnimatedButton(
+                                            borderRadius: 8.0,
+                                            height: 58,
+                                            controller:
+                                                animatedButtonController,
+                                            color: Constants.primaryColor,
+                                            text: 'Log in',
+                                            loadingText: 'Loading',
+                                            loadedIcon: Icon(Icons.check,
+                                                color: Colors.white),
+                                            onPressed: () async {
+                                              if (formkey.currentState!
+                                                  .validate()) {
+                                                _bloc.add(
+                                                  OnLoginEvent(
+                                                      firstData:
+                                                          emailController.text,
+                                                      authenticator:
+                                                          passwordController
+                                                              .text),
+                                                );
+                                              } else {
+                                                animatedButtonController
+                                                    .reset();
+                                                Get.snackbar(
+                                                  "Wrong email or password!",
+                                                  "Please enter the correct email and password",
+                                                  colorText: Colors.white,
+                                                  snackPosition:
+                                                      SnackPosition.BOTTOM,
+                                                );
+                                              }
+                                            },
+                                          ),
+                                          // GestureDetector(
+                                          //   onTap: () {
+                                          //     print('Login call=======>');
+
+                                          //   if (formkey.currentState!
+                                          //       .validate()) {
+                                          //     _bloc.add(
+                                          //       OnLoginEvent(
+                                          //           firstData:
+                                          //               emailController.text,
+                                          //           authenticator:
+                                          //               passwordController
+                                          //                   .text),
+                                          //     );
+                                          //   } else {
+                                          //     Get.snackbar(
+                                          //       "Wrong email or password!",
+                                          //       "Please enter the correct email and password",
+                                          //       colorText: Colors.white,
+                                          //       snackPosition:
+                                          //           SnackPosition.BOTTOM,
+                                          //     );
+                                          //   }
+                                          // },
+                                          //   child: Container(
+                                          //     width: 420,
+                                          //     height: 58,
+                                          //     margin: EdgeInsets.symmetric(
+                                          //         horizontal: 32),
+                                          //     decoration: BoxDecoration(
+                                          //         borderRadius:
+                                          //             BorderRadius.circular(
+                                          //                 6.0),
+                                          //         color:
+                                          //             Constants.primaryColor),
+                                          //     padding: EdgeInsets.symmetric(
+                                          //         horizontal: 12.0),
+                                          //     child: Center(
+                                          //       child: AdaptiveText(
+                                          //         text: 'Login',
+                                          //         minFontSize: 14,
+                                          //         align: TextAlign.center,
+                                          //         style: GoogleFonts.openSans(
+                                          //           fontSize: 18,
+                                          //           fontWeight: FontWeight.w600,
+                                          //           fontStyle: FontStyle.normal,
+                                          //           color: Constants.white,
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          Container(
                                             width: 420,
                                             height: 58,
                                             margin: EdgeInsets.symmetric(
-                                                horizontal: 32),
+                                                vertical: 12.0, horizontal: 32),
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(6.0),
-                                                color: Constants.primaryColor),
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              border: Border.all(
+                                                  width: 2,
+                                                  color:
+                                                      Constants.primaryColor),
+                                              // color: Color(0xff424242).withOpacity(0.4),
+                                            ),
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 12.0),
                                             child: Center(
                                               child: AdaptiveText(
-                                                text: 'Login',
+                                                text: 'Login with Email',
                                                 minFontSize: 14,
                                                 align: TextAlign.center,
                                                 style: GoogleFonts.openSans(
@@ -192,73 +335,54 @@ class _LoginScreenState extends State<LoginScreen> {
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: 420,
-                                          height: 58,
-                                          margin: EdgeInsets.symmetric(
-                                              vertical: 12.0, horizontal: 32),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(6.0),
-                                            border: Border.all(
-                                                width: 2,
-                                                color: Constants.primaryColor),
-                                            // color: Color(0xff424242).withOpacity(0.4),
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 12.0),
-                                          child: Center(
-                                            child: AdaptiveText(
-                                              text: 'Login with Email',
-                                              minFontSize: 14,
-                                              align: TextAlign.center,
-                                              style: GoogleFonts.openSans(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600,
-                                                fontStyle: FontStyle.normal,
-                                                color: Constants.white,
-                                              ),
+
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      'Dont have an account?  ',
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: Constants.white,
+                                                  ),
+                                                ),
+                                                TextSpan(
+                                                  recognizer:
+                                                      new TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              SignupScreen
+                                                                  .routeName);
+                                                        },
+                                                  text: 'Signup',
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontStyle: FontStyle.normal,
+                                                    color:
+                                                        Constants.redIconColor,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ),
-
-                                        Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: 'Dont have an account?  ',
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontStyle: FontStyle.normal,
-                                                  color: Constants.white,
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: 'Signup',
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                  color: Constants.redIconColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // AdaptiveText(
-                                        //   text: 'Dont have an account? Signup',
-                                        //   minFontSize: 14,
-                                        //   align: TextAlign.center,
-                                        //   style: GoogleFonts.openSans(
-                                        //     fontSize: 14,
-                                        //     fontWeight: FontWeight.w400,
-                                        //     fontStyle: FontStyle.normal,
-                                        //     color: Constants.white,
-                                        //   ),
-                                        // ),
-                                      ],
+                                          // AdaptiveText(
+                                          //   text: 'Dont have an account? Signup',
+                                          //   minFontSize: 14,
+                                          //   align: TextAlign.center,
+                                          //   style: GoogleFonts.openSans(
+                                          //     fontSize: 14,
+                                          //     fontWeight: FontWeight.w400,
+                                          //     fontStyle: FontStyle.normal,
+                                          //     color: Constants.white,
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -271,8 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Container(
                                 // margin: EdgeInsets.only(top: isDesktop() ? 80 : 150),
                                 child: Stack(
-                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
+                                  alignment: Alignment.center,
                                   children: [
                                     Align(
                                       child: CustomPaint(
@@ -286,6 +409,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                       alignment: Alignment.center,
                                       child: Image.asset(
                                           'assets/login/banner.png'),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            _launchURL();
+                                          },
+                                          child: Image.asset(
+                                            'assets/login/googlePlay.png',
+                                            height: 50,
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () {},
+                                          child: Image.asset(
+                                            'assets/login/appStore.png',
+                                            height: 50,
+                                          ),
+                                        ),
+                                      ],
                                     )
                                   ],
                                 ),

@@ -1,10 +1,20 @@
-import 'package:animated_size_and_fade/animated_size_and_fade.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:wtf_web/model/signup.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/package/animated_button.dart';
+import 'package:wtf_web/screens/landing/landing_screen.dart';
+import 'package:wtf_web/screens/login/login.dart';
+import 'package:wtf_web/screens/login/login_signup.dart';
 import 'package:wtf_web/screens/onboarding/onboarding.dart';
+import 'package:wtf_web/screens/profile/profile.dart';
+import 'package:wtf_web/screens/signup/bloc/signup_bloc.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/widgets/container_text_field.dart';
@@ -22,8 +32,21 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  int index = 1;
+  int index = 0;
 
+  final fullNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final cPasswordController = TextEditingController();
+  final emailController = TextEditingController();
+  final mobileController = TextEditingController();
+  final otpController = TextEditingController();
+  final referalCodeController = TextEditingController();
+  final formkey = GlobalKey<FormState>();
+  final AnimatedButtonController animatedButtonController =
+      AnimatedButtonController();
+
+  bool isOTPSent = false;
+  final _bloc = SignupBloc();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -31,440 +54,761 @@ class _SignupScreenState extends State<SignupScreen> {
 
     bool isDesktop() => Responsive.isDesktop(context);
     bool isMobile() => Responsive.isMobile(context);
-    return index == 0
-        ? SingleChildScrollView(
-            child: CustomAnimatedSwitcher(
-              child: Column(
-                children: [
-                  BootstrapContainer(
-                    fluid: true,
-                    decoration: const BoxDecoration(color: Constants.black),
-                    padding: EdgeInsets.all(0),
+
+    return BlocProvider(
+      create: (context) => SignupBloc(),
+      child: BlocConsumer<SignupBloc, SignupState>(
+        bloc: _bloc,
+        listener: (context, state) {
+          if (state is FetchOtpState) {
+            animatedButtonController.reset();
+            _bloc.otp = state.otp;
+
+            setState(() {
+              isOTPSent = true;
+            });
+            print('got otp=======>');
+
+            if (state.otp == '1234') {
+              print('Matched otp=======>');
+            }
+          }
+          if (state is SignupSuccessState) {
+            print('=========>Signup Success');
+            if (state.isSuccess) {
+              animatedButtonController.completed();
+              animatedButtonController.reset();
+              Navigator.pushReplacementNamed(
+                  context, OnboardingScreen.routeName);
+            } else {
+              animatedButtonController.reset();
+              print('=========>signup Failed');
+            }
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Constants.black,
+            body: SingleChildScrollView(
+              child: CustomAnimatedSwitcher(
+                child: Form(
+                  key: formkey,
+                  child: Column(
                     children: [
-                      Container(
-                        height: height,
-                        decoration: BoxDecoration(
-                          color: Constants.black,
-                          image: DecorationImage(
-                            image: AssetImage('assets/signup/banner.png'),
-                            fit: BoxFit.fitWidth,
-                          ),
-                        ),
-                        alignment: Alignment.center,
-                        // padding: EdgeInsets.only(top: isDesktop() ? 80 : 150),
-                        child: Container(
-                          height: height,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color(0xff000000),
-                                Color(0xff000000).withOpacity(0.61),
-                                Color(0xff000000)
-                              ],
-                              // stops: [0.1, 1, 0.1],
+                      BootstrapContainer(
+                        fluid: true,
+                        decoration: const BoxDecoration(color: Constants.black),
+                        padding: EdgeInsets.all(0),
+                        children: [
+                          Container(
+                            height: height,
+                            decoration: BoxDecoration(
+                              color: Constants.black,
+                              image: DecorationImage(
+                                image: AssetImage('assets/signup/banner.png'),
+                                fit: BoxFit.fitWidth,
+                              ),
                             ),
-                          ),
-                          child: BootstrapRow(
-                            children: <BootstrapCol>[
-                              BootstrapCol(
-                                sizes: 'col-12 col-md-12 col-sm-12',
-                                child: Padding(
-                                  padding: EdgeInsets.only(top: 90),
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Positioned(
-                                        top: 100,
-                                        right: 284,
-                                        child: CustomPaint(
-                                          foregroundPainter: CircleBlurPainter(
-                                              circleWidth: 104,
-                                              blurSigma: 1.0,
-                                              color: Constants.primaryColor),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 80,
-                                        right: 204,
-                                        child: CustomPaint(
-                                          foregroundPainter: CircleBlurPainter(
-                                              circleWidth: 40,
-                                              blurSigma: 2.0,
-                                              color: Constants.primaryColor),
-                                        ),
-                                      ),
-                                      Align(
+                            alignment: Alignment.center,
+                            // padding: EdgeInsets.only(top: isDesktop() ? 80 : 150),
+                            child: Container(
+                              height: height,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color(0xff000000),
+                                    Color(0xff000000).withOpacity(0.61),
+                                    Color(0xff000000)
+                                  ],
+                                  // stops: [0.1, 1, 0.1],
+                                ),
+                              ),
+                              child: BootstrapRow(
+                                children: <BootstrapCol>[
+                                  BootstrapCol(
+                                    sizes: 'col-12 col-md-12 col-sm-12',
+                                    child: Padding(
+                                      padding: EdgeInsets.only(top: 90),
+                                      child: Stack(
                                         alignment: Alignment.center,
-                                        child: Container(
-                                          constraints: BoxConstraints(
-                                              maxHeight: 538,
-                                              minHeight: 400,
-                                              maxWidth: 874,
-                                              minWidth: 600),
-                                          margin: EdgeInsets.only(
-                                              top: isDesktop() ? 90 : 30),
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 34),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Color(0xFFffffff)
-                                                    .withOpacity(0.1),
-                                                Color(0xFFFFFFFF)
-                                                    .withOpacity(0.05),
-                                              ],
-                                              stops: [0.1, 1],
+                                        children: [
+                                          Positioned(
+                                            top: 100,
+                                            right: 284,
+                                            child: CustomPaint(
+                                              foregroundPainter:
+                                                  CircleBlurPainter(
+                                                      circleWidth: 104,
+                                                      blurSigma: 1.0,
+                                                      color: Constants
+                                                          .primaryColor),
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Row(
+                                          Positioned(
+                                            top: 80,
+                                            right: 204,
+                                            child: CustomPaint(
+                                              foregroundPainter:
+                                                  CircleBlurPainter(
+                                                      circleWidth: 40,
+                                                      blurSigma: 2.0,
+                                                      color: Constants
+                                                          .primaryColor),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: Container(
+                                              constraints: BoxConstraints(
+                                                  maxHeight: 538,
+                                                  minHeight: 400,
+                                                  maxWidth: 874,
+                                                  minWidth: 600),
+                                              margin: EdgeInsets.only(
+                                                  top: isDesktop() ? 90 : 30),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 34),
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [
+                                                    Color(0xFFffffff)
+                                                        .withOpacity(0.1),
+                                                    Color(0xFFFFFFFF)
+                                                        .withOpacity(0.05),
+                                                  ],
+                                                  stops: [0.1, 1],
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                              ),
+                                              child: Column(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
-                                                  Column(
+                                                  Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    36.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            AdaptiveText(
-                                                              text: 'Signup',
-                                                              minFontSize: 14,
-                                                              align: TextAlign
-                                                                  .center,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                fontSize: 36,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        36.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AdaptiveText(
+                                                                  text:
+                                                                      'Signup',
+                                                                  minFontSize:
+                                                                      14,
+                                                                  align: TextAlign
+                                                                      .center,
+                                                                  style: GoogleFonts
+                                                                      .openSans(
+                                                                    fontSize:
+                                                                        36,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                    color: Constants
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          SizedBox(height: 20),
+                                                          ContainerTextField(
+                                                            width: 374,
+                                                            cursorColor:
+                                                                Constants.white,
+                                                            controller:
+                                                                fullNameController,
+                                                            color: Color(
+                                                                    0xff424242)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                            hintText:
+                                                                'Enter Full name',
+                                                            validator: (value) {
+                                                              if (value!
+                                                                  .isEmpty) {
+                                                                return "Enter your full name";
+                                                              } else
+                                                                return null;
+                                                            },
+                                                          ),
+                                                          ContainerTextField(
+                                                            width: 374,
+                                                            obscureText: !_bloc
+                                                                .passwordVisible,
+                                                            suffixIcon:
+                                                                IconButton(
+                                                              icon: Icon(
+                                                                _bloc.passwordVisible
+                                                                    ? Icons
+                                                                        .visibility
+                                                                    : Icons
+                                                                        .visibility_off,
                                                                 color: Constants
                                                                     .white,
+                                                                size: 18,
                                                               ),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  _bloc.passwordVisible =
+                                                                      !_bloc
+                                                                          .passwordVisible;
+                                                                });
+                                                              },
                                                             ),
-                                                          ],
-                                                        ),
+                                                            controller:
+                                                                passwordController,
+                                                            cursorColor:
+                                                                Constants.white,
+                                                            hintText:
+                                                                'Enter password',
+                                                            color: Color(
+                                                                    0xff424242)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                            validator: (value) {
+                                                              if (value!
+                                                                  .isEmpty) {
+                                                                return "Enter a password";
+                                                              } else
+                                                                return null;
+                                                            },
+                                                          ),
+                                                          ContainerTextField(
+                                                            width: 374,
+                                                            controller:
+                                                                mobileController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .phone,
+                                                            cursorColor:
+                                                                Constants.white,
+                                                            hintText:
+                                                                'Mobile number',
+                                                            color: Color(
+                                                                    0xff424242)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                            validator: (value) {
+                                                              if (value!
+                                                                  .isEmpty) {
+                                                                return "Enter your mobile number";
+                                                              } else
+                                                                return null;
+                                                            },
+                                                          ),
+                                                          BlocBuilder<
+                                                              SignupBloc,
+                                                              SignupState>(
+                                                            bloc: _bloc,
+                                                            builder: (context,
+                                                                state) {
+                                                              if (state
+                                                                  is FetchOtpState) {
+                                                                return ContainerTextField(
+                                                                  width: 374,
+                                                                  controller:
+                                                                      otpController,
+                                                                  cursorColor:
+                                                                      Constants
+                                                                          .white,
+                                                                  hintText:
+                                                                      'OTP',
+                                                                  color: Color(
+                                                                          0xff424242)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  validator:
+                                                                      (value) {
+                                                                    if (value!
+                                                                        .isEmpty) {
+                                                                      return "Enter OTP";
+                                                                    } else if (value !=
+                                                                        state
+                                                                            .otp) {
+                                                                      return 'Wrong OTP';
+                                                                    } else
+                                                                      return null;
+                                                                  },
+                                                                );
+                                                              }
+                                                              if (state
+                                                                  is PostSignupEvent) {
+                                                                return ContainerTextField(
+                                                                  width: 374,
+                                                                  controller:
+                                                                      otpController,
+                                                                  cursorColor:
+                                                                      Constants
+                                                                          .white,
+                                                                  hintText:
+                                                                      'OTP',
+                                                                  color: Color(
+                                                                          0xff424242)
+                                                                      .withOpacity(
+                                                                          0.4),
+                                                                  validator:
+                                                                      (value) {
+                                                                    if (value!
+                                                                        .isEmpty) {
+                                                                      return "Enter OTP";
+                                                                    } else if (value !=
+                                                                        _bloc
+                                                                            .otp) {
+                                                                      return 'Wrong OTP';
+                                                                    } else
+                                                                      return null;
+                                                                  },
+                                                                );
+                                                              }
+                                                              return SizedBox(
+                                                                  height: 50);
+                                                            },
+                                                          ),
+                                                        ],
                                                       ),
-                                                      SizedBox(height: 20),
-                                                      ContainerTextField(
-                                                          width: 374,
-                                                          cursorColor:
-                                                              Constants.white,
-                                                          // controller: ,
-                                                          color: Color(
-                                                                  0xff424242)
-                                                              .withOpacity(0.4),
-                                                          hintText:
-                                                              'Enter Full name'),
-                                                      ContainerTextField(
-                                                        width: 374,
-                                                        // controller: ,
-                                                        cursorColor:
-                                                            Constants.white,
-                                                        hintText:
-                                                            'Enter password',
-                                                        color: Color(0xff424242)
-                                                            .withOpacity(0.4),
-                                                      ),
-                                                      ContainerTextField(
-                                                        width: 374,
-                                                        // controller: ,
-                                                        cursorColor:
-                                                            Constants.white,
-                                                        hintText:
-                                                            'Mobile number',
-                                                        color: Color(0xff424242)
-                                                            .withOpacity(0.4),
-                                                      ),
-                                                      ContainerTextField(
-                                                        width: 374,
-                                                        // controller: ,
-                                                        cursorColor:
-                                                            Constants.white,
-                                                        hintText: 'OTP',
-                                                        color: Color(0xff424242)
-                                                            .withOpacity(0.4),
+                                                      Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        36.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                AdaptiveText(
+                                                                  text: '',
+                                                                  minFontSize:
+                                                                      14,
+                                                                  align: TextAlign
+                                                                      .center,
+                                                                  style: GoogleFonts
+                                                                      .openSans(
+                                                                    fontSize:
+                                                                        36,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontStyle:
+                                                                        FontStyle
+                                                                            .normal,
+                                                                    color: Constants
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          ContainerTextField(
+                                                            constraints:
+                                                                BoxConstraints(
+                                                                    minWidth:
+                                                                        200,
+                                                                    maxWidth:
+                                                                        374),
+                                                            cursorColor:
+                                                                Constants.white,
+                                                            color: Color(
+                                                                    0xff424242)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                            controller:
+                                                                emailController,
+                                                            hintText:
+                                                                'Email id',
+                                                            validator: (value) {
+                                                              if (value!
+                                                                  .isEmpty) {
+                                                                return "Enter valid email id";
+                                                              } else
+                                                                return null;
+                                                            },
+                                                          ),
+                                                          ContainerTextField(
+                                                            constraints:
+                                                                BoxConstraints(
+                                                                    minWidth:
+                                                                        200,
+                                                                    maxWidth:
+                                                                        374),
+                                                            cursorColor:
+                                                                Constants.white,
+                                                            controller:
+                                                                cPasswordController,
+                                                            obscureText: !_bloc
+                                                                .confirmpasswordVisible,
+                                                            suffixIcon:
+                                                                IconButton(
+                                                              icon: Icon(
+                                                                _bloc.confirmpasswordVisible
+                                                                    ? Icons
+                                                                        .visibility
+                                                                    : Icons
+                                                                        .visibility_off,
+                                                                color: Constants
+                                                                    .white,
+                                                                size: 18,
+                                                              ),
+                                                              onPressed: () {
+                                                                setState(() {
+                                                                  _bloc.confirmpasswordVisible =
+                                                                      !_bloc
+                                                                          .confirmpasswordVisible;
+                                                                });
+                                                              },
+                                                            ),
+                                                            hintText:
+                                                                'Confirm Password',
+                                                            color: Color(
+                                                                    0xff424242)
+                                                                .withOpacity(
+                                                                    0.4),
+                                                            validator: (value) {
+                                                              if (value!
+                                                                  .isEmpty) {
+                                                                return "Enter your full name";
+                                                              } else if (passwordController
+                                                                      .text !=
+                                                                  value) {
+                                                                return 'Passwords do not match';
+                                                              } else
+                                                                return null;
+                                                            },
+                                                          ),
+                                                          ContainerTextField(
+                                                              constraints:
+                                                                  BoxConstraints(
+                                                                      minWidth:
+                                                                          200,
+                                                                      maxWidth:
+                                                                          374),
+                                                              cursorColor:
+                                                                  Constants
+                                                                      .white,
+                                                              color: Color(
+                                                                      0xff424242)
+                                                                  .withOpacity(
+                                                                      0.4),
+                                                              controller:
+                                                                  referalCodeController,
+                                                              hintText:
+                                                                  'Referal Code (Optional)'),
+                                                          // SizedBox(height: 12),
+                                                          AnimatedButton(
+                                                            borderRadius: 8.0,
+                                                            height: 58,
+                                                            controller:
+                                                                animatedButtonController,
+                                                            color: Constants
+                                                                .primaryColor,
+                                                            text: isOTPSent
+                                                                ? 'Sign Up'
+                                                                : 'Send OTP',
+                                                            loadingText:
+                                                                'Loading',
+                                                            loadedIcon: Icon(
+                                                                Icons.check,
+                                                                color: Colors
+                                                                    .white),
+                                                            onPressed:
+                                                                () async {
+                                                              if (!isOTPSent) {
+                                                                _bloc.add(SendOTPEvent(
+                                                                    mobile: mobileController
+                                                                        .text));
+                                                                isOTPSent ==
+                                                                    true;
+
+                                                                setState(() {});
+                                                              } else {
+                                                                if (formkey
+                                                                    .currentState!
+                                                                    .validate()) {
+                                                                  _bloc.add(
+                                                                    PostSignupEvent(
+                                                                      signupDetails:
+                                                                          SignupModel(
+                                                                        name: fullNameController
+                                                                            .text,
+                                                                        email: emailController
+                                                                            .text,
+                                                                        mobile:
+                                                                            mobileController.text,
+                                                                        password:
+                                                                            passwordController.text,
+                                                                        accountType:
+                                                                            'member',
+                                                                        status:
+                                                                            'active',
+                                                                        referralCode:
+                                                                            '',
+                                                                        deviceDetails: [],
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                } else {
+                                                                  animatedButtonController
+                                                                      .reset();
+                                                                  Get.snackbar(
+                                                                    "Enter all the fields",
+                                                                    "Please enter the mendatories details",
+                                                                    colorText:
+                                                                        Colors
+                                                                            .white,
+                                                                    snackPosition:
+                                                                        SnackPosition
+                                                                            .BOTTOM,
+                                                                  );
+                                                                }
+                                                              }
+                                                            },
+                                                          ),
+                                                          // GestureDetector(
+                                                          //   onTap: () {
+                                                          //     // setState(() {
+                                                          //     //   index = 1;
+                                                          //     // });
+                                                          //     if (formkey
+                                                          //         .currentState!
+                                                          //         .validate()) {
+                                                          //       _bloc.add(
+                                                          //         PostSignupEvent(
+                                                          //           signupDetails:
+                                                          //               SignupModel(
+                                                          //             name: fullNameController
+                                                          //                 .text,
+                                                          //             email: emailController
+                                                          //                 .text,
+                                                          //             mobile: mobileController
+                                                          //                 .text,
+                                                          //             password:
+                                                          //                 passwordController
+                                                          //                     .text,
+                                                          //             accountType:
+                                                          //                 'member',
+                                                          //             status:
+                                                          //                 'active',
+                                                          //             referralCode:
+                                                          //                 '',
+                                                          //             deviceDetails: [],
+                                                          //           ),
+                                                          //         ),
+                                                          //       );
+                                                          //     }
+                                                          //   },
+                                                          //   child: Container(
+                                                          //     // width: 374,
+                                                          //     constraints:
+                                                          //         BoxConstraints(
+                                                          //             minWidth:
+                                                          //                 200,
+                                                          //             maxWidth:
+                                                          //                 374),
+                                                          //     height: 58,
+                                                          //     margin: EdgeInsets
+                                                          //         .symmetric(
+                                                          //             horizontal:
+                                                          //                 30),
+                                                          //     decoration: BoxDecoration(
+                                                          //         borderRadius:
+                                                          //             BorderRadius
+                                                          //                 .circular(
+                                                          //                     6.0),
+                                                          //         color: Constants
+                                                          //             .primaryColor),
+                                                          //     padding: EdgeInsets
+                                                          //         .symmetric(
+                                                          //             horizontal:
+                                                          //                 12.0),
+                                                          //     child: Center(
+                                                          //       child:
+                                                          //           AdaptiveText(
+                                                          //         text:
+                                                          //             'Signup',
+                                                          //         minFontSize:
+                                                          //             14,
+                                                          //         align: TextAlign
+                                                          //             .center,
+                                                          //         style: GoogleFonts
+                                                          //             .openSans(
+                                                          //           fontSize:
+                                                          //               18,
+                                                          //           fontWeight:
+                                                          //               FontWeight
+                                                          //                   .w600,
+                                                          //           fontStyle:
+                                                          //               FontStyle
+                                                          //                   .normal,
+                                                          //           color: Constants
+                                                          //               .white,
+                                                          //         ),
+                                                          //       ),
+                                                          //     ),
+                                                          //   ),
+                                                          // ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal:
-                                                                    36.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            AdaptiveText(
-                                                              text: '',
-                                                              minFontSize: 14,
-                                                              align: TextAlign
-                                                                  .center,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                fontSize: 36,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                color: Constants
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      ContainerTextField(
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  minWidth: 200,
-                                                                  maxWidth:
-                                                                      374),
-                                                          cursorColor:
-                                                              Constants.white,
-                                                          color: Color(
-                                                                  0xff424242)
-                                                              .withOpacity(0.4),
-                                                          hintText: 'Email id'),
-                                                      ContainerTextField(
-                                                        constraints:
-                                                            BoxConstraints(
-                                                                minWidth: 200,
-                                                                maxWidth: 374),
-                                                        cursorColor:
-                                                            Constants.white,
-                                                        hintText:
-                                                            'Confirm Password',
-                                                        color: Color(0xff424242)
-                                                            .withOpacity(0.4),
-                                                      ),
-                                                      ContainerTextField(
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  minWidth: 200,
-                                                                  maxWidth:
-                                                                      374),
-                                                          cursorColor:
-                                                              Constants.white,
-                                                          color: Color(
-                                                                  0xff424242)
-                                                              .withOpacity(0.4),
-                                                          hintText:
-                                                              'Referal Code (Optional)'),
-                                                      SizedBox(height: 12),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            index = 1;
-                                                          });
-                                                        },
-                                                        child: Container(
-                                                          // width: 374,
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  minWidth: 200,
-                                                                  maxWidth:
-                                                                      374),
-                                                          height: 58,
-                                                          margin: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      30),
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          6.0),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 42.0),
+                                                    child: Text.rich(
+                                                      TextSpan(
+                                                        children: [
+                                                          TextSpan(
+                                                            text:
+                                                                'Already have an account?  ',
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
                                                               color: Constants
-                                                                  .primaryColor),
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      12.0),
-                                                          child: Center(
-                                                            child: AdaptiveText(
-                                                              text: 'Signup',
-                                                              minFontSize: 14,
-                                                              align: TextAlign
-                                                                  .center,
-                                                              style: GoogleFonts
-                                                                  .openSans(
-                                                                fontSize: 18,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                color: Constants
-                                                                    .white,
-                                                              ),
+                                                                  .white,
                                                             ),
                                                           ),
-                                                        ),
+                                                          TextSpan(
+                                                            recognizer:
+                                                                new TapGestureRecognizer()
+                                                                  ..onTap = () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                            text: 'Login',
+                                                            style: GoogleFonts
+                                                                .openSans(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              color: Constants
+                                                                  .redIconColor,
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 42.0),
-                                                child: Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text:
-                                                            'Already have an account?  ',
-                                                        style: GoogleFonts
-                                                            .openSans(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          color:
-                                                              Constants.white,
-                                                        ),
-                                                      ),
-                                                      TextSpan(
-                                                        text: 'Login',
-                                                        style: GoogleFonts
-                                                            .openSans(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          color: Constants
-                                                              .redIconColor,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
+                                          Positioned(
+                                            bottom: 10,
+                                            left: 288,
+                                            child: CustomPaint(
+                                              foregroundPainter:
+                                                  CircleBlurPainter(
+                                                      circleWidth: 86,
+                                                      blurSigma: 1.0,
+                                                      color: Constants
+                                                          .primaryColor),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            bottom: 0,
+                                            left: 350,
+                                            child: CustomPaint(
+                                              foregroundPainter:
+                                                  CircleBlurPainter(
+                                                      circleWidth: 20,
+                                                      blurSigma: 1.0,
+                                                      color: Constants
+                                                          .primaryColor),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Positioned(
-                                        bottom: 10,
-                                        left: 288,
-                                        child: CustomPaint(
-                                          foregroundPainter: CircleBlurPainter(
-                                              circleWidth: 86,
-                                              blurSigma: 1.0,
-                                              color: Constants.primaryColor),
-                                        ),
-                                      ),
-                                      Positioned(
-                                        bottom: 0,
-                                        left: 350,
-                                        child: CustomPaint(
-                                          foregroundPainter: CircleBlurPainter(
-                                              circleWidth: 20,
-                                              blurSigma: 1.0,
-                                              color: Constants.primaryColor),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                  // if (!isMobile())
+                                  //   BootstrapCol(
+                                  //     sizes: 'col-12 col-md-6 col-sm-12',
+                                  //     child: Container(
+                                  //       // margin: EdgeInsets.only(top: isDesktop() ? 80 : 150),
+                                  //       child: Stack(
+                                  //         // mainAxisAlignment: MainAxisAlignment.start,
+                                  //         // crossAxisAlignment: CrossAxisAlignment.start,
+                                  //         children: [
+                                  //           Align(
+                                  //             child: CustomPaint(
+                                  //               foregroundPainter: CircleBlurPainter(
+                                  //                   circleWidth: 30,
+                                  //                   blurSigma: 3.0,
+                                  //                   color: Constants.primaryColor),
+                                  //             ),
+                                  //           ),
+                                  //           Align(
+                                  //             alignment: Alignment.center,
+                                  //             child: Image.asset('assets/login/banner.png'),
+                                  //           )
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                ],
                               ),
-                              // if (!isMobile())
-                              //   BootstrapCol(
-                              //     sizes: 'col-12 col-md-6 col-sm-12',
-                              //     child: Container(
-                              //       // margin: EdgeInsets.only(top: isDesktop() ? 80 : 150),
-                              //       child: Stack(
-                              //         // mainAxisAlignment: MainAxisAlignment.start,
-                              //         // crossAxisAlignment: CrossAxisAlignment.start,
-                              //         children: [
-                              //           Align(
-                              //             child: CustomPaint(
-                              //               foregroundPainter: CircleBlurPainter(
-                              //                   circleWidth: 30,
-                              //                   blurSigma: 3.0,
-                              //                   color: Constants.primaryColor),
-                              //             ),
-                              //           ),
-                              //           Align(
-                              //             alignment: Alignment.center,
-                              //             child: Image.asset('assets/login/banner.png'),
-                              //           )
-                              //         ],
-                              //       ),
-                              //     ),
-                              //   ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
+                      const BottomBar()
                     ],
                   ),
-                  const BottomBar()
-                ],
+                ),
               ),
             ),
-          )
-        : OnboardingScreen();
-    // return BlocProvider(
-    //   create: (context) => LoginBloc()
-    //     ..add(
-    //       PostLogInEvent(
-    //         loginDetails: LoginModel(
-    //             email: 'kukreti12.naresh@gmail.com', password: 'password'),
-    //       ),
-    //     ),
-    //   child: BlocConsumer<SignupBloc, SignupState>(
-    //     listener: (context, state) {},
-    //     builder: (context, state) {
-    //       // print('Calling Function===========>');
-
-    //     },
-    //   ),
-    // );
+          );
+        },
+      ),
+    );
   }
 }
 

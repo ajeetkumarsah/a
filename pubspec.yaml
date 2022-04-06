@@ -36,6 +36,10 @@ dependencies:
   video_player: ^2.2.4
   animated_size_and_fade: ^3.0.0
   smooth_page_indicator: ^1.0.0
+  hover_effect: ^0.6.0
+  equatable: ^2.0.3
+  url_launcher: ^6.0.20
+  cupertino_tabbar: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -60,4 +64,5 @@ flutter:
     - assets/lottie/
     - assets/live_classes/
     - assets/signup/
+    - assets/thanks/
     - assets/onboarding/

@@ -6,16 +6,24 @@ import 'package:wtf_web/flavor/flavor_banner.dart';
 import 'package:wtf_web/screens/about_us/about_us.dart';
 import 'package:wtf_web/screens/fitness/fitness_screen.dart';
 import 'package:wtf_web/screens/gyms/gyms.dart';
+import 'package:wtf_web/screens/home/home_screen.dart';
 import 'package:wtf_web/screens/landing/components/header.dart';
-import 'package:wtf_web/screens/live_classes/live_classes.dart';
 import 'package:wtf_web/screens/login/login.dart';
-import 'package:wtf_web/screens/membership/membership.dart';
+import 'package:wtf_web/screens/login/login_signup.dart';
+import 'package:wtf_web/screens/order_summary/order_summary.dart';
+import 'package:wtf_web/screens/profile/profile.dart';
 import 'package:wtf_web/screens/signup/signup.dart';
-import 'package:wtf_web/screens/thanks/thanks.dart';
+import 'package:wtf_web/screens/widgets/animated_pointer.dart';
+import 'package:wtf_web/session_manager/session_manager.dart';
 import 'package:wtf_web/utils/const.dart';
-import '../home/home_screen.dart';
 import '../nutrition/nutrition.dart';
 import '../partner/partner.dart';
+
+class LandingPageArgumnet {
+  final bool userLoggedIn;
+
+  LandingPageArgumnet({required this.userLoggedIn});
+}
 
 class LandingScreen extends StatefulWidget {
   static String routeName = '/landingScreen';
@@ -26,23 +34,23 @@ class LandingScreen extends StatefulWidget {
   _LandingScreenState createState() => _LandingScreenState();
 }
 
-class _LandingScreenState extends State<LandingScreen> {
+class _LandingScreenState extends State<LandingScreen>
+    with SingleTickerProviderStateMixin {
   final MenuController _controller = Get.put(MenuController());
   late ScrollController _scrollController;
-  List<Widget> pages = [
-    const FitnessCenter(),
-    const NutritionScreen(),
-    const GymScreen(),
-    const PartnerScreen(),
-    // const Membership(),
-    const AboutUsScreen(),
-    // const MembershipDetails(),
-    // const StudiosScreen(),
-  ];
+  SessionManager sessionManager = SessionManager.getInstance();
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    pointerSizeController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+    pointerAnimation = CurvedAnimation(
+        curve: Curves.easeInOutCubic,
+        parent:
+            Tween<double>(begin: 0, end: 1).animate(pointerSizeController!));
+
     super.initState();
   }
 
@@ -59,8 +67,34 @@ class _LandingScreenState extends State<LandingScreen> {
     });
   }
 
+  Offset? pointerOffset;
+  AnimationController? pointerSizeController;
+  Animation<double>? pointerAnimation;
+
+  void togglePointerSize(bool hovering) async {
+    if (hovering) {
+      pointerSizeController!.forward();
+    } else
+      pointerSizeController!.reverse();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final LandingPageArgumnet args =
+        ModalRoute.of(context)!.settings.arguments as LandingPageArgumnet;
+    List<Widget> pages = [
+      const FitnessCenter(),
+      const NutritionScreen(),
+      const GymScreen(),
+      const PartnerScreen(),
+      // const Membership(),
+      const AboutUsScreen(),
+      // const MembershipDetails(),
+      // const StudiosScreen(),
+      args.userLoggedIn != null && args.userLoggedIn == true
+          ? const ProfileScreen()
+          : LoginSignupSwitcher(),
+    ];
     return FlavorBanner(
       child: Scaffold(
         key: _controller.scaffoldkey,
@@ -76,7 +110,7 @@ class _LandingScreenState extends State<LandingScreen> {
                 controller: _scrollController,
                 child: StreamBuilder<int?>(
                   stream: viewController.getBaseListStream,
-                  initialData: 0,
+                  initialData: args.userLoggedIn ? pages.length - 1 : 0,
                   builder: (context, snapshot) {
                     return pages[snapshot.data!];
                   },
@@ -85,7 +119,23 @@ class _LandingScreenState extends State<LandingScreen> {
             ),
             Header(
               scroll: scroll,
+              isLoggedIn: args.userLoggedIn,
             ),
+            if (pointerOffset != null) ...[
+              AnimatedBuilder(
+                  animation: pointerSizeController!,
+                  builder: (context, snapshot) {
+                    return AnimatedPointer(
+                      pointerOffset: pointerOffset!,
+                      radius: 45 + 100 * pointerAnimation!.value,
+                    );
+                  }),
+              AnimatedPointer(
+                pointerOffset: pointerOffset!,
+                movementDuration: const Duration(milliseconds: 200),
+                radius: 10,
+              )
+            ]
           ],
         ),
       ),

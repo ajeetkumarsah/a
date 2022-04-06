@@ -4,13 +4,17 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:wtf_web/model/add_membership.dart';
 import 'package:wtf_web/model/diet.dart';
 import 'package:wtf_web/model/onboarding4.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/screens/landing/landing_screen.dart';
+import 'package:wtf_web/screens/onboarding/bloc/onboarding_bloc.dart';
 import 'package:wtf_web/screens/package/flutter_fluid_slider.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
@@ -99,6 +103,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     'None of the above',
   ];
   List<String> selectedItems = [];
+  final _bloc = OnboardingBloc();
   String userAge = 'Select your age',
       userBodyType = 'Select your body Type',
       userHeight = 'Height in cm',
@@ -117,19 +122,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       onBoarding4(),
     ];
 
-    return Container(
-      height: height,
-      // width: double.infinity,
-      child: PageView.builder(
-        controller: controller,
-        // pageSnapping: false,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: pages.length,
-        itemBuilder: (_, index) {
-          return baseContainer(
-              height: height, icon: icons[index], child: pages[index]);
-        },
-      ),
+    return BlocProvider(
+      create: (context) => OnboardingBloc(),
+      child: BlocConsumer<OnboardingBloc, OnboardingState>(
+          // bloc: _bloc,
+          listener: (context, state) async {
+        if (state is PostOnboardingEvent) {
+          print('Inside Listener====>');
+          // if (state.) {
+          // } else {
+          //   print('=========>Login Failed');
+          // }
+        }
+      }, builder: (context, state) {
+        return Scaffold(
+          backgroundColor: Constants.black,
+          body: Container(
+            height: height,
+            // width: double.infinity,
+            child: PageView.builder(
+              controller: controller,
+              // pageSnapping: false,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: pages.length,
+              itemBuilder: (_, index) {
+                return baseContainer(
+                    height: height, icon: icons[index], child: pages[index]);
+              },
+            ),
+          ),
+        );
+      }),
     );
   }
 
@@ -1080,9 +1103,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  controller.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.bounceInOut);
+                  //navigate
+                  _bloc.add(
+                    PostOnboardingEvent(
+                      memberShip: AddMembershipModel(
+                        age: userAge,
+                        gender: userGender,
+                        height: userHeight + '_cm',
+                        weight: userWeight + '_kg',
+                        targetWeight: userTargetWeight,
+                        targetDuration: _value.toString(),
+                        bodyType: userBodyType,
+                        existingDisease: selectedItems.join(","),
+                        isSmoking: smoke.toString(),
+                        isDrinking: drink.toString(),
+                        howactive: userExperience,
+                      ),
+                    ),
+                  );
+                  Navigator.pushReplacementNamed(
+                      context, LandingScreen.routeName,
+                      arguments: LandingPageArgumnet(userLoggedIn: true));
                 },
                 child: Container(
                   height: 46,

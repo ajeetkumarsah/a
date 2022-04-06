@@ -3,10 +3,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/controller/menu_controller.dart';
 import 'package:wtf_web/controller/view_controller.dart';
+import 'package:wtf_web/session_manager/session_manager.dart';
 import 'package:wtf_web/utils/const.dart';
 
 class WebMenu extends StatelessWidget {
+  final bool isLoggedIn;
   final MenuController _controller = Get.put(MenuController());
+
+  WebMenu({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +19,8 @@ class WebMenu extends StatelessWidget {
         children: List.generate(
           _controller.menuItems.length,
           (index) => WebMenuItem(
+            isLoggedIn: isLoggedIn,
+            isLast: index == (_controller.menuItems.length - 1),
             text: _controller.menuItems[index],
             isActive: index == _controller.selectedIndex,
             press: () {
@@ -34,12 +40,15 @@ class WebMenuItem extends StatefulWidget {
     required this.isActive,
     required this.text,
     required this.press,
+    required this.isLast,
+    required this.isLoggedIn,
   }) : super(key: key);
 
   final bool isActive;
   final String text;
   final VoidCallback press;
-
+  final bool isLast;
+  final bool isLoggedIn;
   @override
   _WebMenuItemState createState() => _WebMenuItemState();
 }
@@ -51,9 +60,7 @@ class _WebMenuItemState extends State<WebMenuItem> {
     if (widget.isActive) {
       return Constants.primaryColor;
     }
-    // } else if (!widget.isActive & _isHover) {
-    //   return Constants.primaryColor.withOpacity(0.4);
-    // }
+
     return Colors.transparent;
   }
 
@@ -69,21 +76,45 @@ class _WebMenuItemState extends State<WebMenuItem> {
       child: AnimatedContainer(
         duration: const Duration(microseconds: 250),
         margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.symmetric(vertical: 20 / 2),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: _borderColor(), width: 3),
-          ),
-        ),
-        child: Text(
-          widget.text,
-          style: GoogleFonts.openSans(
-              fontWeight: FontWeight.w300,
-              color: widget.isActive || _isHover
-                  ? Constants.white
-                  : Colors.white.withOpacity(0.5),
-              fontSize: 18),
-        ),
+        height: widget.isLoggedIn == true && widget.isLast ? 42 : null,
+        width: widget.isLoggedIn == true && widget.isLast ? 42 : null,
+        padding: widget.isLast
+            ? EdgeInsets.symmetric(horizontal: 12.0, vertical: 4)
+            : const EdgeInsets.symmetric(vertical: 20 / 2),
+        decoration: widget.isLast
+            ? widget.isLoggedIn == true
+                ? BoxDecoration(
+                    color: Constants.white,
+                    borderRadius: BorderRadius.circular(90))
+                : BoxDecoration(
+                    color: Constants.primaryColor,
+                    borderRadius: BorderRadius.circular(4),
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: <Color>[
+                        Color(0xff9A0E0E),
+                        Color(0xffDE0000),
+                      ],
+                    ),
+                  )
+            : BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: _borderColor(), width: 3),
+                ),
+              ),
+        child: widget.isLoggedIn == true && widget.isLast
+            ? SizedBox()
+            : Text(
+                widget.text,
+                style: GoogleFonts.openSans(
+                  fontWeight: FontWeight.w300,
+                  color: widget.isActive || _isHover
+                      ? Constants.white
+                      : Colors.white.withOpacity(0.5),
+                  fontSize: 18,
+                ),
+              ),
       ),
     );
   }

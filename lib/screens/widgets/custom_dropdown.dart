@@ -11,6 +11,7 @@ class CustomDropDown extends StatefulWidget {
   final Widget? hint;
   final TextStyle? style;
   final void Function(String?)? onChanged;
+  final AlignmentGeometry? alignment;
   const CustomDropDown(
       {Key? key,
       this.padding,
@@ -22,6 +23,7 @@ class CustomDropDown extends StatefulWidget {
       required this.items,
       required this.onChanged,
       this.style,
+      this.alignment,
       this.hint})
       : super(key: key);
 
@@ -33,6 +35,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        alignment: widget.alignment,
         constraints: widget.constraints,
         width: widget.width != null ? widget.width : 374,
         height: widget.height != null ? widget.height : 58,

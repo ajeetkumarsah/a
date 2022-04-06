@@ -4,26 +4,25 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/model/gym_details.dart';
 import 'package:wtf_web/new/responsive.dart';
-import 'package:wtf_web/screens/gym_details/fun_session.dart';
+import 'package:wtf_web/screens/live_classes_details/choose_plan.dart';
+import 'package:wtf_web/screens/live_classes_details/live_classes_gym_details.dart';
+import 'package:wtf_web/screens/live_classes_details/works_offers.dart';
 import 'package:wtf_web/screens/membership/about_gym.dart';
-import 'package:wtf_web/screens/membership/choose_plan.dart';
-import 'package:wtf_web/screens/membership/works_and_offers.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/helper/responsive.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
-import '../gym_details/train_live.dart';
 
-class Membership extends StatefulWidget {
-  static String routeName = '//Membership';
+class LiveClassDetails extends StatefulWidget {
+  static String routeName = '//LiveClassDetails';
 
-  const Membership({Key? key}) : super(key: key);
+  const LiveClassDetails({Key? key}) : super(key: key);
 
   @override
-  _MembershipState createState() => _MembershipState();
+  _LiveClassDetailsState createState() => _LiveClassDetailsState();
 }
 
-class _MembershipState extends State<Membership> {
+class _LiveClassDetailsState extends State<LiveClassDetails> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -135,9 +134,8 @@ class _MembershipState extends State<Membership> {
             ),
           ],
         ),
-        MembershipAboutGym(gymDetails: GymDetailsModel()),
-        ChoosePlan(gymDetails: GymDetailsModel()),
-        const WorksAndOffers(gymId: ''),
+        LiveClassAboutGym(),
+        ChoosePlan(),
         const BottomBar(
           color: Color(0xff292929),
         ),

@@ -1,22 +1,34 @@
 part of 'login_bloc.dart';
 
 @immutable
-abstract class LoginEvent {}
-
-class FetchLogInEvent extends LoginEvent {
-  final String id;
-
-  FetchLogInEvent({required this.id});
+abstract class LoginEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
 }
 
-class PostLogInEvent extends LoginEvent {
-  final LoginModel loginDetails;
+class OnLoginEvent extends LoginEvent {
+  bool phoneAuth;
+  final String firstData;
+  final String authenticator;
 
-  PostLogInEvent({required this.loginDetails});
+  OnLoginEvent(
+      {required this.firstData,
+      required this.authenticator,
+      this.phoneAuth = true});
+  @override
+  // TODO: implement props
+  List<Object?> get props =>
+      [this.phoneAuth, this.authenticator, this.firstData];
 }
 
-class FetchLoginEvent extends LoginEvent {
-  final LoginResponse loginResponse;
+class LoginStatusEvent extends LoginEvent {
+  final LoginResponse loginDetails;
+  final bool isSuccess;
+  final String msg;
 
-  FetchLoginEvent({required this.loginResponse});
+  LoginStatusEvent(
+      {required this.loginDetails, required this.isSuccess, required this.msg});
+  @override
+  // TODO: implement props
+  List<Object?> get props => [this.loginDetails, this.isSuccess, this.msg];
 }

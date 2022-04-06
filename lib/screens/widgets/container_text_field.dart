@@ -27,7 +27,7 @@ class ContainerTextField extends StatelessWidget {
   final ToolbarOptions? toolbarOptions;
   final bool? showCursor;
   final String obscuringCharacter = '•';
-  final bool obscureText = false;
+  final bool obscureText;
   final bool autocorrect = true;
   final SmartDashesType? smartDashesType;
   final SmartQuotesType? smartQuotesType;
@@ -55,6 +55,10 @@ class ContainerTextField extends StatelessWidget {
   final bool enableInteractiveSelection = true;
   final TextSelectionControls? selectionControls;
   final BoxConstraints? constraints;
+  final Widget? suffix;
+  final Widget? suffixIcon;
+  final TextStyle? suffixStyle;
+  final Color? suffixIconColor;
   const ContainerTextField(
       {Key? key,
       this.hintText,
@@ -92,7 +96,12 @@ class ContainerTextField extends StatelessWidget {
       this.cursorColor,
       this.keyboardAppearance,
       this.constraints,
-      this.selectionControls})
+      this.selectionControls,
+      this.suffix,
+      this.suffixIcon,
+      this.suffixStyle,
+      this.suffixIconColor,
+      this.obscureText = false})
       : super(key: key);
 
   @override
@@ -110,44 +119,51 @@ class ContainerTextField extends StatelessWidget {
       ),
       padding:
           padding != null ? padding : EdgeInsets.symmetric(horizontal: 12.0),
-      child: TextFormField(
-        controller: controller,
-        initialValue: initialValue,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction,
-        style: style != null ? style : TextStyle(color: Constants.white),
-        strutStyle: strutStyle,
-        textDirection: textDirection,
-        textAlignVertical: textAlignVertical,
-        toolbarOptions: toolbarOptions,
-        showCursor: showCursor,
-        smartDashesType: smartDashesType,
-        smartQuotesType: smartQuotesType,
-        maxLengthEnforcement: maxLengthEnforcement,
-        minLines: minLines,
-        maxLength: maxLength,
-        onChanged: onChanged,
-        onTap: onTap,
-        onEditingComplete: onEditingComplete,
-        onFieldSubmitted: onFieldSubmitted,
-        onSaved: onSaved,
-        validator: validator,
-        inputFormatters: inputFormatters,
-        enabled: enabled,
-        cursorHeight: cursorHeight,
-        cursorRadius: cursorRadius,
-        cursorColor: cursorColor,
-        keyboardAppearance: keyboardAppearance,
-        selectionControls: selectionControls,
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            hintStyle: GoogleFonts.openSans(
-              fontSize: 18,
-              fontWeight: FontWeight.w300,
-              color: Constants.white,
-            ),
-            hintText: hintText),
+      child: Center(
+        child: TextFormField(
+          controller: controller,
+          initialValue: initialValue,
+          focusNode: focusNode,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          style: style != null ? style : TextStyle(color: Constants.white),
+          strutStyle: strutStyle,
+          textDirection: textDirection,
+          textAlignVertical: textAlignVertical,
+          toolbarOptions: toolbarOptions,
+          showCursor: showCursor,
+          smartDashesType: smartDashesType,
+          smartQuotesType: smartQuotesType,
+          maxLengthEnforcement: maxLengthEnforcement,
+          minLines: minLines,
+          maxLength: maxLength,
+          onChanged: onChanged,
+          obscureText: obscureText,
+          onTap: onTap,
+          onEditingComplete: onEditingComplete,
+          onFieldSubmitted: onFieldSubmitted,
+          onSaved: onSaved,
+          validator: validator,
+          inputFormatters: inputFormatters,
+          enabled: enabled,
+          cursorHeight: cursorHeight,
+          cursorRadius: cursorRadius,
+          cursorColor: cursorColor,
+          keyboardAppearance: keyboardAppearance,
+          selectionControls: selectionControls,
+          decoration: InputDecoration(
+              suffix: suffix,
+              suffixIcon: suffixIcon,
+              suffixStyle: suffixStyle,
+              suffixIconColor: suffixIconColor,
+              border: InputBorder.none,
+              hintStyle: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w300,
+                color: Constants.white,
+              ),
+              hintText: hintText),
+        ),
       ),
     );
   }

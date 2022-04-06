@@ -28,56 +28,49 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        Container(
-          padding: EdgeInsets.all(0),
-          constraints: const BoxConstraints(minHeight: 400, maxHeight: 700),
-          decoration: isMobile()
-              ? BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/home/banner_mobile.jpg'),
-                      fit: BoxFit.fitHeight))
-              : null,
-          child: Stack(
-            children: [
-              if (!isMobile())
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Image.asset(
-                    'assets/home/bg1.png',
-                    fit: BoxFit.fitHeight,
-                  ),
-                ),
-              Container(
-                margin: EdgeInsets.fromLTRB(isDesktop() ? 88 : 30.0,
-                    isDesktop() ? height * 0.2 : 90, 0, isDesktop() ? 0 : 26),
-                child: Column(
-                  mainAxisAlignment: isDesktop()
-                      ? MainAxisAlignment.start
-                      : MainAxisAlignment.end,
-                  crossAxisAlignment: isDesktop()
-                      ? CrossAxisAlignment.start
-                      : CrossAxisAlignment.center,
-                  children: [
-                    AdaptiveText(
-                      text: "MAKING INDIA FIT",
-                      minFontSize: 14,
-                      style: GoogleFonts.openSans(
-                        fontSize: isDesktop() ? 72 : 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+    return Scaffold(
+      backgroundColor: Constants.black,
+      body: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              padding: EdgeInsets.all(0),
+              constraints: const BoxConstraints(minHeight: 400, maxHeight: 700),
+              decoration: isMobile()
+                  ? BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/home/banner_mobile.jpg'),
+                          fit: BoxFit.fitHeight),
+                    )
+                  : null,
+              child: Stack(
+                children: [
+                  if (!isMobile())
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Image.asset(
+                        'assets/home/bg1.png',
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    Row(
+                  Container(
+                    margin: EdgeInsets.fromLTRB(
+                        isDesktop() ? 88 : 30.0,
+                        isDesktop() ? height * 0.2 : 90,
+                        0,
+                        isDesktop() ? 0 : 26),
+                    child: Column(
                       mainAxisAlignment: isDesktop()
                           ? MainAxisAlignment.start
-                          : MainAxisAlignment.center,
+                          : MainAxisAlignment.end,
+                      crossAxisAlignment: isDesktop()
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.center,
                       children: [
                         AdaptiveText(
-                          text: "ON",
+                          text: "MAKING INDIA FIT",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
                             fontSize: isDesktop() ? 72 : 36,
@@ -85,75 +78,93 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: Colors.white,
                           ),
                         ),
-                        AdaptiveText(
-                          text: " BUDGET",
-                          minFontSize: 14,
-                          style: GoogleFonts.openSans(
-                            fontSize: isDesktop() ? 72 : 36,
-                            fontWeight: FontWeight.bold,
-                            color: Constants.primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    AdaptiveText(
-                      text:
-                          "Join WTF managed fitness centers and explore\nfitness like never before",
-                      minFontSize: 14,
-                      maxLines: 2,
-                      align: isDesktop() ? TextAlign.start : TextAlign.center,
-                      style: GoogleFonts.openSans(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w200,
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                    ),
-                    // SizedBox(height:isDesktop()? height * 0.06:30),
-                    Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          child: AdaptiveText(
-                            text: "Download App Now",
-                            minFontSize: 14,
-                            style: GoogleFonts.openSans(
-                              fontSize: isDesktop() ? 18 : 14,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: isDesktop()
+                              ? MainAxisAlignment.start
+                              : MainAxisAlignment.center,
+                          children: [
+                            AdaptiveText(
+                              text: "ON",
+                              minFontSize: 14,
+                              style: GoogleFonts.openSans(
+                                fontSize: isDesktop() ? 72 : 36,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0)),
-                              color: Constants.primaryColor),
-                          padding: const EdgeInsets.all(16),
-                          alignment: Alignment.center,
+                            AdaptiveText(
+                              text: " BUDGET",
+                              minFontSize: 14,
+                              style: GoogleFonts.openSans(
+                                fontSize: isDesktop() ? 72 : 36,
+                                fontWeight: FontWeight.bold,
+                                color: Constants.primaryColor,
+                              ),
+                            ),
+                          ],
                         ),
-                        if (isDesktop()) const Spacer(),
-                        if (isDesktop()) gymCountSection(width),
+                        const SizedBox(height: 12),
+                        AdaptiveText(
+                          text:
+                              "Join WTF managed fitness centers and explore\nfitness like never before",
+                          minFontSize: 14,
+                          maxLines: 2,
+                          align:
+                              isDesktop() ? TextAlign.start : TextAlign.center,
+                          style: GoogleFonts.openSans(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w200,
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                        ),
+                        // SizedBox(height:isDesktop()? height * 0.06:30),
+                        Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: AdaptiveText(
+                                text: "Download App Now",
+                                minFontSize: 14,
+                                style: GoogleFonts.openSans(
+                                  fontSize: isDesktop() ? 18 : 14,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                  color: Constants.primaryColor),
+                              padding: const EdgeInsets.all(16),
+                              alignment: Alignment.center,
+                            ),
+                            if (isDesktop()) const Spacer(),
+                            if (isDesktop()) gymCountSection(width),
+                          ],
+                        ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            if (!isDesktop())
+              const SizedBox(
+                height: 0,
+              ),
+            if (isDesktop() && !isDesktop()) gymCountSection(width),
+            const ExploreSection(),
+            const OfferingSection(),
+            const WorldClassSection(),
+            const WhoSaid(),
+            const YouKnow(),
+            const PartnerSaySection(),
+            const BottomBar(),
+          ],
         ),
-        if (!isDesktop())
-          const SizedBox(
-            height: 0,
-          ),
-        if (isDesktop() && !isDesktop()) gymCountSection(width),
-        const ExploreSection(),
-        const OfferingSection(),
-        const WorldClassSection(),
-        const WhoSaid(),
-        const YouKnow(),
-        const PartnerSaySection(),
-        const BottomBar(),
-      ],
+      ),
     );
   }
 

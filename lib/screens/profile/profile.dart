@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/screens/profile/profile_details.dart';
 import 'package:wtf_web/screens/thanks/summary.dart';
 import 'package:wtf_web/screens/thanks/redeem_continue.dart';
-import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/utils/const.dart';
 
-class ThanksScreen extends StatefulWidget {
-  static String routeName = '/ThanksScreen';
+class ProfileScreen extends StatefulWidget {
+  static String routeName = '/ProfileScreen';
 
-  const ThanksScreen({Key? key}) : super(key: key);
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  _ThanksScreenState createState() => _ThanksScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ThanksScreenState extends State<ThanksScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -25,15 +24,7 @@ class _ThanksScreenState extends State<ThanksScreen> {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          constraints: const BoxConstraints(minHeight: 80, maxHeight: 120),
-          color: Constants.primaryColor,
-        ),
-        const Summary(),
-        RedeemOrContinue(),
-        const BottomBar(),
-      ],
+      children: [const ProfileDetails()],
     );
   }
 }

@@ -8,6 +8,7 @@ class SignupModel {
     this.status,
     this.referralCode,
     this.deviceDetails,
+    this.isOtpSent,
   });
 
   String? name;
@@ -17,6 +18,7 @@ class SignupModel {
   String? accountType;
   String? status;
   String? referralCode;
+  bool? isOtpSent;
   List<String>? deviceDetails;
 
   factory SignupModel.fromJson(Map<String, dynamic> json) => SignupModel(
@@ -31,6 +33,7 @@ class SignupModel {
         deviceDetails: json["device_details"] == null
             ? null
             : List<String>.from(json["device_details"].map((x) => x)),
+        isOtpSent: json["otp"] == null ? true : false,
       );
 
   Map<String, dynamic> toJson() => {

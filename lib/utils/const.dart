@@ -88,7 +88,7 @@ class Constants {
   );
 
   static double getPadding(BuildContext context) {
-    return ResponsiveWidget.isSmallScreen(context) ? 16 : 100;
+    return ResponsiveWidget.isSmallScreen(context) ? 16 : 80;
   }
 }
 
