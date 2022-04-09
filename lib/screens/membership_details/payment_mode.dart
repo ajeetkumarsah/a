@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -15,12 +16,81 @@ class PaymentMode extends StatefulWidget {
 }
 
 class _PaymentModeState extends State<PaymentMode> {
-  int _selection = 0;
+  int _selection = 1;
 
   selectTime(int? timeSelected) {
     setState(() {
       _selection = timeSelected!;
     });
+  }
+
+  DateTime selectedThirdDate = DateTime.now();
+  DateTime selectedSecondDate = DateTime.now();
+
+  var customFormat = DateFormat('dd-MM-yyyy');
+
+  Future<Null> showPickerForSecond(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedSecondDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Constants.primaryColor,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: Constants.primaryColor,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != selectedSecondDate)
+      setState(() {
+        selectedThirdDate = DateTime.now();
+
+        selectedSecondDate = picked;
+      });
+  }
+
+  Future<Null> showPickerForThird(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedSecondDate.add(Duration(days: 1)),
+      firstDate: selectedSecondDate,
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Constants.primaryColor,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                primary: Constants.primaryColor,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != selectedThirdDate)
+      setState(() {
+        selectedThirdDate = picked;
+      });
   }
 
   @override
@@ -94,34 +164,59 @@ class _PaymentModeState extends State<PaymentMode> {
                     ],
                   ),
                   SizedBox(height: 32),
-                  Container(
-                    height: 322,
-                    decoration: BoxDecoration(
-                        color: Constants.svgIconColor,
-                        borderRadius: BorderRadius.circular(16)),
-                    padding: EdgeInsets.fromLTRB(130, 12, 130, 69),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AdaptiveText(
-                          text:
-                              'Pay 2999 now and choose EMI date for your next payment',
-                          minFontSize: 14,
-                          align: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.normal,
-                            color: Constants.white,
+                  _selection == 2
+                      ? Container(
+                          // height: 322,
+                          decoration: BoxDecoration(
+                              color: Constants.svgIconColor,
+                              borderRadius: BorderRadius.circular(16)),
+                          padding: EdgeInsets.fromLTRB(130, 12, 130, 69),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              AdaptiveText(
+                                text:
+                                    'Pay 2999 now and choose EMI date for your next payment',
+                                minFontSize: 14,
+                                align: TextAlign.center,
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w300,
+                                  fontStyle: FontStyle.normal,
+                                  color: Constants.white,
+                                ),
+                              ),
+                              SizedBox(height: 45),
+                              selectEMIDateButton(
+                                title: 'Select 1st EMI date',
+                                enabled: false,
+                                amount: '100',
+                                date: DateTime.now().add(Duration(days: 1)),
+                              ),
+                              SizedBox(height: 20),
+                              selectEMIDateButton(
+                                title: 'Select 2nd EMI date',
+                                enabled: true,
+                                amount: '100',
+                                date: selectedSecondDate,
+                                onTap: () {
+                                  showPickerForSecond(context);
+                                },
+                              ),
+                              SizedBox(height: 20),
+                              selectEMIDateButton(
+                                title: 'Select 3rd EMI date',
+                                enabled: true,
+                                amount: '100',
+                                date: selectedThirdDate,
+                                onTap: () {
+                                  showPickerForThird(context);
+                                },
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(height: 45),
-                        selectEMIDateButton(title: 'Select 1st EMI date'),
-                        SizedBox(height: 20),
-                        selectEMIDateButton(title: 'Select 2nd EMI date'),
-                      ],
-                    ),
-                  ),
+                        )
+                      : SizedBox(),
                   Container(
                     height: 66,
                     // width: ,
@@ -152,29 +247,71 @@ class _PaymentModeState extends State<PaymentMode> {
     );
   }
 
-  Widget selectEMIDateButton({required String title}) {
-    return Container(
-      height: 66,
-      decoration: BoxDecoration(
-          color: Constants.maroonLight,
-          borderRadius: BorderRadius.circular(16)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AdaptiveText(
-            text: title,
-            minFontSize: 14,
-            align: TextAlign.center,
-            style: GoogleFonts.montserrat(
-              fontSize: 20,
-              fontWeight: FontWeight.w300,
-              fontStyle: FontStyle.normal,
-              color: Constants.white,
+  Widget selectEMIDateButton(
+      {required String title,
+      required bool enabled,
+      required String amount,
+      required DateTime date,
+      void Function()? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 66,
+        decoration: BoxDecoration(
+            color: enabled
+                ? Constants.maroonLight
+                : Color(0xffAF4949).withOpacity(0.5),
+            borderRadius: BorderRadius.circular(16)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AdaptiveText(
+                  text: 'Choose Your starting date',
+                  minFontSize: 14,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                    color: Constants.white,
+                  ),
+                ),
+                date.day != DateTime.now().day
+                    ? AdaptiveText(
+                        text: '${customFormat.format(date)}',
+                        minFontSize: 14,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                          color: Constants.white,
+                        ),
+                      )
+                    : SizedBox(),
+              ],
             ),
-          ),
-          SizedBox(width: 24),
-          Image.asset('assets/membership_details/date.png')
-        ],
+            // Column(
+            //   children: [
+            //     AdaptiveText(
+            //       text: title,
+            //       minFontSize: 14,
+            //       align: TextAlign.center,
+            //       style: GoogleFonts.montserrat(
+            //         fontSize: 20,
+            //         fontWeight: FontWeight.w300,
+            //         fontStyle: FontStyle.normal,
+            //         color: Constants.white,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            SizedBox(width: 24),
+            Image.asset('assets/membership_details/date.png')
+          ],
+        ),
       ),
     );
   }

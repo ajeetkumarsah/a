@@ -20,9 +20,10 @@ class _OrderSummaryState extends State<OrderSummary> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     // return CursorBlending();
-    return Stack(
-      children: [
-        Column(
+    return Scaffold(
+      backgroundColor: Constants.black,
+      body: SingleChildScrollView(
+        child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -38,7 +39,7 @@ class _OrderSummaryState extends State<OrderSummary> {
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }

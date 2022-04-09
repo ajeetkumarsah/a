@@ -38,51 +38,6 @@ class _WorksAndOffersState extends State<WorksAndOffers> {
           children: <BootstrapCol>[
             BootstrapCol(
               sizes: 'col-12 col-sm-12 col-md-6',
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  new AdaptiveText(
-                    text: 'How it works?',
-                    maxLines: 2,
-                    minFontSize: 12,
-                    align: TextAlign.center,
-                    style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.normal,
-                      fontSize: isDesktop() ? 24 : 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 30),
-                    height: 240,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        howItWorks(
-                            isDesktop: isDesktop(),
-                            leadingIcon: 'assets/gym/emojione_person.svg',
-                            text:
-                                'Pick membership start ddate and complete your subscription process by clicking Buy Now below.'),
-                        howItWorks(
-                            isDesktop: isDesktop(),
-                            leadingIcon: 'assets/gym/emojione_person.svg',
-                            text:
-                                'A dedicated general trainer will be assigned after you have taken your subscription.'),
-                        howItWorks(
-                            isDesktop: isDesktop(),
-                            leadingIcon: 'assets/gym/emojione_person.svg',
-                            text:
-                                'Explore WTF and start your fitness journey.'),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            BootstrapCol(
-              sizes: 'col-12 col-sm-12 col-md-6',
               child: BlocBuilder<GymDetailsBloc, GymDetailsState>(
                 bloc: GymDetailsBloc()..add(FetchOffersEvent(id: widget.gymId)),
                 builder: (context, state) {

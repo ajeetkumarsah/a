@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bootstrap/flutter_bootstrap.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/model/gym_details.dart';
 import 'package:wtf_web/model/membership_plan.dart';
@@ -191,25 +193,9 @@ class _GymDetailsState extends State<GymDetails> {
                     return CustomLoader();
                   },
                 ),
-                // BlocBuilder<GymDetailsBloc, GymDetailsState>(
-                //   builder: (context, state) {
-                //     if (state is FetchGymDetailsState) {
-                //       GymDetailsModel data = state.gymDetails;
-                //       if (data.id != null) {
-                //         return ChoosePlan(gymDetails: data);
-                //       } else {
-                //         return Container(
-                //           child: Center(
-                //             child: Text('No Data found'),
-                //           ),
-                //         );
-                //       }
-                //     }
-                //     return CustomLoader();
-                //   },
-                // ),
-                WorksAndOffers(gymId: args['id'].toString()),
-                const BuyOrbookScreen(),
+
+                // WorksAndOffers(gymId: args['id'].toString()),
+                // const BuyOrbookScreen(),
                 const TrainLive(),
                 const FunSession(),
                 const BottomBar(

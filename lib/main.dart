@@ -6,7 +6,9 @@ import 'package:wtf_web/screens/gym_details/gym_details.dart';
 import 'package:wtf_web/screens/home/home_screen.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/login/login.dart';
+import 'package:wtf_web/screens/membership_details/membership_details.dart';
 import 'package:wtf_web/screens/onboarding/onboarding.dart';
+import 'package:wtf_web/screens/order_summary/order_summary.dart';
 import 'package:wtf_web/screens/profile/profile.dart';
 import 'package:wtf_web/screens/signup/signup.dart';
 import 'package:wtf_web/screens/splash/splash_screen.dart';
@@ -67,6 +69,8 @@ class MyApp extends StatelessWidget {
         OnboardingScreen.routeName: (context) => const OnboardingScreen(),
         ProfileScreen.routeName: (context) => const ProfileScreen(),
         SignupScreen.routeName: (context) => const SignupScreen(),
+        OrderSummary.routeName: (context) => const OrderSummary(),
+        MembershipDetails.routeName: (context) => const MembershipDetails(),
       },
     );
   }

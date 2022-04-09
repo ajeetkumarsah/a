@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/model/gym_details.dart';
+import 'package:wtf_web/screens/gym_details/gym_details.dart';
+import 'package:wtf_web/screens/membership_details/arguments/arguments.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
 class AboutGym extends StatelessWidget {
-  const AboutGym({Key? key}) : super(key: key);
+  final MemberShipDetailsArgument? memberShipDetailsArgument;
+  const AboutGym({Key? key, required this.memberShipDetailsArgument})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,8 @@ class AboutGym extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AdaptiveText(
-                          text: "Mass Monster",
+                          text:
+                              "${memberShipDetailsArgument!.gymDetails.gymName}",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
                             fontSize: 48,
@@ -82,7 +88,8 @@ class AboutGym extends StatelessWidget {
                         SvgPicture.asset('assets/gym/map_pin.svg'),
                         SizedBox(width: 10),
                         AdaptiveText(
-                          text: "Noida Sector 8, C-Block",
+                          text:
+                              "${memberShipDetailsArgument!.gymDetails.address1}, ${memberShipDetailsArgument!.gymDetails.address2}",
                           minFontSize: 14,
                           style: GoogleFonts.openSans(
                             fontSize: 24,
@@ -96,7 +103,7 @@ class AboutGym extends StatelessWidget {
                     // trailing:
                   ),
                   Container(
-                    width: 280,
+                    // width: 280,
                     margin: EdgeInsets.only(top: 40),
                     padding: EdgeInsets.all(12.0),
                     decoration: BoxDecoration(
@@ -134,7 +141,8 @@ class AboutGym extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4)),
                               child: Center(
                                 child: AdaptiveText(
-                                  text: '₹ 999',
+                                  text:
+                                      '₹ ${memberShipDetailsArgument!.membershipPlan.price}',
                                   minFontSize: 14,
                                   style: GoogleFonts.montserrat(
                                     fontSize: 16,
@@ -152,7 +160,8 @@ class AboutGym extends StatelessWidget {
                             Image.asset('assets/logo.png'),
                             SizedBox(width: 8.0),
                             AdaptiveText(
-                              text: 'Active',
+                              text:
+                                  '${memberShipDetailsArgument!.membershipPlan.planName}',
                               minFontSize: 14,
                               style: GoogleFonts.montserrat(
                                 fontSize: 22,
