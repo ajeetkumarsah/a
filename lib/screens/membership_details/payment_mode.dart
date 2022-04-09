@@ -1,10 +1,13 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:wtf_web/razor_pay/razor_pay.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -17,7 +20,9 @@ class PaymentMode extends StatefulWidget {
 
 class _PaymentModeState extends State<PaymentMode> {
   int _selection = 1;
+  static const platform = const MethodChannel("razorpay_flutter");
 
+  Razorpay? _razorpay;
   selectTime(int? timeSelected) {
     setState(() {
       _selection = timeSelected!;
@@ -206,35 +211,47 @@ class _PaymentModeState extends State<PaymentMode> {
                               SizedBox(height: 20),
                               selectEMIDateButton(
                                 title: 'Select 3rd EMI date',
-                                enabled: true,
+                                enabled:
+                                    selectedSecondDate.day != DateTime.now().day
+                                        ? true
+                                        : false,
                                 amount: '100',
                                 date: selectedThirdDate,
                                 onTap: () {
-                                  showPickerForThird(context);
+                                  if (selectedSecondDate.day !=
+                                      DateTime.now().day) {
+                                    showPickerForThird(context);
+                                  }
                                 },
                               ),
                             ],
                           ),
                         )
                       : SizedBox(),
-                  Container(
-                    height: 66,
-                    // width: ,
-                    margin: EdgeInsets.only(top: 64),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 144, vertical: 20),
-                    decoration: BoxDecoration(
-                        color: Constants.primaryColor,
-                        borderRadius: BorderRadius.circular(47)),
-                    child: AdaptiveText(
-                      text: 'Proceed',
-                      minFontSize: 14,
-                      align: TextAlign.center,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w500,
-                        fontStyle: FontStyle.normal,
-                        color: Constants.white,
+                  GestureDetector(
+                    onTap: () {
+                      print('========>getting start your payment');
+                      openCheckout();
+                    },
+                    child: Container(
+                      height: 66,
+                      // width: ,
+                      margin: EdgeInsets.only(top: 64),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 144, vertical: 20),
+                      decoration: BoxDecoration(
+                          color: Constants.primaryColor,
+                          borderRadius: BorderRadius.circular(47)),
+                      child: AdaptiveText(
+                        text: 'Proceed',
+                        minFontSize: 14,
+                        align: TextAlign.center,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500,
+                          fontStyle: FontStyle.normal,
+                          color: Constants.white,
+                        ),
                       ),
                     ),
                   ),
@@ -314,5 +331,62 @@ class _PaymentModeState extends State<PaymentMode> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay!.clear();
+  }
+
+  void openCheckout() async {
+    var options = {
+      'key': 'rzp_live_ILgsfZCZoFIKMb',
+      'amount': 100,
+      'name': 'Acme Corp.',
+      'description': 'Fine T-Shirt',
+      'retry': {'enabled': true, 'max_count': 1},
+      'send_sms_hash': true,
+      'prefill': {'contact': '8888888888', 'email': 'test@razorpay.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay!.open(options);
+    } catch (e) {
+      debugPrint('Error: e');
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print('Success Response: $response');
+    /*Fluttertoast.showToast(
+        msg: "SUCCESS: " + response.paymentId!,
+        toastLength: Toast.LENGTH_SHORT); */
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('Error Response: $response');
+    /* Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message!,
+        toastLength: Toast.LENGTH_SHORT); */
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print('External SDK Response: $response');
+    /* Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName!,
+        toastLength: Toast.LENGTH_SHORT); */
   }
 }
