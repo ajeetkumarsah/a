@@ -1,6 +1,7 @@
 import 'package:wtf_web/db/api_response.dart';
 import 'package:wtf_web/db/db_provider.dart';
 import 'package:wtf_web/model/add_membership.dart';
+import 'package:wtf_web/model/post_order_id.dart';
 import 'package:wtf_web/model/signup.dart';
 
 class Repository {
@@ -25,4 +26,7 @@ class Repository {
       _dbProvider.getMembershipPlan(id: id);
   Future<ApiResponse> getOffers({required String id}) async =>
       _dbProvider.getOffers(id: id);
+  Future<ApiResponse> getOrderId(
+          {required PostOrderIdModel postOrderIdModel}) async =>
+      _dbProvider.getOrderId(postOrderIdModel: postOrderIdModel);
 }

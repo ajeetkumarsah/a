@@ -31,6 +31,7 @@ class SessionManager {
   }) async {
     final SharedPreferences prefs = await _prefs;
     prefs.setString(KEY_ID, id);
+
     prefs.setString(EMAIL_ID, email);
     prefs.setString(NAME, name);
     prefs.setString(KEY_AUTH_TOKEN, 'Bearer $authToken');

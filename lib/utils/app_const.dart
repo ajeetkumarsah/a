@@ -15,6 +15,9 @@ class AppConstants {
   static const String SIGNUP_URL = '/user/add';
   static const String ADD_MEMBERSHIP = '/member/add';
   static const String SEND_OTP_URL = '/user/mobile/otp';
+  static const String GET_ORDER_ID = '/transaction/get_order_id';
+
+  static const String VERIFY_PAYMENT_URL = '/subscription/verifyPayment';
 
   static const String BANNER_URI = '';
 }

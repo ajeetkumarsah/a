@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/razor_pay/example.dart';
 import 'package:wtf_web/razor_pay/razor_pay.dart';
 import 'package:wtf_web/screens/gym_details/gym_details.dart';
 import 'package:wtf_web/screens/home/home_screen.dart';
@@ -72,8 +73,12 @@ class MyApp extends StatelessWidget {
         SignupScreen.routeName: (context) => const SignupScreen(),
         OrderSummary.routeName: (context) => const OrderSummary(),
         MembershipDetails.routeName: (context) => const MembershipDetails(),
-        RazorPay.routeName: (context) => RazorPay(),
+        // RazorPay.routeName: (context) => RazorPay(),
+        RazorPayWeb.routeName: (context) => RazorPayWeb(),
       },
     );
   }
 }
+
+//command to run the project
+// flutter run -t lib/flavor/main_dev.dart -d chrome --web-renderer canvaskit --no-sound-null-safety --web-renderer=html
