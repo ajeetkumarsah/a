@@ -21,19 +21,26 @@ class _ThanksScreenState extends State<ThanksScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          constraints: const BoxConstraints(minHeight: 80, maxHeight: 120),
-          color: Constants.primaryColor,
+    return Scaffold(
+      backgroundColor: Constants.black,
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              constraints: const BoxConstraints(minHeight: 80, maxHeight: 120),
+              color: Constants.primaryColor,
+            ),
+            const Summary(),
+            RedeemOrContinue(),
+            const BottomBar(),
+          ],
         ),
-        const Summary(),
-        RedeemOrContinue(),
-        const BottomBar(),
-      ],
+      ),
     );
   }
 }

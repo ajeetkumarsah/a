@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 import 'package:wtf_web/model/post_order_id.dart';
 import 'package:wtf_web/razor_pay/example.dart';
 import 'package:wtf_web/screens/membership_details/bloc/membership_details_bloc.dart';
+import 'package:wtf_web/screens/thanks/thanks.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
+import 'package:wtf_web/screens/widgets/alert_flash.dart';
 import 'package:wtf_web/service/payment_service.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -245,7 +247,13 @@ class _PaymentModeState extends State<PaymentMode> {
                           onTap: () {
                             print('========>getting start your payment');
                             // openCheckout();
-                            Navigator.pushNamed(context, RazorPayWeb.routeName);
+                            Navigator.pushNamed(context, RazorPayWeb.routeName)
+                                .then((value) {
+                              if (value == true) {
+                                Navigator.pushNamed(
+                                    context, ThanksScreen.routeName);
+                              }
+                            });
                             // void toastMessage(bool success) {
                             //   ScaffoldMessenger.of(context)
                             //     ..removeCurrentSnackBar()

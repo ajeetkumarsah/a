@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:ui' as ui;
 //conditional import
 import 'package:wtf_web/screens/thanks/thanks.dart';
+import 'package:wtf_web/screens/widgets/alert_flash.dart';
 import 'package:wtf_web/utils/const.dart';
 
 import 'ui_fake.dart' if (dart.library.html) 'dart:ui' as ui;
@@ -21,11 +22,14 @@ class RazorPayWeb extends StatelessWidget {
         if (element.data == 'MODAL_CLOSED') {
           Navigator.pop(context);
         } else if (element.data == 'SUCCESS') {
-          print('==============>API DATA:' + element.data.toString());
-
-          Navigator.pushNamed(context, ThanksScreen.routeName);
+          AlertFlash().showBasicsFlash(
+              context: context, message: 'Payment successful.');
+          Navigator.pop(context, true);
+          // Navigator.pushNamed(context, ThanksScreen.routeName);
           print('PAYMENT SUCCESSFULL=============>');
         } else if (element.data == 'MODAL_ERROR') {
+          AlertFlash().showBasicsFlash(
+              context: context, message: 'Something went wrong.');
           Navigator.pop(context);
           print('Error event called ============>');
         } else if (element.data == "MODAL_PROGRESS") {
@@ -36,6 +40,8 @@ class RazorPayWeb extends StatelessWidget {
           print('Offline event called ============>');
         } else if (element.data == "MODAL_DISMISS") {
           Navigator.pop(context);
+          AlertFlash()
+              .showBasicsFlash(context: context, message: 'Payment failed!.');
           print('Offline event called ============>');
         }
       });

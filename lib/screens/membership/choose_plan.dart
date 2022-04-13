@@ -35,14 +35,7 @@ class ChoosePlan extends StatefulWidget {
 }
 
 class _ChoosePlanState extends State<ChoosePlan> {
-  int _selection = 2;
-  int selectedIndex = 0;
-
-  selectTime(int? timeSelected) {
-    setState(() {
-      _selection = timeSelected!;
-    });
-  }
+  int selectedIndex = -1;
 
   MembershipPlan _plan = MembershipPlan();
   select(int index) {
@@ -277,14 +270,17 @@ class _ChoosePlanState extends State<ChoosePlan> {
                                           itemBuilder: (BuildContext? context,
                                               int index) {
                                             return plans(
+                                              gradient: membershipPlans[index]
+                                                  .gradient,
                                               index: index,
                                               isMobile: isMobile(),
                                               membershipPlan:
                                                   membershipPlan[index],
-                                              titleColor: membershipoPlans[0]
+                                              titleColor: membershipPlans[index]
                                                   .titleColor,
-                                              amountColor: membershipoPlans[0]
-                                                  .amountColor,
+                                              amountColor:
+                                                  membershipPlans[index]
+                                                      .amountColor,
                                             );
                                           }),
                                     ],
@@ -620,64 +616,64 @@ class _ChoosePlanState extends State<ChoosePlan> {
     );
   }
 
-  Widget pricingButton({
-    required String label,
-    required int value,
-    required Gradient? gradient,
-  }) {
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // SizedBox(width: 30),
-            Radio(
-              focusColor: Colors.white,
-              groupValue: _selection,
-              onChanged: selectTime,
-              value: value,
-              activeColor: Constants.primaryColor,
-              fillColor:
-                  MaterialStateColor.resolveWith((states) => Constants.white),
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
-                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: gradient != null
-                      ? gradient
-                      : LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: <Color>[
-                            Constants.gradientBlueLight,
-                            Constants.gradientBlue,
-                          ],
-                        ),
-                ),
-                child: Row(
-                  children: [
-                    new AdaptiveText(
-                      text: label,
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  // Widget pricingButton1({
+  //   required String label,
+  //   required int value,
+  //   required Gradient? gradient,
+  // }) {
+  //   return Stack(
+  //     alignment: Alignment.center,
+  //     children: <Widget>[
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: <Widget>[
+  //           // SizedBox(width: 30),
+  //           Radio(
+  //             focusColor: Colors.white,
+  //             groupValue: _selection,
+  //             onChanged: selectTime,
+  //             value: value,
+  //             activeColor: Constants.primaryColor,
+  //             fillColor:
+  //                 MaterialStateColor.resolveWith((states) => Constants.white),
+  //           ),
+  //           Expanded(
+  //             child: Container(
+  //               padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+  //               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 12.0),
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(8),
+  //                 gradient: gradient != null
+  //                     ? gradient
+  //                     : LinearGradient(
+  //                         begin: Alignment.centerLeft,
+  //                         end: Alignment.centerRight,
+  //                         colors: <Color>[
+  //                           Constants.gradientBlueLight,
+  //                           Constants.gradientBlue,
+  //                         ],
+  //                       ),
+  //               ),
+  //               child: Row(
+  //                 children: [
+  //                   new AdaptiveText(
+  //                     text: label,
+  //                     style: GoogleFonts.montserrat(
+  //                       fontWeight: FontWeight.w400,
+  //                       fontStyle: FontStyle.normal,
+  //                       fontSize: 18,
+  //                       color: Colors.white,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget facilities(
       {required String icon,
@@ -751,7 +747,75 @@ class _ChoosePlanState extends State<ChoosePlan> {
     );
   }
 
-  List<MemberShip> membershipoPlans = [
+  List<MemberShip> membershipPlans = [
+    MemberShip(
+      titleColor: Constants.textLightGreen,
+      amount: '₹ 999',
+      offer1: '1 Month membership',
+      offer2: 'Trainer Support',
+      offer3: 'Access to free diet plans',
+      plan: 1,
+      subTitle: 'Best for person who frequently travel',
+      title: 'Active',
+      amountColor: Color(0xff669C75),
+    ),
+    MemberShip(
+      titleColor: Constants.textLightPink,
+      amount: '₹ 999',
+      offer1: '3 Month membership',
+      offer2: 'Trainer Support',
+      offer3: 'Access to free diet plans',
+      plan: 2,
+      subTitle: 'Best for person who frequently travel',
+      title: 'Transform',
+      gradient: LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: <Color>[
+          Color(0xffB9789B),
+          Color(0xff89506D),
+        ],
+      ),
+      amountColor: Color(0xffA46284),
+    ),
+    MemberShip(
+      titleColor: Constants.textRedLight,
+      amount: '₹ 999',
+      offer1: '6 Month membership',
+      offer2: 'Trainer Support',
+      offer3: 'Access to free diet plans',
+      plan: 3,
+      subTitle: 'Best for person who frequently travel',
+      title: 'Consistent',
+      gradient: LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: <Color>[
+          Color(0xff965651),
+          Color(0xffB43B3B),
+        ],
+      ),
+      amountColor: Color(0xffD24D4D),
+    ),
+    MemberShip(
+      titleColor: Constants.textLightBlue,
+      amount: '₹ 999',
+      offer1: '12 Month membership',
+      offer2: 'Trainer Support',
+      offer3: 'Access to free diet plans',
+      plan: 4,
+      subTitle: 'Best for person who frequently travel',
+      title: 'Lifestyle',
+      gradient: LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: <Color>[
+          Color(0xff438373),
+          Color(0xff3E74B4),
+        ],
+      ),
+      amountColor: Color(0xff4C92B5),
+    ),
     MemberShip(
       titleColor: Constants.textLightGreen,
       amount: '₹ 999',
