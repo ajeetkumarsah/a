@@ -7,6 +7,7 @@ import 'package:wtf_web/screens/about_us/about_us.dart';
 import 'package:wtf_web/screens/fitness/fitness_screen.dart';
 import 'package:wtf_web/screens/gyms/gyms.dart';
 import 'package:wtf_web/screens/home/home_screen.dart';
+import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/components/header.dart';
 import 'package:wtf_web/screens/login/login.dart';
 import 'package:wtf_web/screens/login/login_signup.dart';
@@ -19,12 +20,6 @@ import 'package:wtf_web/utils/const.dart';
 import '../nutrition/nutrition.dart';
 import '../partner/partner.dart';
 
-class LandingPageArgumnet {
-  final bool userLoggedIn;
-
-  LandingPageArgumnet({required this.userLoggedIn});
-}
-
 class LandingScreen extends StatefulWidget {
   static String routeName = '/landingScreen';
 
@@ -36,7 +31,7 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen>
     with SingleTickerProviderStateMixin {
-  final MenuController _controller = Get.put(MenuController());
+  MenuController _controller = Get.put(MenuController());
   late ScrollController _scrollController;
   SessionManager sessionManager = SessionManager.getInstance();
 
@@ -80,7 +75,7 @@ class _LandingScreenState extends State<LandingScreen>
 
   @override
   Widget build(BuildContext context) {
-    final LandingPageArgumnet args =
+    LandingPageArgumnet args =
         ModalRoute.of(context)!.settings.arguments as LandingPageArgumnet;
     List<Widget> pages = [
       const FitnessCenter(),
@@ -95,49 +90,47 @@ class _LandingScreenState extends State<LandingScreen>
           ? const ProfileScreen()
           : LoginSignupSwitcher(),
     ];
-    return FlavorBanner(
-      child: Scaffold(
-        key: _controller.scaffoldkey,
-        backgroundColor: Constants.black,
-        // drawer: SideMenu(),
-        body: Stack(
-          // alignment: Alignment.center,
+    return Scaffold(
+      key: _controller.scaffoldkey,
+      backgroundColor: Constants.black,
+      // drawer: SideMenu(),
+      body: Stack(
+        // alignment: Alignment.center,
 
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                controller: _scrollController,
-                child: StreamBuilder<int?>(
-                  stream: viewController.getBaseListStream,
-                  initialData: args.userLoggedIn ? pages.length - 1 : 0,
-                  builder: (context, snapshot) {
-                    return pages[snapshot.data!];
-                  },
-                ),
+        children: [
+          Center(
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              controller: _scrollController,
+              child: StreamBuilder<int?>(
+                stream: viewController.getBaseListStream,
+                initialData: args.userLoggedIn ? pages.length - 1 : 0,
+                builder: (context, snapshot) {
+                  return pages[snapshot.data!];
+                },
               ),
             ),
-            Header(
-              scroll: scroll,
-              isLoggedIn: args.userLoggedIn,
-            ),
-            if (pointerOffset != null) ...[
-              AnimatedBuilder(
-                  animation: pointerSizeController!,
-                  builder: (context, snapshot) {
-                    return AnimatedPointer(
-                      pointerOffset: pointerOffset!,
-                      radius: 45 + 100 * pointerAnimation!.value,
-                    );
-                  }),
-              AnimatedPointer(
-                pointerOffset: pointerOffset!,
-                movementDuration: const Duration(milliseconds: 200),
-                radius: 10,
-              )
-            ]
-          ],
-        ),
+          ),
+          Header(
+            scroll: scroll,
+            isLoggedIn: args.userLoggedIn,
+          ),
+          if (pointerOffset != null) ...[
+            AnimatedBuilder(
+                animation: pointerSizeController!,
+                builder: (context, snapshot) {
+                  return AnimatedPointer(
+                    pointerOffset: pointerOffset!,
+                    radius: 45 + 100 * pointerAnimation!.value,
+                  );
+                }),
+            AnimatedPointer(
+              pointerOffset: pointerOffset!,
+              movementDuration: const Duration(milliseconds: 200),
+              radius: 10,
+            )
+          ]
+        ],
       ),
     );
   }

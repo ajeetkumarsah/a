@@ -54,7 +54,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           LoginResponse.fromJson(apiResponse.finalData['data']);
 
       add(LoginStatusEvent(
-          isSuccess: true, msg: 'Successful', loginDetails: _loginResponse));
+          isSuccess: true,
+          msg: apiResponse.finalData['message'],
+          loginDetails: _loginResponse));
 
       _saveUserProfile(apiResponse: apiResponse);
     } else {

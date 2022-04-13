@@ -4,6 +4,7 @@ import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/onboarding/onboarding.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
@@ -83,8 +84,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         child: GestureDetector(
                           onTap: () async {
                             await sessionManager.clearPreferences();
-                            // Navigator.pushReplacementNamed(
-                            //     context, OnboardingScreen.routeName);
+
                             Navigator.pushReplacementNamed(
                                 context, LandingScreen.routeName,
                                 arguments:

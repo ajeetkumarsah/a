@@ -8,22 +8,23 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
       var options = {
-        key: "YOUR_KEY_HERE",
-        amount: "50000",
+        key: "rzp_live_NhCDSCOuXIM3Ml",
+        amount: "100",
         currency: "INR",
-        name: "Acme Corp",
-        description: "Test Transaction",
-        image: "https://example.com/your_logo",
+        name: "WTF",
+        description: "Membership",
+        // image: "https://example.com/your_logo",
         handler: function (response) {
           window.parent.postMessage("SUCCESS", "*"); //2
-          alert(response.razorpay_payment_id);
-          alert(response.razorpay_order_id);
-          alert(response.razorpay_signature);
+          // alert(response.razorpay_payment_id);
+          // alert(response.razorpay_order_id);
+          // alert(response.razorpay_signature);
+          alert("Payment Successful :)");
         },
         prefill: {
-          name: "Gaurav Kumar",
-          email: "gaurav.kumar@example.com",
-          contact: "9999999999",
+          name: "Naresh Kukreti",
+          email: "kukreti12.naresh@gmail.com",
+          contact: "7508513936",
         },
         notes: {
           address: "Autofy",
@@ -33,7 +34,23 @@
         },
         modal: {
           ondismiss: function () {
-            window.parent.postMessage("MODAL_CLOSED", "*"); //3
+            window.parent.postMessage("MODAL_DISMISS", "*"); //3
+          },
+          onclose: function () {
+            window.parent.postMessage("MODAL_CLOSED", "*"); //4
+          },
+
+          onerror: function () {
+            window.parent.postMessage("MODAL_ERROR", "*"); //5
+          },
+          onprogress: function () {
+            window.parent.postMessage("MODAL_PROGRESS", "*"); //6
+          },
+          ononline: function () {
+            window.parent.postMessage("MODAL_ONLINE", "*"); //7
+          },
+          onoffline: function () {
+            window.parent.postMessage("MODAL_OFFLINE", "*"); //8
           },
         },
       };

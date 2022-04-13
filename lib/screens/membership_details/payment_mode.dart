@@ -7,6 +7,7 @@ import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:wtf_web/model/post_order_id.dart';
+import 'package:wtf_web/razor_pay/example.dart';
 import 'package:wtf_web/screens/membership_details/bloc/membership_details_bloc.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/service/payment_service.dart';
@@ -244,7 +245,7 @@ class _PaymentModeState extends State<PaymentMode> {
                           onTap: () {
                             print('========>getting start your payment');
                             // openCheckout();
-                            // Navigator.pushNamed(context, RazorPayWeb.routeName);
+                            Navigator.pushNamed(context, RazorPayWeb.routeName);
                             // void toastMessage(bool success) {
                             //   ScaffoldMessenger.of(context)
                             //     ..removeCurrentSnackBar()
@@ -263,17 +264,18 @@ class _PaymentModeState extends State<PaymentMode> {
                             //     );
                             // }
                             // DBProvider().getOrderId();
-                            PaymentService().startPayment(
-                              100,
-                              'Naresh kukreti',
-                              'kukreti12.naresh@gmail.com',
-                              () {
-                                print('payment success====>');
-                              },
-                              () {
-                                print('payment failed====>');
-                              },
-                            );
+
+                            // PaymentService().startPayment(
+                            //   100,
+                            //   'Naresh kukreti',
+                            //   'kukreti12.naresh@gmail.com',
+                            //   () {
+                            //     print('payment success====>');
+                            //   },
+                            //   () {
+                            //     print('payment failed====>');
+                            //   },
+                            // );
                           },
                           child: Container(
                             height: 66,

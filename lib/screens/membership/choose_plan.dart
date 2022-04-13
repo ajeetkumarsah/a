@@ -12,6 +12,7 @@ import 'package:wtf_web/model/membership_plan.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/gym_details/bloc/gym_details_bloc.dart';
 import 'package:wtf_web/screens/gyms/bloc/gym_bloc.dart';
+import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/membership_details/arguments/arguments.dart';
 import 'package:wtf_web/screens/membership_details/membership_details.dart';

@@ -16,6 +16,7 @@ import 'package:wtf_web/screens/onboarding/onboarding.dart';
 import 'package:wtf_web/screens/profile/profile.dart';
 import 'package:wtf_web/screens/signup/bloc/signup_bloc.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
+import 'package:wtf_web/screens/widgets/alert_flash.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/widgets/container_text_field.dart';
 import 'package:wtf_web/screens/widgets/custom_animatedswitcher.dart';
@@ -67,23 +68,31 @@ class _SignupScreenState extends State<SignupScreen> {
             setState(() {
               isOTPSent = true;
             });
-            print('got otp=======>');
 
-            if (state.otp == '1234') {
-              print('Matched otp=======>');
-            }
+            print('got otp=======>');
+            AlertFlash().showBasicsFlash(
+                context: context,
+                message:
+                    'Please enter the OTP sent to +91${mobileController.text}');
           }
           if (state is SignupSuccessState) {
             print('=========>Signup Success');
             if (state.isSuccess) {
               animatedButtonController.completed();
               animatedButtonController.reset();
+              AlertFlash()
+                  .showBasicsFlash(context: context, message: state.msg);
               Navigator.pushReplacementNamed(
                   context, OnboardingScreen.routeName);
             } else {
               animatedButtonController.reset();
-              print('=========>signup Failed');
+              AlertFlash()
+                  .showBasicsFlash(context: context, message: state.msg);
             }
+          }
+          if (state is SignupStatusState) {
+            animatedButtonController.reset();
+            AlertFlash().showBasicsFlash(context: context, message: state.msg);
           }
         },
         builder: (context, state) {
@@ -110,7 +119,6 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                             ),
                             alignment: Alignment.center,
-                            // padding: EdgeInsets.only(top: isDesktop() ? 80 : 150),
                             child: Container(
                               height: height,
                               width: double.infinity,
@@ -123,7 +131,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                     Color(0xff000000).withOpacity(0.61),
                                     Color(0xff000000)
                                   ],
-                                  // stops: [0.1, 1, 0.1],
                                 ),
                               ),
                               child: BootstrapRow(
@@ -362,31 +369,51 @@ class _SignupScreenState extends State<SignupScreen> {
                                                               }
                                                               if (state
                                                                   is PostSignupEvent) {
-                                                                return ContainerTextField(
-                                                                  width: 374,
-                                                                  controller:
-                                                                      otpController,
-                                                                  cursorColor:
-                                                                      Constants
-                                                                          .white,
-                                                                  hintText:
-                                                                      'OTP',
-                                                                  color: Color(
-                                                                          0xff424242)
-                                                                      .withOpacity(
-                                                                          0.4),
-                                                                  validator:
-                                                                      (value) {
-                                                                    if (value!
-                                                                        .isEmpty) {
-                                                                      return "Enter OTP";
-                                                                    } else if (value !=
-                                                                        _bloc
-                                                                            .otp) {
-                                                                      return 'Wrong OTP';
-                                                                    } else
-                                                                      return null;
-                                                                  },
+                                                                return Row(
+                                                                  children: [
+                                                                    ContainerTextField(
+                                                                      // constraints: ,
+                                                                      // width:
+                                                                      //     374,
+                                                                      controller:
+                                                                          otpController,
+                                                                      cursorColor:
+                                                                          Constants
+                                                                              .white,
+                                                                      hintText:
+                                                                          'OTP',
+                                                                      color: Color(
+                                                                              0xff424242)
+                                                                          .withOpacity(
+                                                                              0.4),
+                                                                      validator:
+                                                                          (value) {
+                                                                        if (value!
+                                                                            .isEmpty) {
+                                                                          return "Enter OTP";
+                                                                        } else if (value !=
+                                                                            _bloc.otp) {
+                                                                          return 'Wrong OTP';
+                                                                        } else
+                                                                          return null;
+                                                                      },
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {},
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.symmetric(horizontal: 20),
+                                                                        child:
+                                                                            Text(
+                                                                          'Resend OTP',
+                                                                          style:
+                                                                              GoogleFonts.openSans(color: Constants.primaryColor),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 );
                                                               }
                                                               return SizedBox(
@@ -587,103 +614,15 @@ class _SignupScreenState extends State<SignupScreen> {
                                                                 } else {
                                                                   animatedButtonController
                                                                       .reset();
-                                                                  Get.snackbar(
-                                                                    "Enter all the fields",
-                                                                    "Please enter the mendatories details",
-                                                                    colorText:
-                                                                        Colors
-                                                                            .white,
-                                                                    snackPosition:
-                                                                        SnackPosition
-                                                                            .BOTTOM,
-                                                                  );
+                                                                  AlertFlash().showBasicsFlash(
+                                                                      context:
+                                                                          context,
+                                                                      message:
+                                                                          'Please enter the required fields');
                                                                 }
                                                               }
                                                             },
                                                           ),
-                                                          // GestureDetector(
-                                                          //   onTap: () {
-                                                          //     // setState(() {
-                                                          //     //   index = 1;
-                                                          //     // });
-                                                          //     if (formkey
-                                                          //         .currentState!
-                                                          //         .validate()) {
-                                                          //       _bloc.add(
-                                                          //         PostSignupEvent(
-                                                          //           signupDetails:
-                                                          //               SignupModel(
-                                                          //             name: fullNameController
-                                                          //                 .text,
-                                                          //             email: emailController
-                                                          //                 .text,
-                                                          //             mobile: mobileController
-                                                          //                 .text,
-                                                          //             password:
-                                                          //                 passwordController
-                                                          //                     .text,
-                                                          //             accountType:
-                                                          //                 'member',
-                                                          //             status:
-                                                          //                 'active',
-                                                          //             referralCode:
-                                                          //                 '',
-                                                          //             deviceDetails: [],
-                                                          //           ),
-                                                          //         ),
-                                                          //       );
-                                                          //     }
-                                                          //   },
-                                                          //   child: Container(
-                                                          //     // width: 374,
-                                                          //     constraints:
-                                                          //         BoxConstraints(
-                                                          //             minWidth:
-                                                          //                 200,
-                                                          //             maxWidth:
-                                                          //                 374),
-                                                          //     height: 58,
-                                                          //     margin: EdgeInsets
-                                                          //         .symmetric(
-                                                          //             horizontal:
-                                                          //                 30),
-                                                          //     decoration: BoxDecoration(
-                                                          //         borderRadius:
-                                                          //             BorderRadius
-                                                          //                 .circular(
-                                                          //                     6.0),
-                                                          //         color: Constants
-                                                          //             .primaryColor),
-                                                          //     padding: EdgeInsets
-                                                          //         .symmetric(
-                                                          //             horizontal:
-                                                          //                 12.0),
-                                                          //     child: Center(
-                                                          //       child:
-                                                          //           AdaptiveText(
-                                                          //         text:
-                                                          //             'Signup',
-                                                          //         minFontSize:
-                                                          //             14,
-                                                          //         align: TextAlign
-                                                          //             .center,
-                                                          //         style: GoogleFonts
-                                                          //             .openSans(
-                                                          //           fontSize:
-                                                          //               18,
-                                                          //           fontWeight:
-                                                          //               FontWeight
-                                                          //                   .w600,
-                                                          //           fontStyle:
-                                                          //               FontStyle
-                                                          //                   .normal,
-                                                          //           color: Constants
-                                                          //               .white,
-                                                          //         ),
-                                                          //       ),
-                                                          //     ),
-                                                          //   ),
-                                                          // ),
                                                         ],
                                                       ),
                                                     ],

@@ -66,20 +66,20 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     print('User Profile Saved after Signup============>');
   }
 
+  // void _signupStatus({required ApiResponse apiResponse}) {
+  //   bool isTrue = apiResponse.finalData['status'];
+  //   if (isTrue) {
+  //     add(SignupSuccessEvent(
+  //         isSuccess: true, msg: apiResponse.finalData['message']));
+
+  //     _saveUserProfile(apiResponse: apiResponse);
+  //   } else {
+  //     add(SignupSuccessEvent(
+  //         isSuccess: false, msg: apiResponse.finalData['message']));
+  //   }
+  // }
+
   void _signupStatus({required ApiResponse apiResponse}) {
-    bool isTrue = apiResponse.finalData['status'];
-    if (isTrue) {
-      add(SignupSuccessEvent(
-          isSuccess: true, msg: apiResponse.finalData['message']));
-
-      _saveUserProfile(apiResponse: apiResponse);
-    } else {
-      add(SignupSuccessEvent(
-          isSuccess: false, msg: apiResponse.finalData['message']));
-    }
-  }
-
-  void _loginStatus({required ApiResponse apiResponse}) {
     bool isTrue = apiResponse.finalData['status'];
 
     if (isTrue) {
@@ -87,7 +87,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
           SignupResponse.fromJson(apiResponse.finalData['data']);
 
       add(SignupStatusEvent(
-          isSuccess: true, msg: 'Successful', signupResponse: _signupRespose));
+          isSuccess: true,
+          msg: apiResponse.finalData['message'],
+          signupResponse: _signupRespose));
 
       _saveUserProfile(apiResponse: apiResponse);
     } else {

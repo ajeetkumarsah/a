@@ -13,6 +13,7 @@ import 'package:wtf_web/model/add_membership.dart';
 import 'package:wtf_web/model/diet.dart';
 import 'package:wtf_web/model/onboarding4.dart';
 import 'package:wtf_web/new/responsive.dart';
+import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/onboarding/bloc/onboarding_bloc.dart';
 import 'package:wtf_web/screens/package/flutter_fluid_slider.dart';

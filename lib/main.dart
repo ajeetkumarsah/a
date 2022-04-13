@@ -14,6 +14,7 @@ import 'package:wtf_web/screens/order_summary/order_summary.dart';
 import 'package:wtf_web/screens/profile/profile.dart';
 import 'package:wtf_web/screens/signup/signup.dart';
 import 'package:wtf_web/screens/splash/splash_screen.dart';
+import 'package:wtf_web/screens/thanks/thanks.dart';
 import 'package:wtf_web/screens/widgets/custom_loader.dart';
 import 'package:wtf_web/session_manager/session_manager.dart';
 
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         MembershipDetails.routeName: (context) => const MembershipDetails(),
         // RazorPay.routeName: (context) => RazorPay(),
         RazorPayWeb.routeName: (context) => RazorPayWeb(),
+        ThanksScreen.routeName: (context) => ThanksScreen(),
       },
     );
   }

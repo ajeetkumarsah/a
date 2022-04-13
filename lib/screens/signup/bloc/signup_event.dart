@@ -28,7 +28,6 @@ class FetchOtpEvent extends SignupEvent {
 
   FetchOtpEvent({required this.otp});
   @override
-  // TODO: implement props
   List<Object?> get props => [this.otp];
 }
 

@@ -8,10 +8,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/package/animated_button.dart';
+import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/login/bloc/login_bloc.dart';
 import 'package:wtf_web/screens/signup/signup.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
+import 'package:wtf_web/screens/widgets/alert_flash.dart';
 import 'package:wtf_web/screens/widgets/container_text_field.dart';
 import 'package:wtf_web/utils/const.dart';
 import 'package:wtf_web/utils/custom_painter.dart';
@@ -58,12 +60,25 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginStatusState) {
             if (state.isSuccess) {
               animatedButtonController.completed();
-
               animatedButtonController.reset();
-              Navigator.pushReplacementNamed(context, LandingScreen.routeName,
-                  arguments: LandingPageArgumnet(userLoggedIn: true));
+              AlertFlash().showBasicsFlash(
+                context: context,
+                message: state.msg,
+                backgroundColor: Constants.white,
+                textColor: Constants.black,
+              );
+              WidgetsBinding.instance!.addPostFrameCallback(
+                (_) {
+                  if (true) {
+                    Navigator.pushReplacementNamed(
+                        context, LandingScreen.routeName,
+                        arguments: LandingPageArgumnet(userLoggedIn: true));
+                  }
+                },
+              );
             } else {
-              print('=========>Login Failed');
+              animatedButtonController.reset();
+              AlertFlash().showMessage(message: state.msg, context: context);
             }
           }
         },
@@ -243,13 +258,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                               } else {
                                                 animatedButtonController
                                                     .reset();
-                                                Get.snackbar(
-                                                  "Wrong email or password!",
-                                                  "Please enter the correct email and password",
-                                                  colorText: Colors.white,
-                                                  snackPosition:
-                                                      SnackPosition.BOTTOM,
-                                                );
+                                                if (emailController
+                                                    .text.isEmpty) {
+                                                  AlertFlash().showMessage(
+                                                      message: 'Enter email!',
+                                                      context: context);
+                                                } else if (passwordController
+                                                    .text.isEmpty) {
+                                                  AlertFlash().showMessage(
+                                                      message:
+                                                          'Enter password!',
+                                                      context: context);
+                                                } else
+                                                  AlertFlash().showMessage(
+                                                      message:
+                                                          'Wrong email or password!',
+                                                      context: context);
                                               }
                                             },
                                           ),
@@ -305,32 +329,43 @@ class _LoginScreenState extends State<LoginScreen> {
                                           //     ),
                                           //   ),
                                           // ),
-                                          Container(
-                                            width: 420,
-                                            height: 58,
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 12.0, horizontal: 32),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(6.0),
-                                              border: Border.all(
-                                                  width: 2,
-                                                  color:
-                                                      Constants.primaryColor),
-                                              // color: Color(0xff424242).withOpacity(0.4),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 12.0),
-                                            child: Center(
-                                              child: AdaptiveText(
-                                                text: 'Login with Email',
-                                                minFontSize: 14,
-                                                align: TextAlign.center,
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontStyle: FontStyle.normal,
-                                                  color: Constants.white,
+                                          GestureDetector(
+                                            onTap: () {
+                                              AlertFlash().showBasicsFlash(
+                                                  context: context,
+                                                  message: 'Coming soon!');
+                                              // AlertFlash().showMessage(
+                                              //     message: 'Coming soon!',
+                                              //     context: context);
+                                            },
+                                            child: Container(
+                                              width: 420,
+                                              height: 58,
+                                              margin: EdgeInsets.symmetric(
+                                                  vertical: 12.0,
+                                                  horizontal: 32),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color:
+                                                        Constants.primaryColor),
+                                                // color: Color(0xff424242).withOpacity(0.4),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 12.0),
+                                              child: Center(
+                                                child: AdaptiveText(
+                                                  text: 'Login with Email',
+                                                  minFontSize: 14,
+                                                  align: TextAlign.center,
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontStyle: FontStyle.normal,
+                                                    color: Constants.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),

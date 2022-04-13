@@ -44,7 +44,7 @@ class DBProvider {
     final response = await http.post(
         Uri.parse(AppConstants.BASE_URL_DEV + AppConstants.SEND_OTP_URL),
         body: {"mobile": mobile});
-
+    print('OTP API Response===========>' + response.body.toString());
     if (response.statusCode == 200) {
       return ApiResponse(
           finalData: jsonDecode(response.body),
@@ -52,7 +52,12 @@ class DBProvider {
           networkStatus: false,
           status: false);
     } else {
-      throw Exception('Failed to load post');
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Error',
+          networkStatus: false,
+          status: false);
+      // throw Exception('Failed to load post');
     }
   }
 
@@ -125,7 +130,12 @@ class DBProvider {
           networkStatus: false,
           status: false);
     } else {
-      throw Exception('Failed to load post');
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Failed to login!',
+          networkStatus: false,
+          status: false);
+      // throw Exception('Failed to load post');
     }
   }
 
@@ -152,20 +162,28 @@ class DBProvider {
       body: params,
     );
 
-    logIn(
-        firstData: userDetails.email ?? '',
-        authenticator: userDetails.password ?? '');
     // SessionManager.KEY_AUTH_TOKEN =;
     print('API response Signup Body========>${response.body.toString()}');
 
     if (response.statusCode == 200) {
+      if (jsonDecode(response.body)['status' as bool == true]) {
+        print('Calling Login API=======>');
+        logIn(
+            firstData: userDetails.email ?? '',
+            authenticator: userDetails.password ?? '');
+      }
       return ApiResponse(
           finalData: jsonDecode(response.body),
           error: 'Success',
           networkStatus: false,
           status: false);
     } else {
-      throw Exception('Failed to load post');
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Failed to Signup!',
+          networkStatus: false,
+          status: false);
+      // throw Exception('Failed to load post');
     }
   }
 
