@@ -163,11 +163,10 @@ class DBProvider {
     );
 
     // SessionManager.KEY_AUTH_TOKEN =;
-    print('API response Signup Body========>${response.body.toString()}');
+    // print('API response Signup Body========>${response.body.toString()}');
 
     if (response.statusCode == 200) {
-      if (jsonDecode(response.body)['status' as bool == true]) {
-        print('Calling Login API=======>');
+      if (jsonDecode(response.body)['status'] as bool == true) {
         logIn(
             firstData: userDetails.email ?? '',
             authenticator: userDetails.password ?? '');
@@ -228,7 +227,7 @@ class DBProvider {
       body: params,
     );
 
-    print('API response add member========>' + response.body.toString());
+    // print('API response add member========>' + response.body.toString());
 
     if (response.statusCode == 200) {
       return ApiResponse(
@@ -265,8 +264,8 @@ class DBProvider {
     var _token = await sessionManager.getToken();
     var _id = await sessionManager.getId();
 
-    print('API response Bearer tocken========>' + _token.toString());
-    print('API response Id========>' + _id.toString());
+    // print('API response Bearer tocken========>' + _token.toString());
+    // print('API response Id========>' + _id.toString());
     Map<String, dynamic> mainBody = {
       "gym_id": "GLKdIYAWDS2Q8",
       "user_id": _id.toString(),
@@ -295,7 +294,7 @@ class DBProvider {
       "value": mainBody.toString()
     };
 
-    print('API response Get order id========>');
+    // print('API response Get order id========>');
     Map<String, String> mapHeader = Map();
     mapHeader["Authorization"] = "Bearer " + _token;
     final response = await http.post(
@@ -306,7 +305,7 @@ class DBProvider {
       body: params,
     );
 
-    print('API response Order iD========>' + response.body.toString());
+    // print('API response Order iD========>' + response.body.toString());
 
     if (response.statusCode == 200) {
       // if (jsonDecode(response.body)['status'] as bool == true) {

@@ -64,19 +64,15 @@ class _SignupScreenState extends State<SignupScreen> {
           if (state is FetchOtpState) {
             animatedButtonController.reset();
             _bloc.otp = state.otp;
-
             setState(() {
               isOTPSent = true;
             });
-
-            print('got otp=======>');
             AlertFlash().showBasicsFlash(
                 context: context,
                 message:
                     'Please enter the OTP sent to +91${mobileController.text}');
           }
-          if (state is SignupSuccessState) {
-            print('=========>Signup Success');
+          if (state is SignupStatusState) {
             if (state.isSuccess) {
               animatedButtonController.completed();
               animatedButtonController.reset();
@@ -85,14 +81,11 @@ class _SignupScreenState extends State<SignupScreen> {
               Navigator.pushReplacementNamed(
                   context, OnboardingScreen.routeName);
             } else {
+              isOTPSent = false;
               animatedButtonController.reset();
               AlertFlash()
                   .showBasicsFlash(context: context, message: state.msg);
             }
-          }
-          if (state is SignupStatusState) {
-            animatedButtonController.reset();
-            AlertFlash().showBasicsFlash(context: context, message: state.msg);
           }
         },
         builder: (context, state) {

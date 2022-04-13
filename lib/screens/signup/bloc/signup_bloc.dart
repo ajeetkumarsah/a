@@ -49,6 +49,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
       if (event is FetchSignupEvent) {
         emit(FetchSignupState(id: event.id));
       }
+      if (event is SignupStatusEvent) {
+        emit(SignupStatusState(
+            isSuccess: event.isSuccess,
+            msg: event.msg,
+            signupResponse: event.signupResponse));
+      }
       if (event is SignupSuccessEvent) {
         emit(SignupSuccessState(isSuccess: event.isSuccess, msg: event.msg));
       }
@@ -56,14 +62,14 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   }
   void _convertOtp({required ApiResponse apiResponse}) {
     var _otp = apiResponse.finalData['data']['otp'];
-    print('Sent OTP================>' + otp.toString());
+    // print('Sent OTP================>' + otp.toString());
     add(FetchOtpEvent(otp: _otp));
   }
 
   void _saveUserProfile({required ApiResponse apiResponse}) async {
     SessionManager sessionManager = await SessionManager.getInstance();
     // sessionManager.saveProfile(authToken: '', id: '');
-    print('User Profile Saved after Signup============>');
+    // print('User Profile Saved after Signup============>');
   }
 
   // void _signupStatus({required ApiResponse apiResponse}) {
@@ -80,9 +86,12 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   // }
 
   void _signupStatus({required ApiResponse apiResponse}) {
-    bool isTrue = apiResponse.finalData['status'];
+    // print('before =>Inside Signup status ==========>');
+    bool isTrue = apiResponse.finalData['status'] as bool;
+    // print('=>Inside Signup status ==========>');
 
     if (isTrue) {
+      // print('=>Inside Signup status  true==========>');
       SignupResponse _signupRespose =
           SignupResponse.fromJson(apiResponse.finalData['data']);
 
@@ -93,6 +102,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
 
       _saveUserProfile(apiResponse: apiResponse);
     } else {
+      // print('=>Inside Signup status false==========>');
       add(
         SignupStatusEvent(
             isSuccess: false,
