@@ -11,6 +11,7 @@ import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/components/header.dart';
 import 'package:wtf_web/screens/login/login.dart';
 import 'package:wtf_web/screens/login/login_signup.dart';
+import 'package:wtf_web/screens/onboarding/onboarding.dart';
 import 'package:wtf_web/screens/order_summary/order_summary.dart';
 import 'package:wtf_web/screens/profile/profile.dart';
 import 'package:wtf_web/screens/signup/signup.dart';
@@ -78,7 +79,7 @@ class _LandingScreenState extends State<LandingScreen>
     LandingPageArgumnet args =
         ModalRoute.of(context)!.settings.arguments as LandingPageArgumnet;
     List<Widget> pages = [
-      const FitnessCenter(),
+      const OnboardingScreen(),
       const NutritionScreen(),
       const GymScreen(),
       const PartnerScreen(),

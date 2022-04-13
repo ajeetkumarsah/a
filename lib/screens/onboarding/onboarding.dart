@@ -1,6 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flash/flash.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,6 +21,7 @@ import 'package:wtf_web/screens/landing/landing_screen.dart';
 import 'package:wtf_web/screens/onboarding/bloc/onboarding_bloc.dart';
 import 'package:wtf_web/screens/package/flutter_fluid_slider.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
+import 'package:wtf_web/screens/widgets/alert_flash.dart';
 import 'package:wtf_web/screens/widgets/bottom_bar.dart';
 import 'package:wtf_web/screens/widgets/container_text_field.dart';
 import 'package:wtf_web/screens/widgets/custom_dropdown.dart';
@@ -38,13 +42,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   bool isDesktop() => Responsive.isDesktop(context);
   bool isMobile() => Responsive.isMobile(context);
   List<String> icons = [];
-  double _value = 0.0;
+  double _value = 0.3;
   int selected = 0;
   bool smoke = false, drink = false;
   List<String> selectAge =
       new List<String>.generate(100, (i) => (i + 1).toString());
   List<String> selectHeight =
       new List<String>.generate(100, (i) => (i + 1).toString());
+  var editingController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -111,7 +116,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       userWeight = 'Weight in kg',
       userGender = 'Gender',
       userTargetWeight = 'Target weight in kg',
-      userExperience = 'Workout Experience';
+      userExperience = 'Workout Experience',
+      other = '';
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -136,22 +142,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           // }
         }
       }, builder: (context, state) {
-        return Scaffold(
-          backgroundColor: Constants.black,
-          body: Container(
-            height: height,
-            // width: double.infinity,
-            child: PageView.builder(
-              controller: controller,
-              // pageSnapping: false,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: pages.length,
-              itemBuilder: (_, index) {
-                return baseContainer(
-                    height: height, icon: icons[index], child: pages[index]);
-              },
-            ),
+        return
+            // Scaffold(
+            //   backgroundColor: Constants.black,
+            //   body:
+            Container(
+          height: height,
+          // width: double.infinity,
+          child: PageView.builder(
+            controller: controller,
+            // pageSnapping: false,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: pages.length,
+            itemBuilder: (_, index) {
+              return baseContainer(
+                  height: height, icon: icons[index], child: pages[index]);
+            },
           ),
+          // ),
         );
       }),
     );
@@ -383,9 +391,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  controller.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.bounceInOut);
+                  if (userAge != 'Select your age' &&
+                      userBodyType != 'Select your body Type' &&
+                      userHeight != 'Height in cm' &&
+                      userWeight != 'Weight in kg' &&
+                      userGender != 'Gender' &&
+                      userTargetWeight != 'Target weight in kg' &&
+                      userExperience != 'Workout Experience') {
+                    controller.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.bounceInOut);
+                  } else {
+                    AlertFlash().showBasicsFlash(
+                        context: context,
+                        message: 'Please select all the required fields');
+                  }
                 },
                 child: Container(
                   height: 46,
@@ -524,7 +544,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   SizedBox(
                     width: width * 0.4,
                     child: Wrap(
-                      spacing: 8, runSpacing: 12,
+                      spacing: 8,
+                      runSpacing: 12,
                       runAlignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       alignment: WrapAlignment.center,
@@ -552,56 +573,65 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                       color: Constants.white)),
                             ),
                             onTap: () {
-                              print('Condition called ====>');
                               if (index == condition.length - 2) {
-                                showBottomSheet(
-                                    context: context,
-                                    builder: (context) {
-                                      return Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ContainerTextField(
-                                              width: 374,
-                                              cursorColor: Constants.white,
-                                              // controller: ,
-                                              color: Color(0xff424242)
-                                                  .withOpacity(0.4),
-                                              hintText: 'Enter your condition'),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Container(
-                                                    color: Constants.grey,
-                                                    height: 50,
-                                                    child: Center(
-                                                      child: Text('Cancel'),
-                                                    )),
-                                              ),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  selectedItems.clear();
-                                                  selectedItems
-                                                      .add(condition[index]);
-                                                  setState(() {});
-                                                },
-                                                child: Container(
-                                                    height: 50,
-                                                    color:
-                                                        Constants.primaryColor,
-                                                    child: Center(
-                                                      child: Text('Ok'),
-                                                    )),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      );
+                                context.showFlashDialog(
+                                    backgroundColor: Constants.blackCardColor,
+                                    constraints: BoxConstraints(maxWidth: 300),
+                                    persistent: true,
+                                    title: Text(
+                                      'Please enter Other reason',
+                                      style: GoogleFonts.openSans(
+                                          color: Constants.white),
+                                    ),
+                                    content: Form(
+                                      child: TextFormField(
+                                        cursorColor: Colors.white,
+                                        controller: editingController,
+                                        style: GoogleFonts.openSans(
+                                            color: Colors.white),
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none),
+                                        autofocus: true,
+                                      ),
+                                    ),
+                                    negativeActionBuilder:
+                                        (context, controller, _) {
+                                      return FlatButton(
+                                          color: Constants.white,
+                                          onPressed: () {
+                                            controller.dismiss();
+                                          },
+                                          child: Text(
+                                            'Cancel',
+                                            style: GoogleFonts.openSans(
+                                                color: Constants.redIconColor),
+                                          ));
+                                    },
+                                    positiveActionBuilder:
+                                        (context, controller, _) {
+                                      return FlatButton(
+                                          color: Constants.redIconColor,
+                                          onPressed: () {
+                                            if (editingController
+                                                .text.isNotEmpty) {
+                                              selectedItems.clear();
+                                              selectedItems
+                                                  .add(condition[index]);
+
+                                              setState(() {});
+                                              controller.dismiss();
+                                            } else {
+                                              AlertFlash().showBasicsFlash(
+                                                  context: context,
+                                                  message:
+                                                      'Please enter your medical condition');
+                                            }
+                                          },
+                                          child: Text(
+                                            'Next',
+                                            style: GoogleFonts.openSans(
+                                                color: Constants.white),
+                                          ));
                                     });
                               } else if (index == condition.length - 1) {
                                 selectedItems.clear();
@@ -628,21 +658,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           );
                         },
                       ),
-                      //  [
-                      // Container(
-                      //   padding:
-                      //       EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                      //   decoration: BoxDecoration(
-                      //       color: Constants.primaryColor,
-                      //       borderRadius: BorderRadius.circular(4)),
-                      //   child: Center(
-                      //       child: Text(
-                      //         'Diabeties',
-                      //         style: TextStyle(color: Constants.white),
-                      //       ),
-                      //     ),
-                      //   )
-                      // ],
                     ),
                   )
                 ],
@@ -673,9 +688,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  controller.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.bounceInOut);
+                  if (selectedItems.isEmpty) {
+                    AlertFlash().showBasicsFlash(
+                        context: context,
+                        message: 'Please select your medical condition');
+                  } else
+                    controller.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.bounceInOut);
                 },
                 child: Container(
                   height: 46,
@@ -946,9 +966,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  controller.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.bounceInOut);
+                  if (selectedFitnessGoal == null) {
+                    AlertFlash().showBasicsFlash(
+                        context: context,
+                        message: 'Please select your Fitness goal');
+                  } else if (selectedDiet == null) {
+                    AlertFlash().showBasicsFlash(
+                        context: context,
+                        message: 'Please select your Diet preference');
+                  } else
+                    controller.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.bounceInOut);
                 },
                 child: Container(
                   height: 46,

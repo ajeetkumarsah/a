@@ -84,19 +84,103 @@ class AlertFlash {
     );
   }
 
-  void showDialogFlash(
-      {bool persistent = true, required BuildContext context}) {
+  // void showDialogFlash(
+  //     {bool persistent = true, required BuildContext context}) {
+  //   context.showFlashDialog(
+  //       constraints: BoxConstraints(maxWidth: 300),
+  //       persistent: persistent,
+  //       title: Text('Flash Dialog'),
+  //       content: Text(
+  //           '⚡️A highly customizable, powerful and easy-to-use alerting library for Flutter.'),
+  //       negativeActionBuilder: (context, controller, _) {
+  //         return SizedBox();
+  //       },
+  //       positiveActionBuilder: (context, controller, _) {
+  //         return SizedBox();
+  //       });
+  // }
+
+  void showInputDialogFlash(
+      {bool persistent = true,
+      required BuildContext context,
+      required void Function()? onPressed,
+      required Widget content}) {
     context.showFlashDialog(
+        backgroundColor: Constants.blackCardColor,
         constraints: BoxConstraints(maxWidth: 300),
         persistent: persistent,
-        title: Text('Flash Dialog'),
-        content: Text(
-            '⚡️A highly customizable, powerful and easy-to-use alerting library for Flutter.'),
+        title: Text(
+          'Please enter Other reason',
+          style: GoogleFonts.openSans(color: Constants.white),
+        ),
+        content: content,
+        // Form(
+        //   child: TextFormField(
+        //     cursorColor: Colors.white,
+        //     controller: editingController,
+        //     style: GoogleFonts.openSans(color: Colors.white),
+        //     decoration: InputDecoration(border: InputBorder.none),
+        //     autofocus: true,
+        //   ),
+        // ),
         negativeActionBuilder: (context, controller, _) {
-          return SizedBox();
+          return FlatButton(
+              color: Constants.white,
+              onPressed: () {
+                controller.dismiss();
+              },
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.openSans(color: Constants.redIconColor),
+              ));
         },
         positiveActionBuilder: (context, controller, _) {
-          return SizedBox();
+          return FlatButton(
+              color: Constants.redIconColor,
+              onPressed: onPressed,
+              //  () {
+              //   controller.dismiss();
+              // },
+              child: Text(
+                'Next',
+                style: GoogleFonts.openSans(color: Constants.white),
+              ));
         });
+  }
+
+  void showInputFlash(
+      {bool persistent = true,
+      WillPopCallback? onWillPop,
+      Color? barrierColor,
+      required BuildContext context}) {
+    var editingController = TextEditingController();
+    showFlash(
+      context: context,
+      duration: Duration(seconds: 3),
+      builder: (_, controller) {
+        return Flash(
+          margin: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.6,
+              top: 20,
+              right: 20),
+          // alignment: Alignment.topRight,
+          backgroundColor: Constants.black,
+          borderRadius: BorderRadius.circular(4),
+          controller: controller,
+
+          position: FlashPosition.top,
+          behavior: FlashBehavior.fixed,
+          child: FlashBar(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            content: Form(
+              child: TextFormField(
+                controller: editingController,
+                autofocus: true,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
