@@ -16,8 +16,11 @@ class AppConstants {
   static const String ADD_MEMBERSHIP = '/member/add';
   static const String SEND_OTP_URL = '/user/mobile/otp';
   static const String GET_ORDER_ID = '/transaction/get_order_id';
-
   static const String VERIFY_PAYMENT_URL = '/subscription/verifyPayment';
+  static String GET_MEMBER_INFO_URL(String id) => '/member/id/$id';
+  static String GET_USER_PROFILE_URL(String id) => '/user/id/$id';
+  static String GET_TYPE1_TYPE2(String type) =>
+      '/diettype/getall?page=1&type=$type';
 
   static const String BANNER_URI = '';
 }

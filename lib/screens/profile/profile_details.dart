@@ -1,18 +1,21 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:collapsible_sidebar/collapsible_sidebar.dart';
 import 'package:cupertino_tabbar/cupertino_tabbar.dart' as CupertinoTabBar;
 import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wtf_web/model/member_info.dart';
+import 'package:wtf_web/model/user_profile.dart';
 import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
-import 'package:wtf_web/screens/onboarding/onboarding.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/session_manager/session_manager.dart';
 import 'package:wtf_web/utils/const.dart';
 
 class ProfileDetails extends StatefulWidget {
-  const ProfileDetails({Key? key}) : super(key: key);
+  final UserProfile userInfo;
+  const ProfileDetails({Key? key, required this.userInfo}) : super(key: key);
 
   @override
   State<ProfileDetails> createState() => _ProfileDetailsState();
@@ -21,6 +24,8 @@ class ProfileDetails extends StatefulWidget {
 class _ProfileDetailsState extends State<ProfileDetails> {
   int cupertinoTabBarIIIValue = 0;
   int cupertinoTabBarIIIValueGetter() => cupertinoTabBarIIIValue;
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     SessionManager sessionManager = SessionManager.getInstance();
@@ -45,7 +50,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         height: 789,
                         width: 1080,
                         margin: EdgeInsets.only(top: 54),
-                        // padding: EdgeInsets.all(32),
+                        padding: EdgeInsets.only(top: 160, bottom: 52),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           color: Color(0xff922224),
@@ -53,6 +58,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             AdaptiveText(
                               text: 'Update',
@@ -66,7 +72,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                               ),
                             ),
                             AdaptiveText(
-                              text: 'Karanjeet Singh dhillon',
+                              text: '${widget.userInfo.name}',
                               minFontSize: 14,
                               align: TextAlign.center,
                               style: GoogleFonts.openSans(
@@ -76,6 +82,53 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                                 color: Constants.white,
                               ),
                             ),
+                            Spacer(),
+                            Wrap(
+                              direction: Axis.vertical,
+                              spacing: 14,
+                              runSpacing: 14,
+                              alignment: WrapAlignment.center,
+                              crossAxisAlignment: WrapCrossAlignment.start,
+                              children: [
+                                profileTabItem(
+                                  title: 'My Profile',
+                                  index: 0,
+                                  leading:
+                                      Image.asset('assets/profile/profile.png'),
+                                ),
+                                profileTabItem(
+                                  title: 'Shift Trainer',
+                                  index: 1,
+                                  leading:
+                                      Image.asset('assets/profile/trainer.png'),
+                                ),
+                                profileTabItem(
+                                  title: 'Notifications',
+                                  index: 2,
+                                  leading: Image.asset(
+                                      'assets/profile/notification.png'),
+                                ),
+                                profileTabItem(
+                                  title: 'Subscription',
+                                  index: 3,
+                                  leading: Image.asset(
+                                      'assets/profile/subscription.png'),
+                                ),
+                                profileTabItem(
+                                  title: 'Transactions',
+                                  index: 4,
+                                  leading: Image.asset(
+                                      'assets/profile/transaction.png'),
+                                ),
+                                profileTabItem(
+                                  title: 'Logout',
+                                  index: 5,
+                                  leading:
+                                      Image.asset('assets/profile/logout.png'),
+                                ),
+                              ],
+                            ),
+                            Spacer()
                           ],
                         ),
                       ),
@@ -92,10 +145,13 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                             print('======>cleared');
                           },
                           child: Container(
-                            height: 108,
-                            width: 108,
+                            height: 160,
+                            width: 160,
                             decoration: BoxDecoration(
                                 color: Constants.white,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/profile/man.png')),
                                 borderRadius: BorderRadius.circular(90)),
                           ),
                         ),
@@ -235,6 +291,46 @@ class _ProfileDetailsState extends State<ProfileDetails> {
           ],
         ),
       ],
+    );
+  }
+
+  Widget profileTabItem(
+      {required String title, Widget? leading, required int index}) {
+    return GestureDetector(
+      onTap: () {
+        //
+        _selectedIndex = index;
+        setState(() {});
+      },
+      child: Container(
+        height: 40,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        decoration: BoxDecoration(
+          color: index == _selectedIndex ? Color(0xffE25252) : null,
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            leading != null
+                ? leading
+                : Icon(Icons.person, color: Constants.white),
+            SizedBox(width: 12),
+            AdaptiveText(
+              text: title,
+              minFontSize: 14,
+              align: TextAlign.center,
+              style: GoogleFonts.openSans(
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.normal,
+                color: Constants.white,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

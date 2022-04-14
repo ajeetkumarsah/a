@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:wtf_web/db/api_response.dart';
 import 'package:wtf_web/model/add_membership.dart';
 import 'package:wtf_web/model/login.dart';
+import 'package:wtf_web/model/member_info.dart';
 import 'package:wtf_web/model/post_order_id.dart';
 import 'package:wtf_web/model/signup.dart';
 import 'package:wtf_web/service/payment_service.dart';
+import 'package:wtf_web/session_manager/global_data.dart';
 import 'package:wtf_web/session_manager/session_manager.dart';
 import 'package:wtf_web/utils/app_const.dart';
 import 'package:http/http.dart' as http;
@@ -264,8 +266,6 @@ class DBProvider {
     var _token = await sessionManager.getToken();
     var _id = await sessionManager.getId();
 
-    // print('API response Bearer tocken========>' + _token.toString());
-    // print('API response Id========>' + _id.toString());
     Map<String, dynamic> mainBody = {
       "gym_id": "GLKdIYAWDS2Q8",
       "user_id": _id.toString(),
@@ -294,7 +294,6 @@ class DBProvider {
       "value": mainBody.toString()
     };
 
-    // print('API response Get order id========>');
     Map<String, String> mapHeader = Map();
     mapHeader["Authorization"] = "Bearer " + _token;
     final response = await http.post(
@@ -305,13 +304,7 @@ class DBProvider {
       body: params,
     );
 
-    // print('API response Order iD========>' + response.body.toString());
-
     if (response.statusCode == 200) {
-      // if (jsonDecode(response.body)['status'] as bool == true) {
-      //   //
-
-      // }
       return ApiResponse(
           finalData: jsonDecode(response.body),
           error: 'Success',
@@ -319,6 +312,81 @@ class DBProvider {
           status: false);
     } else {
       throw Exception('Failed to load post');
+    }
+  }
+
+  Future<ApiResponse> getUserInfo() async {
+    SessionManager sessionManager = await SessionManager.getInstance();
+
+    var _token = await sessionManager.getToken();
+    var _id = await sessionManager.getId();
+    Map<String, String> mapHeader = Map();
+    mapHeader["Authorization"] = "Bearer " + _token;
+
+    final memberResponse = await http.get(
+        Uri.parse(
+            AppConstants.BASE_URL_DEV + AppConstants.GET_MEMBER_INFO_URL(_id)),
+        headers: mapHeader);
+    if (memberResponse.statusCode == 200) {
+      //
+      print('Inside Member Info====>');
+      MemberInfo _memberInfo =
+          MemberInfo.fromJson(jsonDecode(memberResponse.body)['data']);
+
+      globalData.setMemberInfo = _memberInfo;
+      print('After Member Info====>');
+    } else {
+      print('Inside Member Info else====>');
+      //
+    }
+
+    final response = await http.get(
+        Uri.parse(
+            AppConstants.BASE_URL_DEV + AppConstants.GET_USER_PROFILE_URL(_id)),
+        headers: mapHeader);
+    print('==========>Profile API response:' + response.body.toString());
+    if (response.statusCode == 200) {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Success',
+          networkStatus: false,
+          status: false);
+    } else {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: jsonDecode(response.body)['message'],
+          networkStatus: false,
+          status: false);
+      // throw Exception('Failed to load post');
+    }
+  }
+
+  Future<ApiResponse> getType1Type2({required String type}) async {
+    SessionManager sessionManager = await SessionManager.getInstance();
+
+    var _token = await sessionManager.getToken();
+    var _id = await sessionManager.getId();
+    Map<String, String> mapHeader = Map();
+    mapHeader["Authorization"] = "Bearer " + _token;
+
+    final response = await http.get(
+        Uri.parse(
+            AppConstants.BASE_URL_DEV + AppConstants.GET_TYPE1_TYPE2(type)),
+        headers: mapHeader);
+    print('==========>getType1Type2 API response:' + response.body.toString());
+    if (response.statusCode == 200) {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Success',
+          networkStatus: false,
+          status: false);
+    } else {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: jsonDecode(response.body)['message'],
+          networkStatus: false,
+          status: false);
+      // throw Exception('Failed to load post');
     }
   }
 }

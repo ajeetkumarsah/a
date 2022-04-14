@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: Constants.white,
                 textColor: Constants.black,
               );
-              WidgetsBinding.instance!.addPostFrameCallback(
+              WidgetsBinding.instance.addPostFrameCallback(
                 (_) {
                   if (true) {
                     Navigator.pushReplacementNamed(

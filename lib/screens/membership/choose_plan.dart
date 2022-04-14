@@ -266,6 +266,8 @@ class _ChoosePlanState extends State<ChoosePlan> {
                                       SizedBox(height: 30),
                                       ListView.builder(
                                           shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           itemCount: membershipPlan.length,
                                           itemBuilder: (BuildContext? context,
                                               int index) {

@@ -32,3 +32,31 @@ class SignupSuccessEvent extends OnboardingEvent {
   @override
   List<Object> get props => [this.isSuccess, this.msg];
 }
+
+class FetchType1Event extends OnboardingEvent {
+  final String type;
+  FetchType1Event({required this.type});
+  @override
+  List<Object> get props => [this.type];
+}
+
+class FetchType2Event extends OnboardingEvent {
+  final String type;
+  FetchType2Event({required this.type});
+  @override
+  List<Object> get props => [this.type];
+}
+
+class FetchedType1Event extends OnboardingEvent {
+  final List<Type1Type2Model> type1model;
+  FetchedType1Event({required this.type1model});
+  @override
+  List<Object> get props => [this.type1model];
+}
+
+class FetchedType2Event extends OnboardingEvent {
+  final List<Type1Type2Model> type2model;
+  FetchedType2Event({required this.type2model});
+  @override
+  List<Object> get props => [this.type2model];
+}

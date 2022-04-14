@@ -29,4 +29,7 @@ class Repository {
   Future<ApiResponse> getOrderId(
           {required PostOrderIdModel postOrderIdModel}) async =>
       _dbProvider.getOrderId(postOrderIdModel: postOrderIdModel);
+  Future<ApiResponse> getUserInfo() async => _dbProvider.getUserInfo();
+  Future<ApiResponse> postType1Type2({required String type}) async =>
+      _dbProvider.getType1Type2(type: type);
 }

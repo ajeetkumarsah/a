@@ -54,13 +54,9 @@ class RazorPayWeb extends StatelessWidget {
     });
     return Scaffold(
       backgroundColor: Constants.black,
-      body: Builder(
-        builder: (BuildContext context) {
-          return Container(
-            color: Constants.black,
-            child: HtmlElementView(viewType: 'rzp-html'),
-          );
-        },
+      body: Container(
+        color: Constants.black,
+        child: HtmlElementView(viewType: 'rzp-html'),
       ),
     );
   }

@@ -15,6 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:wtf_web/model/add_membership.dart';
 import 'package:wtf_web/model/diet.dart';
 import 'package:wtf_web/model/onboarding4.dart';
+import 'package:wtf_web/model/type1_type2.dart';
 import 'package:wtf_web/new/responsive.dart';
 import 'package:wtf_web/screens/landing/argument/argument.dart';
 import 'package:wtf_web/screens/landing/landing_screen.dart';
@@ -22,22 +23,34 @@ import 'package:wtf_web/screens/onboarding/bloc/onboarding_bloc.dart';
 import 'package:wtf_web/screens/package/flutter_fluid_slider.dart';
 import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/alert_flash.dart';
-import 'package:wtf_web/screens/widgets/bottom_bar.dart';
-import 'package:wtf_web/screens/widgets/container_text_field.dart';
 import 'package:wtf_web/screens/widgets/custom_dropdown.dart';
+import 'package:wtf_web/screens/widgets/custom_loader.dart';
 import 'package:wtf_web/utils/const.dart';
 import 'package:wtf_web/utils/custom_painter.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreen extends StatelessWidget {
   static String routeName = '/OnboardingScreen';
-
   const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Constants.black,
+      body: Material(
+        child: OnboardingFlow(),
+      ),
+    );
+  }
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class OnboardingFlow extends StatefulWidget {
+  const OnboardingFlow({Key? key}) : super(key: key);
+
+  @override
+  _OnboardingFlowState createState() => _OnboardingFlowState();
+}
+
+class _OnboardingFlowState extends State<OnboardingFlow> {
   final controller = PageController(viewportFraction: 1.0, keepPage: true);
   bool isDesktop() => Responsive.isDesktop(context);
   bool isMobile() => Responsive.isMobile(context);
@@ -48,7 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   List<String> selectAge =
       new List<String>.generate(100, (i) => (i + 1).toString());
   List<String> selectHeight =
-      new List<String>.generate(100, (i) => (i + 1).toString());
+      new List<String>.generate(200, (i) => (i + 1).toString());
   var editingController = TextEditingController();
   @override
   void initState() {
@@ -60,6 +73,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'assets/signup/onboard4.png'
     ];
   }
+
+  String? bmrResult;
 
   List<Onboarding4> onboarding4 = [
     Onboarding4(
@@ -81,10 +96,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   ];
   List<DietModel> diets = [
     DietModel(
-        title: 'Vegeterian',
-        icon: 'assets/onboarding/veg.svg',
-        coloredIcon: 'assets/onboarding/Coloured_veg.svg'),
-    DietModel(
         title: 'Eggeterian',
         icon: 'assets/onboarding/egg.svg',
         coloredIcon: 'assets/onboarding/Coloured_egg.svg'),
@@ -92,6 +103,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         title: 'Non-vegeterian',
         icon: 'assets/onboarding/nonveg.svg',
         coloredIcon: 'assets/onboarding/Coloured_nonveg.svg'),
+    DietModel(
+        title: 'Vegeterian',
+        icon: 'assets/onboarding/veg.svg',
+        coloredIcon: 'assets/onboarding/Coloured_veg.svg'),
   ];
   String? selectedFitnessGoal = null, selectedDiet = null;
   List<String> fitnessGoal = ['Lean', 'Gain', 'Maintain'];
@@ -142,11 +157,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           // }
         }
       }, builder: (context, state) {
-        return
-            // Scaffold(
-            //   backgroundColor: Constants.black,
-            //   body:
-            Container(
+        return Container(
           height: height,
           // width: double.infinity,
           child: PageView.builder(
@@ -159,7 +170,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: height, icon: icons[index], child: pages[index]);
             },
           ),
-          // ),
         );
       }),
     );
@@ -768,59 +778,76 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ],
         ),
         SizedBox(height: 24),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 32,
-          runSpacing: 2,
-          children: List<Widget>.generate(
-            fitnessGoal.length,
-            (int index) {
-              bool isSelected = (selectedFitnessGoal == fitnessGoal[index]);
-              return GestureDetector(
-                onTap: () {
-                  selectedFitnessGoal = fitnessGoal[index];
-                  setState(() {});
-                },
-                child: Container(
-                  // width: 374,
-                  constraints: BoxConstraints(minWidth: 150, maxWidth: 178),
-                  height: 58,
-                  // margin: EdgeInsets.symmetric(horizontal: 30),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6.0),
-                    color:
-                        isSelected ? Constants.primaryColor : Color(0xff424242),
-                    gradient: isSelected
-                        ? LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            colors: [
-                              Color(0xFF9A0E0E),
-                              Color(0xFFDE0000),
-                            ],
-                            stops: [0.1, 1],
-                          )
-                        : null,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Center(
-                    child: AdaptiveText(
-                      text: fitnessGoal[index],
-                      minFontSize: 14,
-                      align: TextAlign.center,
-                      style: GoogleFonts.openSans(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                        color: Constants.white,
-                      ),
-                    ),
-                  ),
-                ),
-              );
+        BlocConsumer<OnboardingBloc, OnboardingState>(
+            bloc: _bloc..add(FetchType1Event(type: 'type1')),
+            listener: (context, state) {
+              if (state is FetchedType1State) {
+                _bloc.add(FetchType2Event(type: 'type2'));
+                print('<===================From State type 1===========>');
+              }
             },
-          ),
-        ),
+            builder: (context, state) {
+              if (state is FetchedType1State) {
+                List<Type1Type2Model> type1 = state.type1type2model;
+                return Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 32,
+                  runSpacing: 2,
+                  children: List<Widget>.generate(
+                    type1.length,
+                    (int index) {
+                      bool isSelected =
+                          (selectedFitnessGoal == fitnessGoal[index]);
+                      return GestureDetector(
+                        onTap: () {
+                          selectedFitnessGoal = fitnessGoal[index];
+                          setState(() {});
+                        },
+                        child: Container(
+                          // width: 374,
+                          constraints:
+                              BoxConstraints(minWidth: 150, maxWidth: 178),
+                          height: 58,
+                          // margin: EdgeInsets.symmetric(horizontal: 30),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.0),
+                            color: isSelected
+                                ? Constants.primaryColor
+                                : Color(0xff424242),
+                            gradient: isSelected
+                                ? LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xFF9A0E0E),
+                                      Color(0xFFDE0000),
+                                    ],
+                                    stops: [0.1, 1],
+                                  )
+                                : null,
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Center(
+                            child: AdaptiveText(
+                              text: type1[index].value ?? '',
+                              minFontSize: 14,
+                              align: TextAlign.center,
+                              style: GoogleFonts.openSans(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                                color: Constants.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+              return CustomLoader();
+            }),
         SizedBox(height: 32),
         AdaptiveText(
           text: 'Diet Preference',
@@ -834,56 +861,70 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ),
         SizedBox(height: 24),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 32,
-          runSpacing: 2,
-          children: List<Widget>.generate(
-            diets.length,
-            (int index) {
-              bool isSelected = (selectedDiet == diets[index].title);
-              return GestureDetector(
-                onTap: () {
-                  selectedDiet = diets[index].title;
-                  setState(() {});
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      constraints: BoxConstraints(minWidth: 60, maxWidth: 83),
-                      height: 83,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6.0),
-                      ),
-                      child: SvgPicture.asset(
-                        isSelected
-                            ? diets[index].coloredIcon
-                            : diets[index].icon,
-                        height: 83,
-                        width: 83,
-                      ),
-                    ),
-                    SizedBox(height: 12.0),
-                    AdaptiveText(
-                      text: diets[index].title,
-                      minFontSize: 10,
-                      align: TextAlign.center,
-                      style: GoogleFonts.openSans(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.normal,
-                        color: Constants.white,
-                      ),
-                    ),
-                  ],
-                ),
-              );
+        BlocConsumer<OnboardingBloc, OnboardingState>(
+            bloc: _bloc,
+            listener: (context, state) {
+              if (state is FetchedType2State) {
+                print('<===================From State type2===========>');
+              }
             },
-          ),
-        ),
+            builder: (context, state) {
+              if (state is FetchedType2State) {
+                List<Type1Type2Model> type2 = state.type1type2model;
+                return Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 32,
+                  runSpacing: 2,
+                  children: List<Widget>.generate(
+                    type2.length,
+                    (int index) {
+                      bool isSelected = (selectedDiet == diets[index].title);
+                      return GestureDetector(
+                        onTap: () {
+                          selectedDiet = diets[index].title;
+                          setState(() {});
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              constraints:
+                                  BoxConstraints(minWidth: 60, maxWidth: 83),
+                              height: 83,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              child: SvgPicture.asset(
+                                isSelected
+                                    ? diets[index].coloredIcon
+                                    : diets[index].icon,
+                                height: 83,
+                                width: 83,
+                              ),
+                            ),
+                            SizedBox(height: 12.0),
+                            AdaptiveText(
+                              text: type2[index].value ?? '',
+                              minFontSize: 10,
+                              align: TextAlign.center,
+                              style: GoogleFonts.openSans(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                                color: Constants.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+              return CustomLoader();
+            }),
         SizedBox(height: 48),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1144,7 +1185,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         targetWeight: userTargetWeight,
                         targetDuration: _value.toString(),
                         bodyType: userBodyType,
-                        existingDisease: selectedItems.join(","),
+                        existingDisease: selectedItems[0] == 'Other'
+                            ? editingController.text
+                            : selectedItems.join(","),
                         isSmoking: smoke.toString(),
                         isDrinking: drink.toString(),
                         howactive: userExperience,
@@ -1318,4 +1361,45 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ],
     );
   }
+
+  // bmrForMen(
+  //     {required BuildContext context,
+  //     required num weight,
+  //     required num height,
+  //     required num age,
+  //     bool openBmtResult = true}) {
+  //   this.weight = weight;
+  //   this.height = height;
+  //   this.age = age;
+
+  //   bmrResult = (10 * weight / 1 + 6.25 * height / 1 - 5 * age / 1 + 5)
+  //       .toStringAsFixed(2);
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     notifyListeners();
+  //   });
+  //   if (openBmtResult) {
+  //     saveProgress(context: context);
+  //   }
+  // }
+
+  // bmrForWoMen(
+  //     {required BuildContext context,
+  //     required num weight,
+  //     required num height,
+  //     required num age,
+  //     bool openBmtResult = true}) {
+  //   this.weight = weight;
+  //   this.height = height;
+  //   this.age = age;
+  //   bmrResult = (10 * weight / 1 + 6.25 * height / 1 - 5 * age / 1 - 161)
+  //       .toStringAsFixed(2);
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     notifyListeners();
+  //   });
+  //   if (openBmtResult) {
+  //     saveProgress(
+  //       context: context,
+  //     );
+  //   }
+  // }
 }

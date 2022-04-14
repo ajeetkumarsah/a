@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wtf_web/controller/menu_controller.dart';
 import 'package:wtf_web/controller/view_controller.dart';
+import 'package:wtf_web/session_manager/global_data.dart';
 import 'package:wtf_web/session_manager/session_manager.dart';
 import 'package:wtf_web/utils/const.dart';
 
@@ -85,7 +86,13 @@ class _WebMenuItemState extends State<WebMenuItem> {
             ? widget.isLoggedIn == true
                 ? BoxDecoration(
                     color: Constants.white,
-                    borderRadius: BorderRadius.circular(90))
+                    borderRadius: BorderRadius.circular(90),
+                    image: DecorationImage(
+                      image: globalData.userProfile?.profile != null
+                          ? AssetImage('assets/profile/woman.png')
+                          : AssetImage('assets/profile/man.png'),
+                    ),
+                  )
                 : BoxDecoration(
                     color: Constants.primaryColor,
                     borderRadius: BorderRadius.circular(4),
