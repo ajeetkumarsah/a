@@ -8,9 +8,18 @@ abstract class MyProfileEvent extends Equatable {
 }
 
 class FetchSubscriptionEvent extends MyProfileEvent {
-  final dynamic subscription;
+  final String type;
 
-  FetchSubscriptionEvent({required this.subscription});
+  FetchSubscriptionEvent({required this.type});
+  @override
+  // TODO: implement props
+  List<Object> get props => [this.type];
+}
+
+class FetchedSubscriptionEvent extends MyProfileEvent {
+  final List<SubscriptionModel> subscription;
+
+  FetchedSubscriptionEvent({required this.subscription});
   @override
   // TODO: implement props
   List<Object> get props => [this.subscription];

@@ -37,4 +37,7 @@ class Repository {
   Future<ApiResponse> updateNewMember(
           {required AddMembershipModel memberShip}) async =>
       _dbProvider.updateMembership(membershipModel: memberShip);
+
+  Future<ApiResponse> getSubscriptionList({required String userId}) async =>
+      _dbProvider.getSubscriptionList();
 }

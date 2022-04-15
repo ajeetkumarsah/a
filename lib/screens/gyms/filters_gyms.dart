@@ -472,7 +472,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
               ),
             ],
           ),
-          SizedBox(height: isSmallMobile() ? 4 : 10),
+          SizedBox(height: isSmallMobile() ? 4 : 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -483,7 +483,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
                 maxLines: 2,
                 style: GoogleFonts.montserrat(
                   fontSize: isDesktop()
-                      ? 18
+                      ? 16
                       : isSmallMobile()
                           ? 8
                           : 10,
@@ -535,7 +535,7 @@ class _FiltersAndGymsState extends State<FiltersAndGyms> {
           ),
           SizedBox(height: isSmallMobile() ? 4 : 10),
           Container(
-              height: height * 0.078,
+              height: height * 0.08,
               child: gymList.benefits!.length > 4
                   ? ListView(
                       shrinkWrap: true,

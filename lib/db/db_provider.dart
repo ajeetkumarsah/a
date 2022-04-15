@@ -491,4 +491,19 @@ class DBProvider {
           status: false);
     }
   }
+
+  Future<ApiResponse> getSubscriptionList() async {
+    final response = await http.get(Uri.parse(AppConstants.BASE_URL_DEV +
+        AppConstants.GET_SUBSCRIPTION_URL(id, type)));
+
+    if (response.statusCode == 200) {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Success',
+          networkStatus: false,
+          status: false);
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
 }
