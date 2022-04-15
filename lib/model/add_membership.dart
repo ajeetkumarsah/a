@@ -19,6 +19,8 @@ class AddMembershipModel {
     this.nToken,
     this.deviceId,
     this.howactive,
+    this.type1,
+    this.type2,
   });
 
   String? userId;
@@ -40,6 +42,8 @@ class AddMembershipModel {
   String? nToken;
   String? deviceId;
   String? howactive;
+  String? type1;
+  String? type2;
 
   factory AddMembershipModel.fromJson(Map<String, dynamic> json) =>
       AddMembershipModel(
@@ -65,10 +69,12 @@ class AddMembershipModel {
         nToken: json["n_token"] == null ? null : json["n_token"],
         deviceId: json["device_id"] == null ? null : json["device_id"],
         howactive: json["howactive"] == null ? null : json["howactive"],
+        type1: json["type1"] == null ? null : json["type1"],
+        type2: json["type2"] == null ? null : json["type2"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "user_id": userId == null ? null : userId,
+  Map<String, dynamic> toJson(AddMembershipModel data) => {
+        "user_id": data.userId == null ? null : userId,
         "name": name == null ? null : name,
         "email": email == null ? null : email,
         "age": age == null ? null : age,
@@ -84,8 +90,10 @@ class AddMembershipModel {
         "existing_disease": existingDisease == null ? null : existingDisease,
         "is_smoking": isSmoking == null ? null : isSmoking,
         "is_drinking": isDrinking == null ? null : isDrinking,
-        "n_token": nToken == null ? null : nToken,
-        "device_id": deviceId == null ? null : deviceId,
-        "howactive": howactive == null ? null : howactive,
+        "n_token": data.nToken == null ? null : data.nToken,
+        "device_id": data.deviceId == null ? null : data.deviceId,
+        "howactive": data.howactive == null ? null : data.howactive,
+        "type1": data.type1 == null ? "type1" : data.type1,
+        "type2": data.type2 == null ? "type2" : data.type2,
       };
 }

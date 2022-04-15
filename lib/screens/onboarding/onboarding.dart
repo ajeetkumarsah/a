@@ -25,6 +25,7 @@ import 'package:wtf_web/screens/widgets/adaptiveText.dart';
 import 'package:wtf_web/screens/widgets/alert_flash.dart';
 import 'package:wtf_web/screens/widgets/custom_dropdown.dart';
 import 'package:wtf_web/screens/widgets/custom_loader.dart';
+import 'package:wtf_web/session_manager/global_data.dart';
 import 'package:wtf_web/utils/const.dart';
 import 'package:wtf_web/utils/custom_painter.dart';
 
@@ -63,6 +64,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   List<String> selectHeight =
       new List<String>.generate(200, (i) => (i + 1).toString());
   var editingController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -75,7 +77,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   }
 
   String? bmrResult;
-
+  Type1Type2Model? type1, type2;
   List<Onboarding4> onboarding4 = [
     Onboarding4(
         title: 'Eat',
@@ -137,7 +139,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     final pages = [
+      // onBoarding3(),
       onBoarding1(),
       onBoarding2(width),
       onBoarding3(),
@@ -779,75 +783,70 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         ),
         SizedBox(height: 24),
         BlocConsumer<OnboardingBloc, OnboardingState>(
-            bloc: _bloc..add(FetchType1Event(type: 'type1')),
-            listener: (context, state) {
-              if (state is FetchedType1State) {
-                _bloc.add(FetchType2Event(type: 'type2'));
-                print('<===================From State type 1===========>');
-              }
-            },
-            builder: (context, state) {
-              if (state is FetchedType1State) {
-                List<Type1Type2Model> type1 = state.type1type2model;
-                return Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 32,
-                  runSpacing: 2,
-                  children: List<Widget>.generate(
-                    type1.length,
-                    (int index) {
-                      bool isSelected =
-                          (selectedFitnessGoal == fitnessGoal[index]);
-                      return GestureDetector(
-                        onTap: () {
-                          selectedFitnessGoal = fitnessGoal[index];
-                          setState(() {});
-                        },
-                        child: Container(
-                          // width: 374,
-                          constraints:
-                              BoxConstraints(minWidth: 150, maxWidth: 178),
-                          height: 58,
-                          // margin: EdgeInsets.symmetric(horizontal: 30),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6.0),
-                            color: isSelected
-                                ? Constants.primaryColor
-                                : Color(0xff424242),
-                            gradient: isSelected
-                                ? LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                      Color(0xFF9A0E0E),
-                                      Color(0xFFDE0000),
-                                    ],
-                                    stops: [0.1, 1],
-                                  )
-                                : null,
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Center(
-                            child: AdaptiveText(
-                              text: type1[index].value ?? '',
-                              minFontSize: 14,
-                              align: TextAlign.center,
-                              style: GoogleFonts.openSans(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                                color: Constants.white,
-                              ),
-                            ),
+          bloc: _bloc..add(FetchType1Event(type: 'type2')),
+          listener: (context, state) {
+            if (state is FetchedType1State) {
+              print('<===================From State type1===========>');
+            }
+          },
+          builder: (context, state) {
+            return Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 32,
+              runSpacing: 2,
+              children: List<Widget>.generate(
+                globalData.typeList?.length ?? 3,
+                (int index) {
+                  bool isSelected = (selectedFitnessGoal == fitnessGoal[index]);
+                  return GestureDetector(
+                    onTap: () {
+                      selectedFitnessGoal = fitnessGoal[index];
+                      type1 = globalData.typeList?[index];
+                      setState(() {});
+                    },
+                    child: Container(
+                      // width: 374,
+                      constraints: BoxConstraints(minWidth: 150, maxWidth: 178),
+                      height: 58,
+                      // margin: EdgeInsets.symmetric(horizontal: 30),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.0),
+                        color: isSelected
+                            ? Constants.primaryColor
+                            : Color(0xff424242),
+                        gradient: isSelected
+                            ? LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Color(0xFF9A0E0E),
+                                  Color(0xFFDE0000),
+                                ],
+                                stops: [0.1, 1],
+                              )
+                            : null,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Center(
+                        child: AdaptiveText(
+                          text: globalData.typeList?[index].value ?? '',
+                          minFontSize: 14,
+                          align: TextAlign.center,
+                          style: GoogleFonts.openSans(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                            color: Constants.white,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              }
-              return CustomLoader();
-            }),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
         SizedBox(height: 32),
         AdaptiveText(
           text: 'Diet Preference',
@@ -864,24 +863,25 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         BlocConsumer<OnboardingBloc, OnboardingState>(
             bloc: _bloc,
             listener: (context, state) {
-              if (state is FetchedType2State) {
-                print('<===================From State type2===========>');
+              if (state is FetchedType1State) {
+                // print('<===================From State type2===========>');
               }
             },
             builder: (context, state) {
-              if (state is FetchedType2State) {
-                List<Type1Type2Model> type2 = state.type1type2model;
+              if (state is FetchedType1State) {
+                List<Type1Type2Model> type2Data = state.type1type2model;
                 return Wrap(
                   alignment: WrapAlignment.center,
                   spacing: 32,
                   runSpacing: 2,
                   children: List<Widget>.generate(
-                    type2.length,
+                    type2Data.length,
                     (int index) {
                       bool isSelected = (selectedDiet == diets[index].title);
                       return GestureDetector(
                         onTap: () {
                           selectedDiet = diets[index].title;
+                          type2 = type2Data[index];
                           setState(() {});
                         },
                         child: Column(
@@ -906,7 +906,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                             ),
                             SizedBox(height: 12.0),
                             AdaptiveText(
-                              text: type2[index].value ?? '',
+                              text: type2Data[index].value ?? '',
                               minFontSize: 10,
                               align: TextAlign.center,
                               style: GoogleFonts.openSans(
@@ -1191,7 +1191,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                         isSmoking: smoke.toString(),
                         isDrinking: drink.toString(),
                         howactive: userExperience,
+                        type1: type1?.uid,
+                        type2: type2?.uid,
                       ),
+                      context: context,
                     ),
                   );
                   Navigator.pushReplacementNamed(

@@ -21,6 +21,9 @@ class AppConstants {
   static String GET_USER_PROFILE_URL(String id) => '/user/id/$id';
   static String GET_TYPE1_TYPE2(String type) =>
       '/diettype/getall?page=1&type=$type';
+  static String UPDATE_MEMBER = '/member/update';
+  static String GET_SUBSCRIPTION_URL(String id, String type) =>
+      'subscription/member?member_id=$id&type=$type';
 
-  static const String BANNER_URI = '';
+  static const String BANNER_URI = '/';
 }

@@ -18,11 +18,11 @@ class FetchOnboardingEvent extends OnboardingEvent {
 
 class PostOnboardingEvent extends OnboardingEvent {
   final AddMembershipModel memberShip;
-
-  PostOnboardingEvent({required this.memberShip});
+  final BuildContext context;
+  PostOnboardingEvent({required this.memberShip, required this.context});
 
   @override
-  List<Object> get props => [this.memberShip];
+  List<Object> get props => [this.memberShip, this.context];
 }
 
 class SignupSuccessEvent extends OnboardingEvent {

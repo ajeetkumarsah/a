@@ -5,6 +5,7 @@ import 'package:wtf_web/model/login.dart';
 import 'package:wtf_web/model/member_info.dart';
 import 'package:wtf_web/model/post_order_id.dart';
 import 'package:wtf_web/model/signup.dart';
+import 'package:wtf_web/model/type1_type2.dart';
 import 'package:wtf_web/service/payment_service.dart';
 import 'package:wtf_web/session_manager/global_data.dart';
 import 'package:wtf_web/session_manager/session_manager.dart';
@@ -197,6 +198,14 @@ class DBProvider {
     var _name = await sessionManager.getName();
     var _email = await sessionManager.getEmail();
 
+    // Map<String, dynamic> params = AddMembershipModel().toJson(membershipModel);
+    // params["lat"] = "88585887";
+    // params["long"] = "25885858";
+    // params["n_token"] = "N/A";
+    // params["device_id"] = "N/A";
+    // params["location"] = "Block C Noida UP";
+    // print(
+    //     "~~~~~~~~~type1:${membershipModel.type1}=====type2:${membershipModel.type2}");
     Map<String, dynamic> params = {
       "user_id": _id,
       "name": _name,
@@ -217,10 +226,13 @@ class DBProvider {
       "n_token": "N/A",
       "device_id": "N/A",
       "howactive": membershipModel.howactive,
+      "type1": membershipModel.type1,
+      "type2": membershipModel.type2,
     };
 
     Map<String, String> mapHeader = Map();
     mapHeader["Authorization"] = "Bearer " + _token;
+
     final response = await http.post(
       Uri.parse(
         AppConstants.BASE_URL_DEV + AppConstants.ADD_MEMBERSHIP,
@@ -238,11 +250,15 @@ class DBProvider {
           networkStatus: false,
           status: false);
     } else {
-      throw Exception('Failed to load post');
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Failed',
+          networkStatus: false,
+          status: false);
+      // throw Exception('Failed to load post');
     }
   }
 
-//TODO GENERATE ORDER ID
   Future<ApiResponse> generateOrderId() async {
     final response = await http.post(
         Uri.parse(AppConstants.BASE_URL_DEV + AppConstants.SEND_OTP_URL),
@@ -327,14 +343,15 @@ class DBProvider {
         Uri.parse(
             AppConstants.BASE_URL_DEV + AppConstants.GET_MEMBER_INFO_URL(_id)),
         headers: mapHeader);
+    // print('~~~~~~~~~~Member body:' + memberResponse.body);
     if (memberResponse.statusCode == 200) {
       //
-      print('Inside Member Info====>');
+      // print('Inside Member Info====>');
       MemberInfo _memberInfo =
           MemberInfo.fromJson(jsonDecode(memberResponse.body)['data']);
 
-      globalData.setMemberInfo = _memberInfo;
-      print('After Member Info====>');
+      globalData.memberInfo = _memberInfo;
+      // print('After Member Info====>');
     } else {
       print('Inside Member Info else====>');
       //
@@ -344,7 +361,7 @@ class DBProvider {
         Uri.parse(
             AppConstants.BASE_URL_DEV + AppConstants.GET_USER_PROFILE_URL(_id)),
         headers: mapHeader);
-    print('==========>Profile API response:' + response.body.toString());
+    // print('==========>Profile API response:' + response.body.toString());
     if (response.statusCode == 200) {
       return ApiResponse(
           finalData: jsonDecode(response.body),
@@ -369,11 +386,23 @@ class DBProvider {
     Map<String, String> mapHeader = Map();
     mapHeader["Authorization"] = "Bearer " + _token;
 
+    final type1Response = await http.get(
+        Uri.parse(
+            AppConstants.BASE_URL_DEV + AppConstants.GET_TYPE1_TYPE2('type1')),
+        headers: mapHeader);
+    // print('==========>getType1Type2 API response:' +
+    //     type1Response.body.toString());
+
+    List<dynamic> _listType1Type2 =
+        jsonDecode(type1Response.body)['data'] as List;
+
+    List<Type1Type2Model> _list =
+        _listType1Type2.map((e) => Type1Type2Model.fromJson(e)).toList();
+    globalData.typeList = _list;
     final response = await http.get(
         Uri.parse(
             AppConstants.BASE_URL_DEV + AppConstants.GET_TYPE1_TYPE2(type)),
         headers: mapHeader);
-    print('==========>getType1Type2 API response:' + response.body.toString());
     if (response.statusCode == 200) {
       return ApiResponse(
           finalData: jsonDecode(response.body),
@@ -387,6 +416,79 @@ class DBProvider {
           networkStatus: false,
           status: false);
       // throw Exception('Failed to load post');
+    }
+  }
+
+  Future<ApiResponse> updateMembership(
+      {required AddMembershipModel membershipModel}) async {
+    SessionManager sessionManager = await SessionManager.getInstance();
+
+    var _token = await sessionManager.getToken();
+    var _id = await sessionManager.getId();
+    var _name = await sessionManager.getName();
+    var _email = await sessionManager.getEmail();
+
+    // Map<String, dynamic> params = AddMembershipModel().toJson(membershipModel);
+    // params["lat"] = "88585887";
+    // params["long"] = "25885858";
+    // params["n_token"] = "N/A";
+    // params["device_id"] = "N/A";
+    // params["location"] = "Block C Noida UP";
+
+    // print(
+    //     'updateMembership=======>$_id==>email:$_email===GlobalUID:${globalData.memberInfo?.uid}');
+    Map<String, dynamic> params = {
+      "user_uid": _id,
+      "uid": globalData.memberInfo?.uid,
+      "name": _name,
+      "email": _email,
+      "age": membershipModel.age,
+      "gender": membershipModel.gender,
+      "height": membershipModel.height,
+      "weight": membershipModel.weight,
+      "target_weight": membershipModel.targetWeight,
+      "target_duration": membershipModel.targetDuration,
+      "location": "Block C Noida UP",
+      "lat": "88585887",
+      "long": "25885858",
+      "body_type": membershipModel.bodyType,
+      "existing_disease": membershipModel.existingDisease,
+      "is_smoking": membershipModel.isSmoking,
+      "is_drinking": membershipModel.isDrinking,
+      "n_token": "N/A",
+      "device_id": "N/A",
+      "howactive": membershipModel.howactive,
+      "type1": membershipModel.type1,
+      "type2": membershipModel.type2,
+    };
+
+    Map<String, String> mapHeader = Map();
+    mapHeader["Authorization"] = "Bearer " + _token;
+    // mapHeader["Content-Type"] = "application/json";
+
+    // print('=====>Inside member Update API<====Token:${_token}');
+    final response = await http.put(
+      Uri.parse(
+        AppConstants.BASE_URL_DEV + AppConstants.UPDATE_MEMBER,
+      ),
+      headers: mapHeader,
+      body: params,
+    );
+
+    // print('API response update member========>' + response.body.toString());
+
+    if (response.statusCode == 200) {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Success',
+          networkStatus: false,
+          status: false);
+    } else {
+      return ApiResponse(
+          finalData: jsonDecode(response.body),
+          error: 'Failed',
+          networkStatus: false,
+          status: false);
     }
   }
 }

@@ -15,7 +15,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileEvent>((event, emit) {
       if (event is FetchProfileEvent) {
         emit(ProfileInitial());
-        print('Inside FetchProfileEvent=========>');
+        // print('Inside FetchProfileEvent=========>');
         _repository
             .getUserInfo()
             .then((value) => _convertData(apiResponse: value));

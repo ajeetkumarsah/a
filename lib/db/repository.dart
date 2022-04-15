@@ -20,6 +20,7 @@ class Repository {
   Future<ApiResponse> postNewMember(
           {required AddMembershipModel memberShip}) async =>
       _dbProvider.addMembership(membershipModel: memberShip);
+
   Future<ApiResponse> postSignup({required SignupModel userDetails}) async =>
       _dbProvider.signUp(userDetails);
   Future<ApiResponse> getMembershipPlan({required String id}) async =>
@@ -32,4 +33,8 @@ class Repository {
   Future<ApiResponse> getUserInfo() async => _dbProvider.getUserInfo();
   Future<ApiResponse> postType1Type2({required String type}) async =>
       _dbProvider.getType1Type2(type: type);
+
+  Future<ApiResponse> updateNewMember(
+          {required AddMembershipModel memberShip}) async =>
+      _dbProvider.updateMembership(membershipModel: memberShip);
 }
